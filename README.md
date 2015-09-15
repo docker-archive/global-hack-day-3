@@ -1,7 +1,7 @@
 # global-hack-day-3
 Participant final submissions for the 3rd edition of the Docker Global Hack Day
 # Step 1
-Create a sub repository titled with the name of of your team
+Create a sub repository titled with the name of your team
 # Step 2
 Fork the repository you just created and start hacking on the best Docker project you can think of for a chance to win the Docker Global hack Day #3 https://www.docker.com/community/hackathon
 # Step 3
