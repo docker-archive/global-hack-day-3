@@ -12,4 +12,4 @@ Start hacking on the best Docker project you can think of for a chance to win th
 Once your hack is ready, submit a pull request to this repository before 9am PDT on Monday, September 21st. All files related to your hack should live inside your team's subdirectory.
 
 # Step 4
-Once you've submitted your Pull Request, go ahead and submit additional informations about your hackday project via this form to appear on the Docker.com website and have people vote for you for a chance to win the global prize! https://docs.google.com/a/docker.com/forms/d/1hKpSHbyifzUYIkv9zQVc6qgQdACPSQVKV8ZHo0Ctp_A/viewform
+Once you've submitted your Pull Request, go ahead and submit additional informations about your hackday project via [this form] (https://docs.google.com/a/docker.com/forms/d/1hKpSHbyifzUYIkv9zQVc6qgQdACPSQVKV8ZHo0Ctp_A/viewform) to appear on the Docker.com website and have people vote for you for a chance to win the global prize! 
