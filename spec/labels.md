@@ -12,15 +12,12 @@ under `schema` versions.
 | io.hica.xsocket_passthrough | --xsocket-path, --x-display-num | *path*, *int* | `/tmp/.X11-unix`, `0` |
 | io.hica.dri_passthrough | *none* | *none* | `/dev/dri/*` |
 | io.hica.cuda | --cuda-device, --cuda-device-ctl, --cuda-device-uvm | *path*, *path*, *path* | `/dev/nvidia0`, `/dev/nvidiactl`, `/dev/nvidia-uvm` |
-------------------
 | io.hica.sound_device | --sound-device | *glob* | `/dev/snd*` |
 | io.hica.pulse | --pulse-device | *path* | `/run/user/$UID/pulse/` |
-------------------
 | io.hica.bind_home | --home-path | *path* | `$HOME` |
 | io.hica.bind_pwd | *none* | *none* | `$PWD` |
 | io.hica.bind_users_groups | --users-path, --groups-path | *path*, *path* | `/etc/passwd`, `/etc/group` |
 | io.hica.bind_localtime | --time-path | *path* | `/etc/localtime` |
--------------------
 | io.hica.env_passthrough | --env | `none`, `full` | `full` |
 | io.hica.kvm_passthrough | --kvm-device | *path* | `/dev/kvm` |
 
