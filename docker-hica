@@ -1,0 +1,32 @@
+#!/usr/bin/python -tt
+# vim: set fileencoding=utf-8
+# Pavel Odvody <podvody@redhat.com>
+#
+# HICA - Host integrated container applications
+#
+# MIT License (C) 2015
+
+import os, sys, docker, argparse, imp
+from base import *
+
+def HicaLoadInjectors(path):
+  r = {}
+  for inj in os.listdir(os.path.join(os.getcwd(), path)):
+    modname, suffix = inj.rsplit('.', 1)
+    if suffix == 'py':
+      fullpath = os.path.join(os.getcwd(), path)
+      f, filename, description = imp.find_module(modname, [fullpath])
+      m = imp.load_module(modname, open(filename, 'U'), '', description)
+      try:
+        m.register(r)
+      except AttributeError:
+        print ("Module {0} does not implement `register(context)`".format(modname))
+  return r
+
+_injector_registry = HicaLoadInjectors("injectors")
+
+for key, val in _injector_registry.items():
+  args = val.get_injected_args()
+  print ("Argparse for: {0} is {1}".format(key, str(args)))
+
+#print (_injector_registry)
