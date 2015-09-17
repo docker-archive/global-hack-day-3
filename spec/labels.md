@@ -8,7 +8,7 @@ under `schema` versions.
 ## Label Schema v0.1
 
 | Label | Command line | Values | Default Value |
-------------------
+|-------|--------------|--------|---------------|
 | io.hica.xsocket_passthrough | --xsocket-path, --x-display-num | *path*, *int* | `/tmp/.X11-unix`, `0` |
 | io.hica.dri_passthrough | *none* | *none* | `/dev/dri/*` |
 | io.hica.cuda | --cuda-device, --cuda-device-ctl, --cuda-device-uvm | *path*, *path*, *path* | `/dev/nvidia0`, `/dev/nvidiactl`, `/dev/nvidia-uvm` |
