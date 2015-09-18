@@ -30,6 +30,7 @@ class CSK_CLI(object):
     def setup_arguments(self):
         self.parser.add_argument('-v', '--verbose', action="store_true", help='verbose output')
         self.parser.add_argument('-q', '--quiet', action="store_true", help='set quiet output')
+        # consider multiple commands like : setup_tools, mount tools, umount, stop, etc
         self.parser.add_argument('container', help='container to enhance with tools')
         self.parser.add_argument('-c', '--config-file', help='path to a config file')
         self.parser.add_argument('--version', action='version', help="show version", version=version.version)
@@ -46,11 +47,15 @@ class CSK_CLI(object):
 
         if args.config_file:
             self.read_config()
+
         tools_container = Container("csk-tools")
         #fixme pulling if not exists
         tools_container.start()
 
-                
+        enhanced_container = Container(args.container)
+        #fixme we should check some /tmp/.csk file to not enhance container mutliple times
+        enhanced_container.enable_csk()
+
         tools_container.stop()
 
     def read_config(self):

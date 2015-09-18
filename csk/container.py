@@ -10,7 +10,9 @@ import logging
 from docker import Client
 import os
 import re
-d = Client(version='1.18')
+import base64
+import requests
+d = Client(version='1.20')
 
 logger = logging.getLogger('csk')
 
@@ -22,6 +24,10 @@ class Container(object):
     running = False
 
     def __init__(self, name):
+        for candidate in d.containers():
+            if candidate["Id"].startswith(name):
+                logger.debug("found container %s" %candidate["Id"])
+                self.container = candidate
         self.name = name
 
     def __enter__(self):
@@ -30,11 +36,31 @@ class Container(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
 
-    def _put_file():
-        pass
+    def _put_file(self, filename):
+        # FIXME - this is very very ugly hack - it uses docker remote API directly
+
+        headers = {
+            'Content-Type': 'application/tar',
+        }
+
+        params = {
+            #maybe choose some better path
+            'path' : '/tmp',
+            'noOverwriteDirNonDir' : 'true'
+            }
+    
+        content = open("%s/fuse9fs.tar" %os.path.dirname(__file__), "rb").read()
+        res = d.put(
+            d._url("/containers/{0}/archive".format(self.container['Id'])),
+            data=content,
+            params=params,
+            headers = headers
+        )
+        d._raise_for_status(res)
 
     def enable_csk(self):
-        fuse_bin = "%s/fuse9s.zip" %os.path.dirname(__file__)
+        fuse_bin = "%s/fuse9fs.zip" %os.path.dirname(__file__)
+        self._put_file(fuse_bin)
 
     def execute(self, cmd):
         """ executes cmd in container and return its output """
