@@ -9,9 +9,4 @@ Get instant feedback in your local workstation without a heavy CI server.
 
 This is a submission for the 3rd edition of the Docker Global Hack Day
 
-# How to install
-TODO
-
-# How to run
-TODO
 
