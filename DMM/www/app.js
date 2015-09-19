@@ -1,4 +1,4 @@
-angular.module('DMM', ['ionic', 'ngResource'])
+angular.module('DMM', ['ionic', 'ngResource', 'chart.js'])
 
   .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
