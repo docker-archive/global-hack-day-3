@@ -6,15 +6,11 @@
 #
 # MIT License (C) 2015
 
-import os, sys, docker, argparse, imp
+import os, sys, docker, argparse, imp, subprocess
 from base import *
 
 dock = docker.Client()
 _injector_registry  = {}
-LABELS = ["io.hica.xsocket_passthrough", "io.hica.machine_id", "io.hica.dri_passthrough", 
-          "io.hica.sound_device", "io.hica.pulse", "io.hica.bind_home", "io.hica.bind_pwd",
-          "io.hica.bind_users_groups", "io.hica.bind_localtime", "io.hica.env_passthrough",
-          "io.hica.kvm_passthrough", "io.hica.cuda"]
 
 def HicaLoadInjectors(path):
   """ Load all Python modules from `path`
@@ -36,6 +32,23 @@ def HicaLoadInjectors(path):
         print ("Module {0} does not implement `register(context)`".format(modname))
   return r
 
+def HicaGetImageName():
+  """ Get image name so that we can fetch labels from it """
+
+  args = argparse.ArgumentParser()
+  args.add_argument('hica_app_name')
+  p, _ = args.parse_known_args()
+  return p.hica_app_name
+
+def HicaGetLabelsFromImage(image):
+  """ Get labels from image as list
+
+  :param image: Docker image
+  :type image: dict
+  """
+
+  return [k for (k, _) in image['Config']['Labels'].iteritems()]
+
 def HicaParseArguments(labels):
   """ Parse argument and optionally show usage and terminate with `0`
   return code
@@ -53,10 +66,11 @@ def HicaParseArguments(labels):
 
   # add needed argparsers
   for label in labels:
-    inj = _injector_registry[label]
-    for (arg, typ, defval) in inj.get_injected_args():
-      if arg:
-        args.add_argument(arg, default=defval)
+    if label in _injector_registry:
+      inj = _injector_registry[label]
+      for (arg, typ, defval) in inj.get_injected_args():
+        if arg:
+          args.add_argument(arg, default=defval)
 
   # now that we added the argparsers we can print usage and bail
   if p.show_args:
@@ -77,26 +91,36 @@ def HicaInjectConfiguration(labels, args, config):
   :type config: list(str)
   """
 
+  caps = []
   # map params from argparse back to injectors
   for label in labels:
-    inj = _injector_registry[label]
-    cfgs = []
-    for (arg, typ, defval) in inj.get_injected_args():
-      if arg:
-        x = getattr(args, arg[2:].replace("-", "_"))
-        cfgs.append((typ, x))
-      else:
-        cfgs.append((typ, defval))
-    inj.inject_config(config, cfgs)
-  return config
-
+    if label in _injector_registry:
+      inj = _injector_registry[label]
+      cfgs = []
+      caps.append(inj.get_description())
+      for (arg, typ, defval) in inj.get_injected_args():
+        if arg:
+          x = getattr(args, arg[2:].replace("-", "_"))
+          cfgs.append((typ, x))
+        else:
+          cfgs.append((typ, defval))
+      inj.inject_config(config, cfgs)
+  if not caps or raw_input("The container requests the following capabilities: \n *" + "\n *".join(caps)) in ['y', 'Y']:
+    return config
+  else:
+    print("*** Operation aborted!")
+    sys.exit(1)
 
 _injector_registry = HicaLoadInjectors("injectors")
-parsed = HicaParseArguments(LABELS)
+
+name = HicaGetImageName()
+image = dock.inspect_image(name)
+labels = HicaGetLabelsFromImage(image)
+
+parsed = HicaParseArguments(labels)
 # base configuration
 # run the container as current user so that file system rights are fine
 # for bind mounted files
-config = HicaInjectConfiguration(LABELS, parsed, ['-u', os.getuid()])
+config = HicaInjectConfiguration(labels, parsed, ['-it', '-u', str(os.getuid())])
 
-# looks like the basic mechanism works fine ;)
-print config
+subprocess.call(["docker", "run"] + config + [name])
