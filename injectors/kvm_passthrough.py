@@ -9,7 +9,7 @@ from base.hica_base import *
 
 class KvmPassthroughInjector(HicaInjector):
   def get_description(self):
-    return ""
+    return "Bind mounts KVM device into the container"
 
   def get_config_key(self):
     return "io.hica.kvm_passthrough"

@@ -9,6 +9,9 @@ import os
 from base.hica_base import *
 
 class BindPwdInjector(HicaInjector):
+  def get_description(self):
+    return "Bind mounts current working directory ({0}) into the container".format(os.getenv("PWD"))
+
   def get_config_key(self):
     return "io.hica.bind_pwd"
 

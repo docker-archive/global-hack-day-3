@@ -9,7 +9,7 @@ from base.hica_base import *
 
 class BindLocaltimeInjector(HicaInjector):
   def get_description(self):
-    return ""
+    return "Bind mounts local time information into the container"
 
   def get_config_key(self):
     return "io.hica.bind_localtime"

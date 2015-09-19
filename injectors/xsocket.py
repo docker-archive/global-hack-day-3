@@ -8,6 +8,9 @@
 from base.hica_base import *
 
 class XSocketInjector(HicaInjector):
+  def get_description(self):
+    return "Bind mounts XSocket into the container"
+
   def get_config_key(self):
     return "io.hica.xsocket_passthrough"
 

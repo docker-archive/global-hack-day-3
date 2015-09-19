@@ -10,7 +10,7 @@ from base.hica_base import *
 
 class EnvPassthroughInjector(HicaInjector):
   def get_description(self):
-    return ""
+    return "Bind mounts current environment into the container"
 
   def get_config_key(self):
     return "io.hica.env_passthrough"

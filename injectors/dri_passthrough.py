@@ -8,6 +8,9 @@
 from base.hica_base import *
 
 class DriPassthroughInjector(HicaInjector):
+  def get_description(self):
+    return "Bind mounts direct rendering interface devices (DRI) into the container"
+
   def get_config_key(self):
     return "io.hica.dri_passthrough"
 

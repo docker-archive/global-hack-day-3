@@ -9,6 +9,9 @@ import os
 from base.hica_base import *
 
 class BindHomeInjector(HicaInjector):
+  def get_description(self):
+    return "Bind mounts home directory ({0}) into the container".format(os.getenv("HOME"))
+
   def get_config_key(self):
     return "io.hica.bind_home"
 

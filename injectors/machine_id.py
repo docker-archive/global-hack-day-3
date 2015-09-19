@@ -8,6 +8,9 @@
 from base.hica_base import *
 
 class MachineIdInjector(HicaInjector):
+  def get_description(self):
+    return "Bind mounts machine-id into the container"
+
   def get_config_key(self):
     return "io.hica.machine_id"
 

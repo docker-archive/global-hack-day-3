@@ -8,6 +8,9 @@
 from base.hica_base import *
 
 class CudaInjector(HicaInjector):
+  def get_description(self):
+    return "Bind mounts CUDA devices into the container"
+
   def get_config_key(self):
     return "io.hica.cuda"
 
