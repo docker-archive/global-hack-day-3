@@ -40,7 +40,7 @@ angular.module('DMM', ['ionic', 'ngResource'])
         url: '/dash',
         views: {
           'tab-dash': {
-            templateUrl: 'dashboard/tab-dashboard.html',
+            templateUrl: 'dashboard/dashboard.html',
             controller: 'DashCtrl'
           }
         }
@@ -49,8 +49,8 @@ angular.module('DMM', ['ionic', 'ngResource'])
       .state('tab.containers', {
         url: '/containers',
         views: {
-          'tab-chats': {
-            templateUrl: 'containers/tab-containers.html',
+          'tab-containers': {
+            templateUrl: 'containers/containers.html',
             controller: 'ContainersCtrl'
           }
         }
@@ -58,7 +58,7 @@ angular.module('DMM', ['ionic', 'ngResource'])
       .state('tab.container', {
         url: '/containers/:containerId',
         views: {
-          'tab-chats': {
+          'tab-containers': {
             templateUrl: 'container/container.html',
             controller: 'ContainerDetailCtrl'
           }
@@ -69,7 +69,7 @@ angular.module('DMM', ['ionic', 'ngResource'])
         url: '/settings',
         views: {
           'tab-account': {
-            templateUrl: 'settings/tab-settings.html',
+            templateUrl: 'settings/settings.html',
             controller: 'SettingsCtrl'
           }
         }

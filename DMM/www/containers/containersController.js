@@ -5,6 +5,6 @@
         $scope.containers = data;
       }, function () {
 
-      })
+      });
     }]);
 })(angular);
