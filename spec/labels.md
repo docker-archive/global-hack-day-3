@@ -5,11 +5,11 @@ All labels live in common namespace `io.hica`, each set of labels with defined
 values and name of command line parameter for supplying the value is versioned 
 under `schema` versions. 
 
-## Label Schema v0.2.2
+## Label Schema v0.2.3
 
 | Label | Command line | Values | Default Value |
 |-------|--------------|--------|---------------|
-| io.hica.xsocket_passthrough | --xsocket-path, --x-display-num | *path*, *string* | `/tmp/.X11-unix`, `:0` |
+| io.hica.xsocket_passthrough | --xsocket-path, --x-display-num | *path*, *string* | `/tmp/.X11-unix`, `DISPLAY=:0` |
 | io.hica.dri_passthrough | --dri-passthrough-path | *glob* | `/dev/dri/*` |
 | io.hica.machine_id | --machine-id-path | *path* | `/etc/machine-id`|
 | io.hica.cuda | --cuda-device, --cuda-device-ctl, --cuda-device-uvm | *path*, *path*, *path* | `/dev/nvidia0`, `/dev/nvidiactl`, `/dev/nvidia-uvm` |
