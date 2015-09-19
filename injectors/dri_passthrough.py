@@ -7,14 +7,13 @@
 
 from base.hica_base import *
 
-class XSocketInjector(HicaInjector):
+class DriPassthroughInjector(HicaInjector):
   def get_config_key(self):
-    return "io.hica.xsocket_passthrough"
+    return "io.hica.dri_passthrough"
 
   def get_injected_args(self):
-    return (("--xsocket-path", HicaValueType.PATH, "/tmp/.X11-unix"), 
-        ("--x-display-num", HicaValueType.STRING, "DISPLAY=:0"))
+    return (("--dri-passthrough-path", HicaValueType.DEVICE | HicaValueType.GLOB, "/dev/dri/*"),)
 
 def register(context):
-  obj = XSocketInjector()
+  obj = DriPassthroughInjector()
   context[obj.get_config_key()] = obj

@@ -8,7 +8,7 @@
 import glob, os, sys
 
 class HicaValueType(object):
-  (PATH, DEVICE, GLOB, STRING) = [0] + [1 << x for x in range(3)]
+  (NONE, PATH, DEVICE, GLOB, STRING) = [0] + [1 << x for x in range(4)]
 
 class HicaInjector(object):
   def get_config_key(self):

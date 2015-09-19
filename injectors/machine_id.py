@@ -7,14 +7,13 @@
 
 from base.hica_base import *
 
-class XSocketInjector(HicaInjector):
+class MachineIdInjector(HicaInjector):
   def get_config_key(self):
-    return "io.hica.xsocket_passthrough"
+    return "io.hica.machine_id"
 
   def get_injected_args(self):
-    return (("--xsocket-path", HicaValueType.PATH, "/tmp/.X11-unix"), 
-        ("--x-display-num", HicaValueType.STRING, "DISPLAY=:0"))
+    return (("--machine-id-path", HicaValueType.PATH, "/etc/machine-id"),)
 
 def register(context):
-  obj = XSocketInjector()
+  obj = MachineIdInjector()
   context[obj.get_config_key()] = obj
