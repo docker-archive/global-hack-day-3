@@ -9,6 +9,19 @@
 import os, sys, docker, argparse, imp, subprocess
 from base import *
 
+# adjust for container arguments passed after the -- delimeter
+container_args = []
+sliceat = 0
+for i, arg in enumerate(sys.argv[1:]):
+  if sliceat:
+    container_args.append(arg)
+  if arg == '--':
+    sliceat = i + 1
+
+if sliceat:
+  sys.argv = sys.argv[:sliceat]
+
+# create docker client for inspecting images
 dock = docker.Client()
 _injector_registry  = {}
 
@@ -60,6 +73,7 @@ def HicaParseArguments(labels):
   args = argparse.ArgumentParser()
   args.add_argument("hica_app_name")
   args.add_argument("--show-args", default=False, action='store_true')
+  args.add_argument("--verbose", default=False, action='store_true')
 
   # parse now to catch --show-args
   p, _ = args.parse_known_args()
@@ -123,8 +137,10 @@ parsed = HicaParseArguments(labels)
 # base configuration
 # run the container as current user so that file system rights are fine
 # for bind mounted files
-config = HicaInjectConfiguration(labels, parsed, ['-it', '-u', str(os.getuid())])
-runcmd = ["docker", "run"] + config + [name]
-print("Executing: " + " ".join(runcmd))
+config = HicaInjectConfiguration(labels, parsed, ['-it', '-u', '{0}:{0}'.format(str(os.getuid()))])
+runcmd = ["docker", "run"] + config + [name] + container_args
+
+if parsed.verbose:
+  print("Executing: " + " ".join(runcmd))
 
 subprocess.call(runcmd)
