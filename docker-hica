@@ -10,7 +10,7 @@ import os, sys, docker, argparse, imp
 from base import *
 
 _injector_registry  = {}
-LABELS = ["io.hica.xsocket_passthrough", "io.hica.machine_id", "io.hica.dri_passthrough"]
+LABELS = ["io.hica.xsocket_passthrough", "io.hica.machine_id", "io.hica.dri_passthrough", "io.hica.sound_device"]
 
 def HicaLoadInjectors(path):
   """ Load all Python modules from `path`
@@ -33,6 +33,13 @@ def HicaLoadInjectors(path):
   return r
 
 def HicaParseArguments(labels):
+  """ Parse argument and optionally show usage and terminate with `0`
+  return code
+
+  :param labels: `Labels` read from the `Image`
+  :type labels: list(str)
+  """
+
   args = argparse.ArgumentParser()
   args.add_argument("hica_app_name")
   args.add_argument("--show-args", default=False, action='store_true')
@@ -54,6 +61,17 @@ def HicaParseArguments(labels):
   return args.parse_args()
 
 def HicaInjectConfiguration(labels, args, config):
+  """ Inject configuration parameters for `labels` with values
+  obtained from `args` into the `config` array
+
+  :param labels: `Labels` read from the `Image`
+  :type labels: list(str)
+  :param args: Result of `parse_args` operation
+  :type args: argparse.ArgumentParser
+  :param config: Array where to inject configuration parameters
+  :type config: list(str)
+  """
+
   # map params from argparse back to injectors
   for label in labels:
     inj = _injector_registry[label]
