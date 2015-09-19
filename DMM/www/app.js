@@ -17,6 +17,8 @@ angular.module('DMM', ['ionic', 'ngResource'])
   })
   .value('AppConfig', {
     BASE_URL: 'http://localhost:4243',
+    DOCKER_HOST: 'localhost',
+    DOCKER_PORT: 4243,
     showAll: 0
   })
 
@@ -72,9 +74,20 @@ angular.module('DMM', ['ionic', 'ngResource'])
       .state('tab.settings', {
         url: '/settings',
         views: {
-          'tab-account': {
+          'tab-settings': {
             templateUrl: 'settings/settings.html',
             controller: 'SettingsCtrl'
+          }
+        },
+        cache: false
+      })
+
+      .state('tab.connection', {
+        url: '/connection',
+        views: {
+          'tab-settings': {
+            templateUrl: 'settings/connectionSettings.html',
+            controller: 'ConnectionSettingsCtrl'
           }
         },
         cache: false

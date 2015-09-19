@@ -3,7 +3,8 @@
     .controller('ContainersCtrl', ['$scope', 'Containers', 'AppConfig', function ($scope, Containers, AppConfig) {
       $scope.refresh = function () {
         Containers.query({
-          all: AppConfig.showAll + 0
+          all: AppConfig.showAll + 0,
+          url: AppConfig.DOCKER_HOST + ':' + AppConfig.DOCKER_PORT
         }, function (data) {
           $scope.containers = data;
           $scope.$broadcast('scroll.refreshComplete');
@@ -16,7 +17,8 @@
 
       $scope.stopContainer = function (container) {
         Containers.stop({
-          id: container.Id
+          id: container.Id,
+          url: AppConfig.DOCKER_HOST + ':' + AppConfig.DOCKER_PORT
         }, function () {
           $scope.refresh();
         }, angular.noop);
@@ -24,7 +26,8 @@
 
       $scope.startContainer = function (container) {
         Containers.start({
-          id: container.Id
+          id: container.Id,
+          url: AppConfig.DOCKER_HOST + ':' + AppConfig.DOCKER_PORT
         }, function () {
           $scope.refresh();
         }, angular.noop);

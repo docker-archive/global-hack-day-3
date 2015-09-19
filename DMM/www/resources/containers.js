@@ -1,7 +1,7 @@
 (function (angular) {
   angular.module('DMM')
     .factory('Containers', ['$resource', 'AppConfig', function ($resource, AppConfig) {
-      return $resource(AppConfig.BASE_URL + '/containers/:id/:action', {}, {
+      return $resource('http://:url/containers/:id/:action', {}, {
         query: {
           method: 'GET',
           params: {

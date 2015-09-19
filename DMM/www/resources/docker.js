@@ -1,7 +1,7 @@
 (function (angular) {
   angular.module('DMM')
     .factory('Docker', ['$resource', 'AppConfig', function ($resource, AppConfig) {
-      return $resource(AppConfig.BASE_URL + '/:action', {}, {
+      return $resource('http://:url/:action', {}, {
         version: {
           method: 'GET',
           params: {
