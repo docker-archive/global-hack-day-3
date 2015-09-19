@@ -1,6 +1,6 @@
 (function (angular) {
   angular.module('DMM')
-    .controller('DashCtrl', ['$scope', 'Docker', function ($scope, Docker) {
+    .controller('DashCtrl', ['$scope', 'Docker', '$ionicHistory', function ($scope, Docker, $ionicHistory) {
       Docker.version({}, function (data) {
         $scope.version = data;
       }, function () {
@@ -11,5 +11,7 @@
       }, function () {
 
       });
+      $ionicHistory.clearHistory();
+      $ionicHistory.clearCache();
     }]);
 })(angular);

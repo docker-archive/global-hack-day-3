@@ -16,7 +16,8 @@ angular.module('DMM', ['ionic', 'ngResource'])
     });
   })
   .value('AppConfig', {
-    BASE_URL: 'http://localhost:4243'
+    BASE_URL: 'http://localhost:4243',
+    showAll: 0
   })
 
   .config(function ($stateProvider, $urlRouterProvider) {
@@ -43,7 +44,8 @@ angular.module('DMM', ['ionic', 'ngResource'])
             templateUrl: 'dashboard/dashboard.html',
             controller: 'DashCtrl'
           }
-        }
+        },
+        cache: false
       })
 
       .state('tab.containers', {
@@ -74,7 +76,8 @@ angular.module('DMM', ['ionic', 'ngResource'])
             templateUrl: 'settings/settings.html',
             controller: 'SettingsCtrl'
           }
-        }
+        },
+        cache: false
       });
 
     // if none of the above states are matched, use this as the fallback
