@@ -105,7 +105,9 @@ def HicaInjectConfiguration(labels, args, config):
         else:
           cfgs.append((typ, defval))
       inj.inject_config(config, cfgs)
-  if not caps or raw_input("The container requests the following capabilities: \n *" + "\n *".join(caps)) in ['y', 'Y']:
+
+  instr = "The container requests the following capabilities: \n - " + "\n - ".join(caps) + "\nProceed? [y/Y/n]: "
+  if not caps or raw_input(instr) in ['y', 'Y']:
     return config
   else:
     print("*** Operation aborted!")
@@ -122,5 +124,7 @@ parsed = HicaParseArguments(labels)
 # run the container as current user so that file system rights are fine
 # for bind mounted files
 config = HicaInjectConfiguration(labels, parsed, ['-it', '-u', str(os.getuid())])
+runcmd = ["docker", "run"] + config + [name]
+print("Executing: " + " ".join(runcmd))
 
-subprocess.call(["docker", "run"] + config + [name])
+subprocess.call(runcmd)
