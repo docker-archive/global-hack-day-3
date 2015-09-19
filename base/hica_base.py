@@ -40,7 +40,8 @@ class HicaInjector(object):
       config.append(val)
 
   def inject_config(self, config, from_args):
-    pass
+    for cv in from_args:
+      self.inject_value_type(cv, config)
 
 class HicaConfiguration(object):
   def __init__(self):
