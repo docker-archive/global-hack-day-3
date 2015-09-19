@@ -13,7 +13,7 @@ class XSocketInjector(HicaInjector):
 
   def get_injected_args(self):
     return (("--xsocket-path", HicaValueType.PATH, "/tmp/.X11-unix"), 
-	    ("--x-display-num", HicaValueType.INT, 0))
+        ("--x-display-num", HicaValueType.STRING, ":0"))
 
 def register(context):
   context['xsocket'] = XSocketInjector()

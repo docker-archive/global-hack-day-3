@@ -5,10 +5,10 @@
 #
 # MIT License (C) 2015
 
-import os, sys
+import glob, os, sys
 
 class HicaValueType(object):
-  (PATH, INT, GLOB, STRING) = [0] + [1 << x for x in range(3)]
+  (PATH, DEVICE, GLOB, STRING) = [0] + [1 << x for x in range(3)]
 
 class HicaInjector(object):
   def get_config_key(self):
@@ -17,7 +17,29 @@ class HicaInjector(object):
   def get_injected_args(self):
     return None
 
-  def inject_config(self, config):
+  def inject_value_type(self, value, config):
+    typ, val = value
+    if typ & HicaValueType.PATH:
+      if typ & HicaValueType.GLOB:
+        for v in glob.glob(val):
+          config.append("--volume")
+          config.append("{0}:{0}:Z".format(v))
+      else:
+        config.append("--volume")
+        config.append("{0}:{0}:Z".format(val))
+    elif typ & HicaValueType.DEVICE:
+      if typ & HicaValueType.GLOB:
+        for v in glob.glob(val):
+          config.append("--device")
+          config.append("{0}:{0}".format(v))
+      else:
+        config.append("--device")
+        config.append("{0}:{0}".format(val))
+    elif typ == HicaValueType.STRING:
+      config.append("-e")
+      config.append(val)
+
+  def inject_config(self, config, from_args):
     pass
 
 class HicaConfiguration(object):
@@ -30,8 +52,6 @@ class HicaDriverBase(object):
 
   def launch_container(self, config):
     pass
-
-
 
 def main():
   pass
