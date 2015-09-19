@@ -11,7 +11,8 @@ from base import *
 
 _injector_registry  = {}
 LABELS = ["io.hica.xsocket_passthrough", "io.hica.machine_id", "io.hica.dri_passthrough", 
-          "io.hica.sound_device", "io.hica.pulse", "io.hica.bind_home", "io.hica.bind_pwd"]
+          "io.hica.sound_device", "io.hica.pulse", "io.hica.bind_home", "io.hica.bind_pwd",
+          "io.hica.bind_users_groups"]
 
 def HicaLoadInjectors(path):
   """ Load all Python modules from `path`
