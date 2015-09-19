@@ -5,7 +5,7 @@ All labels live in common namespace `io.hica`, each set of labels with defined
 values and name of command line parameter for supplying the value is versioned 
 under `schema` versions. 
 
-## Label Schema v0.2.1
+## Label Schema v0.2.2
 
 | Label | Command line | Values | Default Value |
 |-------|--------------|--------|---------------|
@@ -14,7 +14,7 @@ under `schema` versions.
 | io.hica.machine_id | --machine-id-path | *path* | `/etc/machine-id`|
 | io.hica.cuda | --cuda-device, --cuda-device-ctl, --cuda-device-uvm | *path*, *path*, *path* | `/dev/nvidia0`, `/dev/nvidiactl`, `/dev/nvidia-uvm` |
 | io.hica.sound_device | --sound-device | *glob* | `/dev/snd*` |
-| io.hica.pulse | --pulse-device | *path* | `/run/user/$UID/pulse/` |
+| io.hica.pulse | --pulse | *path* | `/run/user/$UID/pulse/` |
 | io.hica.bind_home | --home-path | *path* | `$HOME` |
 | io.hica.bind_pwd | *none* | *none* | `$PWD` |
 | io.hica.bind_users_groups | --users-path, --groups-path | *path*, *path* | `/etc/passwd`, `/etc/group` |
