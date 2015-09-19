@@ -10,7 +10,8 @@ import os, sys, docker, argparse, imp
 from base import *
 
 _injector_registry  = {}
-LABELS = ["io.hica.xsocket_passthrough", "io.hica.machine_id", "io.hica.dri_passthrough", "io.hica.sound_device"]
+LABELS = ["io.hica.xsocket_passthrough", "io.hica.machine_id", "io.hica.dri_passthrough", 
+          "io.hica.sound_device", "io.hica.pulse"]
 
 def HicaLoadInjectors(path):
   """ Load all Python modules from `path`
