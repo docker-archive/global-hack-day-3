@@ -70,6 +70,16 @@ angular.module('DMM', ['ionic', 'ngResource', 'chart.js'])
         },
         cache: false
       })
+      .state('tab.monitoring', {
+        url: '/monitoring/:containerId',
+        views: {
+          'tab-containers': {
+            templateUrl: 'monitoring/monitoring.html',
+            controller: 'MonitoringCtrl'
+          }
+        },
+        cache: false
+      })
 
       .state('tab.settings', {
         url: '/settings',

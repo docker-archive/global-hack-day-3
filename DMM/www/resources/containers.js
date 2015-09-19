@@ -34,7 +34,8 @@
           method: 'GET',
           params: {
             id: '@id',
-            action: 'stats'
+            action: 'stats',
+            stream: '0'
           }
         },
         top: {

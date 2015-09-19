@@ -2,7 +2,9 @@
 </ion-nav-bar>
 <ion-view view-title="Details">
   <ion-nav-buttons side="right">
-    <button menu-toggle="right" class="button button-icon icon ion-heart"></button>
+    <a class="button button-icon icon ion-heart"
+       href="#/tab/monitoring/{{container.Id}}"
+       ng-show="container.State.Running"></a>
   </ion-nav-buttons>
   <ion-content>
     <ion-item class="item-remove-animate"
@@ -35,6 +37,5 @@
       <h2>Ip Adress</h2>
       {{container.NetworkSettings.IPAddress}}
     </ion-item>
-
   </ion-content>
 </ion-view>
