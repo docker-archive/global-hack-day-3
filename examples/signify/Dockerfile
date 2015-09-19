@@ -10,6 +10,6 @@ ENV PKGS='libbsd libbsd-devel make gcc findutils git'
 RUN dnf install -y ${PKGS}\
  && (git clone https://github.com/aperezdc/signify && cd signify\
  && git checkout ${SIGNIFY_COMMIT} && make && make install && rm -rf /signify)\
- && dnf remove -y ${PKGS} && dnf autoremove -y && rm -rf /var/dnf/cache/
+ && dnf remove -y ${PKGS} && dnf autoremove -y && rm -rf /var/cache/dnf/
 
 ENTRYPOINT ["signify"]
