@@ -5,8 +5,10 @@
         id: $stateParams.containerId
       }, function (data) {
         $scope.container = data;
-      }, function () {
+      }, angular.noop);
 
-      });
+      $scope.getStatus = function () {
+        return $scope.container ? $scope.container.State.Running : '';
+      };
     }]);
 })(angular);

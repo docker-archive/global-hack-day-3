@@ -1,4 +1,9 @@
+<ion-nav-bar>
+</ion-nav-bar>
 <ion-view view-title="Details">
+  <ion-nav-buttons side="right">
+    <button menu-toggle="right" class="button button-icon icon ion-heart"></button>
+  </ion-nav-buttons>
   <ion-content>
     <ion-item class="item-remove-animate"
               type="item-text-wrap">
@@ -7,8 +12,29 @@
     </ion-item>
     <ion-item class="item-remove-animate"
               type="item-text-wrap">
-      <h2>Image</h2>
-      {{container.Image}}
+      <h2>Status</h2>
+      {{getStatus()}}
     </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Image</h2>
+      {{container.Config.Image}}
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Path</h2>
+      {{container.Path}}
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Hostname</h2>
+      {{container.Config.Hostname}}
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Ip Adress</h2>
+      {{container.NetworkSettings.IPAddress}}
+    </ion-item>
+
   </ion-content>
 </ion-view>
