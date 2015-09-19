@@ -11,7 +11,7 @@ from base import *
 
 _injector_registry  = {}
 LABELS = ["io.hica.xsocket_passthrough", "io.hica.machine_id", "io.hica.dri_passthrough", 
-          "io.hica.sound_device", "io.hica.pulse"]
+          "io.hica.sound_device", "io.hica.pulse", "io.hica.bind_home", "io.hica.bind_pwd"]
 
 def HicaLoadInjectors(path):
   """ Load all Python modules from `path`
@@ -52,7 +52,8 @@ def HicaParseArguments(labels):
   for label in labels:
     inj = _injector_registry[label]
     for (arg, typ, defval) in inj.get_injected_args():
-      args.add_argument(arg, default=defval)
+      if arg:
+        args.add_argument(arg, default=defval)
 
   # now that we added the argparsers we can print usage and bail
   if p.show_args:
@@ -78,8 +79,11 @@ def HicaInjectConfiguration(labels, args, config):
     inj = _injector_registry[label]
     cfgs = []
     for (arg, typ, defval) in inj.get_injected_args():
-      x = getattr(args, arg[2:].replace("-", "_"))
-      cfgs.append((typ, x))
+      if arg:
+        x = getattr(args, arg[2:].replace("-", "_"))
+        cfgs.append((typ, x))
+      else:
+        cfgs.append((typ, defval))
     inj.inject_config(config, cfgs)
   return config
 
