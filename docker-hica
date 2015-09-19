@@ -16,7 +16,7 @@ def HicaLoadInjectors(path):
     if suffix == 'py':
       fullpath = os.path.join(os.getcwd(), path)
       f, filename, description = imp.find_module(modname, [fullpath])
-      m = imp.load_module(modname, open(filename, 'U'), '', description)
+      m = imp.load_module(modname, open(filename, 'U'), filename, description)
       try:
         m.register(r)
       except AttributeError:
