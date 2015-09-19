@@ -53,7 +53,8 @@ angular.module('DMM', ['ionic', 'ngResource'])
             templateUrl: 'containers/containers.html',
             controller: 'ContainersCtrl'
           }
-        }
+        },
+        cache: false
       })
       .state('tab.container', {
         url: '/containers/:containerId',
@@ -62,7 +63,8 @@ angular.module('DMM', ['ionic', 'ngResource'])
             templateUrl: 'container/container.html',
             controller: 'ContainerDetailCtrl'
           }
-        }
+        },
+        cache: false
       })
 
       .state('tab.settings', {
