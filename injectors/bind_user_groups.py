@@ -16,7 +16,7 @@ class BindUsersGroupsInjector(HicaInjector):
 
   def get_injected_args(self):
     return (("--users-path", HicaValueType.PATH, "/etc/passwd"),
-        ("--groups-path", HicaValueType.PATH, "/etc/groups"))
+        ("--groups-path", HicaValueType.PATH, "/etc/group"))
 
 def register(context):
   obj = BindUsersGroupsInjector()
