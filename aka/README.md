@@ -4,6 +4,10 @@ The code we have upgraded to add built in support for aliases in the docker CLI 
 
 We have also added the man page that describes how it works and give a list of nice aliases
 
+# the team
+
+Guillaume GERBAUD / Armel GOURIOU / Mathieu POUSSE
+
 --------
 % DOCKER(1) Docker User Manuals
 % Docker Community
