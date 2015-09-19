@@ -8,7 +8,7 @@
 import glob, os, sys
 
 class HicaValueType(object):
-  (NONE, PATH, DEVICE, GLOB, STRING) = [0] + [1 << x for x in range(4)]
+  (NONE, PATH, DEVICE, GLOB, STRING, FULLENV) = [0] + [1 << x for x in range(5)]
 
 class HicaInjector(object):
   def get_description(self):
@@ -23,24 +23,30 @@ class HicaInjector(object):
   def inject_value_type(self, value, config):
     typ, val = value
     if typ & HicaValueType.PATH:
-      if typ & HicaValueType.GLOB:
-        for v in glob.glob(val):
+      if val and val != "none":
+        if typ & HicaValueType.GLOB:
+          for v in glob.glob(val):
+            config.append("--volume")
+            config.append("{0}:{0}:Z".format(v))
+        else:
           config.append("--volume")
-          config.append("{0}:{0}:Z".format(v))
-      else:
-        config.append("--volume")
-        config.append("{0}:{0}:Z".format(val))
+          config.append("{0}:{0}:Z".format(val))
     elif typ & HicaValueType.DEVICE:
-      if typ & HicaValueType.GLOB:
-        for v in glob.glob(val):
+      if val and val != "none":
+        if typ & HicaValueType.GLOB:
+          for v in glob.glob(val):
+            config.append("--device")
+            config.append("{0}:{0}".format(v))
+        else:
           config.append("--device")
-          config.append("{0}:{0}".format(v))
-      else:
-        config.append("--device")
-        config.append("{0}:{0}".format(val))
+          config.append("{0}:{0}".format(val))
     elif typ == HicaValueType.STRING:
       config.append("-e")
       config.append(val)
+    elif typ == HicaValueType.FULLENV:
+      for k, v in val.iteritems():
+        config.append("-e")
+        config.append("{0}={1}".format(k, v))
 
   def inject_config(self, config, from_args):
     for cv in from_args:

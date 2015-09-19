@@ -9,10 +9,12 @@
 import os, sys, docker, argparse, imp
 from base import *
 
+dock = docker.Client()
 _injector_registry  = {}
 LABELS = ["io.hica.xsocket_passthrough", "io.hica.machine_id", "io.hica.dri_passthrough", 
           "io.hica.sound_device", "io.hica.pulse", "io.hica.bind_home", "io.hica.bind_pwd",
-          "io.hica.bind_users_groups"]
+          "io.hica.bind_users_groups", "io.hica.bind_localtime", "io.hica.env_passthrough",
+          "io.hica.kvm_passthrough", "io.hica.cuda"]
 
 def HicaLoadInjectors(path):
   """ Load all Python modules from `path`
@@ -47,7 +49,7 @@ def HicaParseArguments(labels):
   args.add_argument("--show-args", default=False, action='store_true')
 
   # parse now to catch --show-args
-  p = args.parse_args()
+  p, _ = args.parse_known_args()
 
   # add needed argparsers
   for label in labels:
@@ -98,5 +100,3 @@ config = HicaInjectConfiguration(LABELS, parsed, ['-u', os.getuid()])
 
 # looks like the basic mechanism works fine ;)
 print config
-
-dock = docker.Client()
