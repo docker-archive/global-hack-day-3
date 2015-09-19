@@ -9,6 +9,7 @@
 import os, sys, docker, argparse, imp
 from base import *
 
+_injector_registry  = {}
 LABELS = ["io.hica.xsocket_passthrough", "io.hica.machine_id", "io.hica.dri_passthrough"]
 
 def HicaLoadInjectors(path):
@@ -31,32 +32,38 @@ def HicaLoadInjectors(path):
         print ("Module {0} does not implement `register(context)`".format(modname))
   return r
 
-_injector_registry = HicaLoadInjectors("injectors")
+def HicaParseArguments(labels):
+  args = argparse.ArgumentParser()
+  args.add_argument("hica_app_name")
 
+  # add needed argparsers
+  for label in labels:
+    inj = _injector_registry[label]
+    for (arg, typ, defval) in inj.get_injected_args():
+      args.add_argument(arg, default=defval)
+
+  return args.parse_args()
+
+def HicaInjectConfiguration(labels, args, config):
+  # map params from argparse back to injectors
+  for label in labels:
+    inj = _injector_registry[label]
+    cfgs = []
+    for (arg, typ, defval) in inj.get_injected_args():
+      x = getattr(args, arg[2:].replace("-", "_"))
+      cfgs.append((typ, x))
+    inj.inject_config(config, cfgs)
+  return config
+
+
+_injector_registry = HicaLoadInjectors("injectors")
+parsed = HicaParseArguments(LABELS)
 # base configuration
 # run the container as current user so that file system rights are fine
 # for bind mounted files
-config = ['-u', os.getuid()]
-
-args = argparse.ArgumentParser()
-args.add_argument("hica_app_name")
-
-# add needed argparsers
-for label in LABELS:
-  inj = _injector_registry[label]
-  for (arg, typ, defval) in inj.get_injected_args():
-    args.add_argument(arg, default=defval)
-
-parsed = args.parse_args()
-
-# map params from argparse back to injectors
-for label in LABELS:
-  inj = _injector_registry[label]
-  cfgs = []
-  for (arg, typ, defval) in inj.get_injected_args():
-    x = getattr(parsed, arg[2:].replace("-", "_"))
-    cfgs.append((typ, x))
-  inj.inject_config(config, cfgs)
+config = HicaInjectConfiguration(LABELS, parsed, ['-u', os.getuid()])
 
 # looks like the basic mechanism works fine ;)
 print config
+
+dock = docker.Client()
