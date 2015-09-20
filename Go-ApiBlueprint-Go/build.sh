@@ -1,1 +1,1 @@
-aglio -i docker_remote_api_v1.2.apib -o index.html
+aglio -i docker_remote_api_v1.21.apib -o index.html | head
