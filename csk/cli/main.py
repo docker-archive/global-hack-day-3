@@ -32,10 +32,11 @@ class CSK_CLI(object):
         self.parser.add_argument('-q', '--quiet', action="store_true", help='set quiet output')
         # consider multiple commands like : setup_tools, mount tools, umount, stop, etc
         self.parser.add_argument('container', help='container to enhance with tools')
-        self.parser.add_argument('-c', '--config-file', help='path to a config file')
+        self.parser.add_argument('-t', '--tools-container', help='name of the tools container')
         self.parser.add_argument('--version', action='version', help="show version", version=version.version)
 
     def run(self):
+        tools_container = "csk-tools"
         self.setup_arguments()
         args = self.parser.parse_args()
         if args.verbose:
@@ -45,10 +46,11 @@ class CSK_CLI(object):
         else:
             setup_logging(level=logging.INFO)
 
-        if args.config_file:
-            self.read_config()
-
-        tools_container = Container("csk-tools")
+        if args.tools_container:
+            tools_container = args.tools_container
+            
+        logger.debug("using tools container: %s" %tools_container)
+        tools_container = Container(tools_container)
         #fixme pulling if not exists
         tools_container.start()
 
