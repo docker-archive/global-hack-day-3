@@ -91,7 +91,11 @@ Here is a list of what could be easily achieved with aliases:
     : return the last container id
     docker alias last \
            ps -l -q
-    
+       
+    : hello world
+    docker alias hello \
+           run --rm docker/whalesay cowsay "hello world"
+           
     : starts your favorite container and join
     docker alias ubuntu \
            run -i -t --rm ubuntu /bin/bash
