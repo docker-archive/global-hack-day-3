@@ -1,5 +1,5 @@
 (function (angular) {
-  angular.module('DMM')
+  angular.module('Owler')
     .factory('Docker', ['$resource', 'AppConfig', function ($resource, AppConfig) {
       return $resource('http://:url/:action', {}, {
         version: {

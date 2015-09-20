@@ -1,5 +1,5 @@
 (function (angular) {
-  angular.module('DMM')
+  angular.module('Owler')
     .controller('ContainersCtrl', ['$scope', 'Containers', 'AppConfig', '$ionicLoading', function ($scope, Containers, AppConfig, $ionicLoading) {
       $scope.refresh = function () {
         Containers.query({

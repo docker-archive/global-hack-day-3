@@ -1,5 +1,5 @@
 (function (angular) {
-  angular.module('DMM')
+  angular.module('Owler')
     .controller('ContainerDetailCtrl', ['$scope', '$stateParams', 'Containers', 'AppConfig', '$ionicLoading', function ($scope, $stateParams, Containers, AppConfig, $ionicLoading) {
       Containers.get({
         id: $stateParams.containerId,

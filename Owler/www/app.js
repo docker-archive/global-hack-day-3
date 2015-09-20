@@ -1,4 +1,4 @@
-angular.module('DMM', ['ionic', 'ngResource', 'chart.js', 'angularCancelOnNavigateModule'])
+angular.module('Owler', ['ionic', 'ngResource', 'chart.js', 'angularCancelOnNavigateModule'])
 
   .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {

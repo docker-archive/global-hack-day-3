@@ -1,5 +1,5 @@
 (function (angular) {
-  angular.module('DMM')
+  angular.module('Owler')
     .controller('LogsCtrl', ['$scope', '$stateParams', 'Containers', 'AppConfig', function ($scope, $stateParams, Containers, AppConfig) {
       var nbStandard = 10;
       var nbErrors = 10;

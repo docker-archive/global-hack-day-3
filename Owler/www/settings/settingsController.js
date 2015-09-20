@@ -1,5 +1,5 @@
 (function (angular) {
-  angular.module('DMM')
+  angular.module('Owler')
     .controller('SettingsCtrl', ['$scope', 'AppConfig', '$ionicHistory', function ($scope, AppConfig, $ionicHistory) {
       $scope.AppConfig = AppConfig;
       $ionicHistory.clearHistory();

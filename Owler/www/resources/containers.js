@@ -1,5 +1,5 @@
 (function (angular) {
-  angular.module('DMM')
+  angular.module('Owler')
     .factory('Containers', ['$resource', 'AppConfig', function ($resource, AppConfig) {
       return $resource('http://:url/containers/:id/:action', {}, {
         query: {

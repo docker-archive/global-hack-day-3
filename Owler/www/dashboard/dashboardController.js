@@ -1,5 +1,5 @@
 (function (angular) {
-  angular.module('DMM')
+  angular.module('Owler')
     .controller('DashCtrl', ['$scope', 'Docker', '$ionicHistory', 'AppConfig', '$ionicLoading', function ($scope, Docker, $ionicHistory, AppConfig, $ionicLoading) {
       Docker.version({
         url: AppConfig.DOCKER_HOST + ':' + AppConfig.DOCKER_PORT

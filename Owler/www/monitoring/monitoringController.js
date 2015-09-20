@@ -1,5 +1,5 @@
 (function (angular) {
-  angular.module('DMM')
+  angular.module('Owler')
     .controller('MonitoringCtrl', ['$scope', '$stateParams', '$timeout', 'Containers', 'AppConfig', function ($scope, $stateParams, $timeout, Containers, AppConfig) {
       var intervalLoad = 1000;
       var maxInformation = 10;

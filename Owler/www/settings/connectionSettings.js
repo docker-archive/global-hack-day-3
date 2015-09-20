@@ -1,5 +1,5 @@
 (function (angular) {
-  angular.module('DMM')
+  angular.module('Owler')
     .controller('ConnectionSettingsCtrl', ['$scope', 'AppConfig', '$ionicLoading', 'Docker', function ($scope, AppConfig, $ionicLoading, Docker) {
       $scope.AppConfig = AppConfig;
       $scope.testConnection = function () {
