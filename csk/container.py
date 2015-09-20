@@ -12,7 +12,7 @@ import os
 import re
 import base64
 import requests
-d = Client(version='1.20')
+d = Client()
 
 logger = logging.getLogger('csk')
 
@@ -36,7 +36,7 @@ class Container(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
 
-    def _put_file(self, filename):
+    def _put_file(self,content):
         # FIXME - this is very very ugly hack - it uses docker remote API directly
 
         headers = {
@@ -45,11 +45,10 @@ class Container(object):
 
         params = {
             #maybe choose some better path
-            'path' : '/tmp',
+            'path' : '/tmp/tools/',
             'noOverwriteDirNonDir' : 'true'
             }
     
-        content = open("%s/fuse9fs.tar" %os.path.dirname(__file__), "rb").read()
         res = d.put(
             d._url("/containers/{0}/archive".format(self.container['Id'])),
             data=content,
@@ -62,6 +61,16 @@ class Container(object):
         fuse_bin = "%s/fuse9fs.zip" %os.path.dirname(__file__)
         self._put_file(fuse_bin)
 
+    def enable_csk_by_copy(self, tools):
+        for directory in ['usr', 'lib', 'lib64']:
+            for copy_file in tools.execute("find /%s -type f" %directory):
+                dirname = os.path.dirname(copy_file)
+                logger.debug("creating directory: /tmp/tools/%s" %dirname)
+                self.execute("mkdir -p /tmp/tools/%s" %dirname)
+                content = d.copy(tools.container["Id"], copy_file)
+                self._put_file(content.data)
+
+                
     def execute(self, cmd):
         """ executes cmd in container and return its output """
         inst = d.exec_create(container=self.container, cmd=cmd)
@@ -70,7 +79,7 @@ class Container(object):
         retcode = d.exec_inspect(inst)['ExitCode']
 
         if retcode is not 0:
-            raise ExecException("Command %s failed to execute, return code: %s" % (cmd, retcode), output)
+            raise Exception("Command %s failed to execute, return code: %s" % (cmd, retcode), output)
 
         return output
 
@@ -107,9 +116,32 @@ class Container(object):
             self.running = False
             d.remove_container(self.container)
 
-    def pull(self):
+    def pull(self, image):
         logger.info("pulling image %s" %self.name)
-        for line in cli.pull('busybox', stream=True):
+        for line in cli.pull('image', stream=True):
             loger.debug("  %s")
-    
-    
+
+    def session(self, cmd="bash"):
+        pass
+
+    def _proper_session(self, cmd="bash"):
+  
+        cmd = shlex.split(str(cmd))
+
+        data = {
+            'Container': self.container['Id'],
+        #    'User': user,
+        #    'Privileged': privileged,
+            'Tty': True,
+            'AttachStdin': True,
+            'AttachStdout': True,
+            'AttachStderr': True,
+            'Cmd': cmd
+        }
+
+        url = d._url('/containers/{0}/exec', self.container['Id'])
+        res = d._post_json(url, data=data)
+        
+        
+        
+       

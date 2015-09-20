@@ -54,13 +54,14 @@ class CSK_CLI(object):
 
         enhanced_container = Container(args.container)
         #fixme we should check some /tmp/.csk file to not enhance container mutliple times
-        enhanced_container.enable_csk()
+        enhanced_container.enable_csk_by_copy(tools_container)
 
+        enhanced_container.session()
+        print(tools_container.ip_address)
         tools_container.stop()
 
     def read_config(self):
         pass
-    
         
 def run():
     cli=CSK_CLI()
