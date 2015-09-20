@@ -9,7 +9,7 @@ integration with the host operating system.
 
 ### Label Specification
 
-Versioned specification of all labels can be found in `spec/label.md`.
+Versioned specification of all labels can be found in `docs/label.md`.
 
 ### Examples
 
