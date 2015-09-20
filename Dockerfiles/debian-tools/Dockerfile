@@ -1,7 +1,7 @@
 FROM debian:jessie
 MAINTAINER Jakub Veverka <jakub@appuri.com>
 
-ENVIRONMENT USER=tools
+ENV USER=tools
 
 # Create user
 RUN useradd -m $USER

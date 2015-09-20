@@ -9,7 +9,6 @@ of the BSD license. See the LICENSE file for details.
 
 import argparse
 import logging
-import yaml
 import sys
 
 from csk.container import Container
@@ -64,7 +63,7 @@ class CSK_CLI(object):
 
     def read_config(self):
         pass
-        
+
 def run():
     cli=CSK_CLI()
     cli.run()
