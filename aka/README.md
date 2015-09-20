@@ -75,8 +75,8 @@ Here is a list of what could be easily achieved with aliases:
 	: remove stopped containers
     docker alias clean '!f() { docker rm $(docker ps -a -q) ; } ; f'
     
-    : returns the ip of a container
-    docker alias ip '!f() { docker inspect $1 | grep IPAddress | cut -d \" -f 4; }; f'
+    : returns network information of a container (requires jq)
+    docker alias network '!f() { docker inspect $1 | jq ".[0].NetworkSettings | {ip: .IPAddress, ports: .Ports}" ; } ; f'
     
     : start a bash on a running container
     docker alias join '!f() { docker exec -it $1 /bin/bash ; } ; f'
