@@ -22,20 +22,17 @@
             var nbCpu = data.cpu_stats.cpu_usage.percpu_usage.length;
             if (!lastData) {
               // Init CPU chart
-              for (var cpu = 1; cpu <= nbCpu; cpu++) {
+              for (var cpu = 0; cpu <= nbCpu; cpu++) {
                 $scope.cpu.push([]);
-                $scope.cpuSeries.push('CPU ' + cpu);
+                $scope.cpuSeries.push('CPU ' + (cpu+1));
                 for (var i = 0; i < maxInformation; i++) {
                   $scope.cpu[cpu].push(0);
                 }
               }
             } else {
               var cpuDeltas = [];
-              var cpuDelta = data.cpu_stats.cpu_usage.total_usage - lastData.cpu_stats.cpu_usage.total_usage;
               var sysDelta = data.cpu_stats.system_cpu_usage - lastData.cpu_stats.system_cpu_usage;
-
               sysDelta ? 0 : sysDelta = 1;
-              pushData($scope.cpu[0], cpuDelta / sysDelta * 100 / nbCpu);
 
               for (var cpu = 0; cpu < nbCpu; cpu++) {
                 var cpuDeltas = data.cpu_stats.cpu_usage.percpu_usage[cpu] - lastData.cpu_stats.cpu_usage.percpu_usage[cpu];
@@ -55,17 +52,16 @@
       };
 
       var init = function () {
-        $scope.cpu = [[]];
+        $scope.cpu = [];
         $scope.memory = [[]];
         $scope.lan = [[]];
         $scope.blank_label = [];
         for (var i = 0; i < maxInformation; i++) {
-          $scope.cpu[0].push(0);
           $scope.memory[0].push(0);
           $scope.lan[0].push(0);
           $scope.blank_label.push('');
         }
-        $scope.cpuSeries = ['Total'];
+        $scope.cpuSeries = [];
         $scope.memorySeries = [''];
         $scope.lanSeries = [''];
 
