@@ -9,11 +9,7 @@ RUN useradd -m $USER
 # Install tools
 RUN \
     apt-get update \
-    && apt-get install -y \
-    && dnsutils\
-    && \
-    &&\
-    &&\
+    && apt-get install -y dnsutils
 
 USER $USER
 

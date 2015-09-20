@@ -14,4 +14,4 @@ RUN pip install -r /requirements.txt
 WORKDIR /csk
 USER $USER
 
-CMD ["python", "csk/cli/main.py"]
+ENTRYPOINT ["python", "csk/cli/main.py"]

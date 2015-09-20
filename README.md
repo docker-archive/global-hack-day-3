@@ -2,6 +2,13 @@
 
 A tool for making containers easy to debug/hack.
 
+## Quickstart
+
+```
+docker build -t csk .
+docker run -d --rm csk
+```
+
 ## Motivation
 Sometimes you just need to look in a docker container more closely like:
 
