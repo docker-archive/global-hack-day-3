@@ -44,6 +44,18 @@
             id: '@id',
             action: 'top'
           }
+        },
+        logs: {
+          method: 'GET',
+          params: {
+            id: '@id',
+            action: 'logs',
+            follow: 0,
+            tail: 10
+          },
+          transformResponse: function(data, headersGetter, status) {
+            return {content: data.replace(/(\[[0-9]*;?[0-9]*m)/g, '').split('\n')};
+          }
         }
       });
     }]);
