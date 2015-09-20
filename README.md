@@ -1,15 +1,38 @@
-# global-hack-day-3
+# Docker config container
 
-Participant final submissions for the 3rd edition of the Docker Global Hack Day
+## Why this project
 
-# Step 1
-Fork the repository, and create a subdirectory titled with the name of your team.
+In the context of big or distributed application, we use configurations manager like Zookeeper to easily deploy our configurations ... Why not do the same for containers? There are many aspects to manage as memory, cpu and other network configurations...
 
-# Step 2
-Start hacking on the best Docker project you can think of for a chance to win the [Docker Global hack Day #3](https://www.docker.com/community/hackathon)!
+## What is this project
 
-# Step 3
-Once your hack is ready, submit a pull request to this repository before 9am PDT on Monday, September 21st. All files related to your hack should live inside your team's subdirectory.
+This project is a Proof of Concept (PoC) about execute container configured by centralized configuration service.
 
-# Step 4
-Once you've submitted your Pull Request, go ahead and submit additional informations about your hackday project via [this form] (https://docs.google.com/a/docker.com/forms/d/1hKpSHbyifzUYIkv9zQVc6qgQdACPSQVKV8ZHo0Ctp_A/viewform) to appear on the Docker.com website and have people vote for you for a chance to win the global prize! 
+I never work with powerful system like Zookeeper. I know I can spend some time to implement it so I use a substitution solution, redis, to realise this PoC in time.
+
+## How to use
+
+This project is base on python script an docker client. To be easier to test I include a container to use it.
+
+In first we need a redis instance:
+```bash
+$ docker run -p 6379:6379 --name redis -d redis
+```
+
+```bash
+$ docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock <image_name> -h
+```
+
+Example
+```bash
+$ docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock hackday3 --host=192.168.99.100 --port=6379 config -n nginx -e qlf -i nginx:1.9.4 -d true -m 300M -s 300M
+$ docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock hackday3 --host=192.168.99.100 --port=6379 run -n nginx -e qlf
+```
+
+## What next
+
+* Improve error management
+* Improve log
+* Refactor code to be able to use different configuration manager service
+* Use configuration manager service like Zookeeper
+* Work with common docker tools like docker-compose and swarm
