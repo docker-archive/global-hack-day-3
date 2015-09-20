@@ -8,4 +8,6 @@ RUN pip install redis
 
 ADD . /usr/src/myapp/
 
-WORKDIR /usr/src/myapp
+WORKDIR /usr/src/myapp/
+
+ENTRYPOINT ["python", "main.py"]
