@@ -16,13 +16,13 @@ import (
 	"github.com/tj/docopt"
 )
 
-type HelloFs struct {
+type P9Fs struct {
 	pathfs.FileSystem
 }
 
 var address string
 
-func (me *HelloFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fuse.Status) {
+func (me *P9Fs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fuse.Status) {
 	switch name {
 	case "file.txt":
 		return &fuse.Attr{
@@ -36,7 +36,7 @@ func (me *HelloFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fuse
 	return nil, fuse.ENOENT
 }
 
-func (me *HelloFs) OpenDir(name string, context *fuse.Context) (c []fuse.DirEntry, code fuse.Status) {
+func (me *P9Fs) OpenDir(name string, context *fuse.Context) (c []fuse.DirEntry, code fuse.Status) {
 	if name == "" {
 		c = []fuse.DirEntry{{Name: "file.txt", Mode: fuse.S_IFREG}}
 		return c, fuse.OK
@@ -44,7 +44,7 @@ func (me *HelloFs) OpenDir(name string, context *fuse.Context) (c []fuse.DirEntr
 	return nil, fuse.ENOENT
 }
 
-func (me *HelloFs) Open(name string, flags uint32, context *fuse.Context) (nodefs.File, fuse.Status) {
+func (me *P9Fs) Open(name string, flags uint32, context *fuse.Context) (nodefs.File, fuse.Status) {
 
 	var user go9p.User
 	var err error
@@ -91,7 +91,7 @@ Options:
 	args, err := docopt.Parse(usage, nil, true, "9pmount 0.1", false)
 	mount_point := args["<mount_point>"].(string)
 	address = args["<address>"].(string)
-	nfs := pathfs.NewPathNodeFs(&HelloFs{FileSystem: pathfs.NewDefaultFileSystem()}, nil)
+	nfs := pathfs.NewPathNodeFs(&P9Fs{FileSystem: pathfs.NewDefaultFileSystem()}, nil)
 	server, _, err := nodefs.MountRoot(mount_point, nfs.Root(), nil)
 	if err != nil {
 		log.Fatalf("Mount fail: %v\n", err)
