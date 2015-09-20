@@ -132,12 +132,25 @@ def HicaInjectConfiguration(labels, args, config):
     print("*** Operation aborted!")
     sys.exit(1)
 
+def HicaGetImages(images):
+  """ Gets a list of all image names
+
+  :param images: all docker images
+  :type images: dict
+  """
+  tags = filter(lambda y: y != [u'<none>:<none>'], [x['RepoTags'] for x in images])
+  return [a for b in tags for a in b]
+
 _injector_registry = HicaLoadInjectors("injectors")
 
 name = HicaGetImageName()
-image = dock.inspect_image(name)
-labels = HicaGetLabelsFromImage(image)
+if name not in HicaGetImages(dock.images(all=True)):
+  print("*** Image '{0}' not found locally, bailing!".format(name))
+  sys.exit(1)
 
+image = dock.inspect_image(name)
+
+labels = HicaGetLabelsFromImage(image)
 parsed = HicaParseArguments(labels)
 # base configuration
 # run the container as current user so that file system rights are fine
