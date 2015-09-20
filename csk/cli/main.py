@@ -31,6 +31,7 @@ class CSK_CLI(object):
         self.parser.add_argument('-q', '--quiet', action="store_true", help='set quiet output')
         # consider multiple commands like : setup_tools, mount tools, umount, stop, etc
         self.parser.add_argument('container', help='container to enhance with tools')
+        self.parser.add_argument('--remove', action="store_true", help="remove csk from container")
         self.parser.add_argument('-t', '--tools-container', help='name of the tools container')
         self.parser.add_argument('--version', action='version', help="show version", version=version.version)
 
@@ -47,14 +48,17 @@ class CSK_CLI(object):
 
         if args.tools_container:
             tools_container = args.tools_container
-            
+
+        enhanced_container = Container(args.container)
+        if args.remove:
+            enhanced_container.remove_csk()
         logger.debug("using tools container: %s" %tools_container)
         tools_container = Container(tools_container)
         #fixme pulling if not exists
         tools_container.start()
 
-        enhanced_container = Container(args.container)
         #fixme we should check some /tmp/.csk file to not enhance container mutliple times
+
         enhanced_container.enable_csk_by_copy(tools_container)
 
         enhanced_container.session()

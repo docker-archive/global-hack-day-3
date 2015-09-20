@@ -62,6 +62,9 @@ class Container(object):
         fuse_bin = "%s/fuse9fs.zip" %os.path.dirname(__file__)
         self._put_file(fuse_bin)
 
+    def remove_csk(self):
+        self.execute("rm -rf /tmp/tools")
+
     def enable_csk_by_copy(self, tools):
         self.tools = tools.container["Id"]
         content = d.copy(self.tools, "/")
