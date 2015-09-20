@@ -45,11 +45,20 @@ def HicaLoadInjectors(path):
         print ("Module {0} does not implement `register(context)`".format(modname))
   return r
 
+def HicaGetBaseArgparse():
+  """ Provides with common `argparse` settings  """
+
+  args = argparse.ArgumentParser()
+  args.add_argument("hica_app_name")
+  args.add_argument("--show-args", default=False, action='store_true')
+  args.add_argument("--verbose", default=False, action='store_true')
+  args.add_argument("--yes", default=False, action='store_true')
+  return args
+
 def HicaGetImageName():
   """ Get image name so that we can fetch labels from it """
 
-  args = argparse.ArgumentParser()
-  args.add_argument('hica_app_name')
+  args = HicaGetBaseArgparse()
   p, _ = args.parse_known_args()
   return p.hica_app_name
 
@@ -70,12 +79,7 @@ def HicaParseArguments(labels):
   :type labels: list(str)
   """
 
-  args = argparse.ArgumentParser()
-  args.add_argument("hica_app_name")
-  args.add_argument("--show-args", default=False, action='store_true')
-  args.add_argument("--verbose", default=False, action='store_true')
-  args.add_argument("--yes", default=False, action='store_true')
-
+  args = HicaGetBaseArgparse()
   # parse now to catch --show-args
   p, _ = args.parse_known_args()
 
