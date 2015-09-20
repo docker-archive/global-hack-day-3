@@ -1,15 +1,22 @@
 (function (angular) {
   angular.module('DMM')
-    .controller('ContainerDetailCtrl', ['$scope', '$stateParams', 'Containers', 'AppConfig', function ($scope, $stateParams, Containers, AppConfig) {
+    .controller('ContainerDetailCtrl', ['$scope', '$stateParams', 'Containers', 'AppConfig', '$ionicLoading', function ($scope, $stateParams, Containers, AppConfig, $ionicLoading) {
       Containers.get({
         id: $stateParams.containerId,
         url: AppConfig.DOCKER_HOST + ':' + AppConfig.DOCKER_PORT
       }, function (data) {
         $scope.container = data;
-      }, angular.noop);
+      }, function () {
+        $ionicLoading.show({
+          template: 'Connection failed ! Please verify your connection settings !',
+          noBackdrop: true,
+          duration: 2000
+        });
+      });
 
+      // #FIX ME
       $scope.getStatus = function () {
-        return $scope.container ? $scope.container.State.Running : '';
+        return $scope.container ? $scope.container.State.Running ? 'Running ' : 'Stopped' : '';
       };
     }]);
 })(angular);

@@ -1,6 +1,6 @@
 (function (angular) {
   angular.module('DMM')
-    .controller('ContainersCtrl', ['$scope', 'Containers', 'AppConfig', function ($scope, Containers, AppConfig) {
+    .controller('ContainersCtrl', ['$scope', 'Containers', 'AppConfig', '$ionicLoading', function ($scope, Containers, AppConfig, $ionicLoading) {
       $scope.refresh = function () {
         Containers.query({
           all: AppConfig.showAll + 0,
@@ -8,29 +8,49 @@
         }, function (data) {
           $scope.containers = data;
           $scope.$broadcast('scroll.refreshComplete');
-        }, angular.noop);
+        }, function () {
+          $ionicLoading.show({
+            template: 'Connection failed ! Please verify your connection settings !',
+            noBackdrop: true,
+            duration: 2000
+          });
+        });
       };
 
       $scope.isUp = function (container) {
-        return container.Status.startsWith('Up');
+        return container.Status.indexOf('Up') > -1;
       };
 
       $scope.stopContainer = function (container) {
         Containers.stop({
-          id: container.Id,
           url: AppConfig.DOCKER_HOST + ':' + AppConfig.DOCKER_PORT
+        }, {
+          id: container.Id
         }, function () {
           $scope.refresh();
-        }, angular.noop);
+        }, function () {
+          $ionicLoading.show({
+            template: 'Connection failed ! Please verify your connection settings !',
+            noBackdrop: true,
+            duration: 2000
+          });
+        });
       };
 
       $scope.startContainer = function (container) {
         Containers.start({
-          id: container.Id,
           url: AppConfig.DOCKER_HOST + ':' + AppConfig.DOCKER_PORT
+        }, {
+          id: container.Id
         }, function () {
           $scope.refresh();
-        }, angular.noop);
+        }, function () {
+          $ionicLoading.show({
+            template: 'Connection failed ! Please verify your connection settings !',
+            noBackdrop: true,
+            duration: 2000
+          });
+        });
       };
       $scope.refresh();
     }]);

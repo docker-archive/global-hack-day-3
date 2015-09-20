@@ -14,6 +14,11 @@
     </ion-item>
     <ion-item class="item-remove-animate"
               type="item-text-wrap">
+      <h2>StartedAt</h2>
+      {{container.State.StartedAt | date :'medium'}}
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
       <h2>Status</h2>
       {{getStatus()}}
     </ion-item>
@@ -43,6 +48,10 @@
               type="item-text-wrap">
       <h2>Ip Adress</h2>
       {{container.NetworkSettings.IPAddress}}
+    </ion-item>
+    <ion-item type="item-text-wrap">
+      <h2>Entrypoint</h2>
+      {{container.Config.Entrypoint}}
     </ion-item>
   </ion-content>
 </ion-view>
