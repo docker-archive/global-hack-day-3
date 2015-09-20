@@ -22,6 +22,7 @@ class Container(object):
     container = None
     ip_address = None
     running = False
+    tools = None
 
     def __init__(self, name):
         for candidate in d.containers():
@@ -62,14 +63,11 @@ class Container(object):
         self._put_file(fuse_bin)
 
     def enable_csk_by_copy(self, tools):
-        for directory in ['usr', 'lib', 'lib64']:
-            for copy_file in tools.execute("find /%s -type f" %directory):
-                dirname = os.path.dirname(copy_file)
-                logger.debug("creating directory: /tmp/tools/%s" %dirname)
-                self.execute("mkdir -p /tmp/tools/%s" %dirname)
-                content = d.copy(tools.container["Id"], copy_file)
-                self._put_file(content.data)
-
+        self.tools = tools.container["Id"]
+        content = d.copy(self.tools, "/")
+        self._put_file(content.data)
+        print("please run:\n  docker exec -ti %s /tmp/tools/%s/bin/bash" %(self.container["Id"], self.tools))
+        print("  export PATH=$PATH:/tmp/tools/%s/bin:/tmp/tools/%s/usr/bin" % self.tools)
                 
     def execute(self, cmd):
         """ executes cmd in container and return its output """
