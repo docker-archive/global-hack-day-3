@@ -1,23 +1,19 @@
-#!/usr/bin/env python
-# vim: set ts=4; shiftwidth=4; expandtab
-"""docker-record
+#!/bin/bash
 
-Usage:
-    docker-record <CONTAINER>
-    docker-record <CONTAINER> --replay
-"""
-from docopt import docopt
-import os
+#docker-record
+#
+#Usage:
+#    docker-record <CONTAINER>
+#    docker-record <CONTAINER> --replay
 
-if __name__ == '__main__':
-    arguments = docopt(__doc__, version='docker-record 1.0')
+CONTAINER=$1
+REPLAY=$2
 
-    if arguments['--replay']:
-        # generate dockerfile
-        pass
-    else:
-        # start a record session
-        os.execvp("/home/allon/playground/docker-record/start_record_session.sh", [arguments["<CONTAINER>"]])
-
-        
-    print(arguments)
+if [ -z $REPLAY ]
+then
+	./session.sh $CONTAINER
+else
+	docker cp $CONTAINER:/tmp/record sessions/$CONTAINER
+	./replay $CONTAINER
+fi
+	

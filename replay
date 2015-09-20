@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+# vim: set ts=4; shiftwidth=4; expandtab
+
+import sys
+
+if __name__ == '__main__':
+    print sys.argv[1]
