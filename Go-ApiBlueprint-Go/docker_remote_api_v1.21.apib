@@ -686,7 +686,7 @@ Status Codes:
 
 
 
-### Restart a container [POST /containers/{id}/restart]
+### Restart a container [POST /containers/{id}/restart{?t}]
 
 Restart the container `id`
 
@@ -696,19 +696,11 @@ Status Codes:
 + 404 - no such container
 + 500 - server error
 
-
-+ Request (application/json)
-
-        POST /containers/e90e34656806/restart?t=5 HTTP/1.1
-
-
-+ Response 204 (application/json)
-
-
 + Parameters
 
     + t - number of seconds to wait before killing the container
 
++ Response 204 (application/json)
 
 ### Kill a container [POST /containers/{id}/kill]
 
@@ -741,14 +733,10 @@ Status Codes:
 + 409 - conflict name already assigned
 + 500 - server error
 
-+ Request
-
-        POST /containers/e90e34656806/rename?name=new_name HTTP/1.1
-
-+ Response 204
-
 + Parameters
     + name: new_name (string) - new name for the container
+
++ Response 204
 
 ### Pause a container [POST /containers/{id}/pause]
 
@@ -760,9 +748,9 @@ Status Codes:
 + 404 - no such container
 + 500 - server error
 
-+ Request
++ Parameters
 
-        POST /containers/e90e34656806/pause HTTP/1.1
+    + id: e90e34656806 (string)
 
 + Response 204
 
@@ -776,9 +764,9 @@ Status Codes:
 + 404 - no such container
 + 500 - server error
 
-+ Request
++ Parameters
 
-        POST /containers/e90e34656806/unpause HTTP/1.1
+    + id: e90e34656806 (string)
 
 + Response 204
 
@@ -947,7 +935,7 @@ Status Codes:
 
 See the description of the `X-Docker-Container-Path-Stat` header in the following section.
 
-+ Response
++ Response 200
 
 ### Get an archive of a filesystem resource in a container [GET /containers/{id}/archive{?path}]
 
@@ -965,6 +953,21 @@ Status Codes:
     - no such file or directory (**path** does not exist)
 + 500 - server error
 
+On success, a response header `X-Docker-Container-Path-Stat` will be set to a
+base64-encoded JSON object containing some filesystem header information about
+the archived resource. The above example value would decode to the following
+JSON object (whitespace added for readability):
+
+    {
+        "name": "root",
+        "size": 4096,
+        "mode": 2147484096,
+        "mtime": "2014-02-27T20:51:23Z",
+        "linkTarget": ""
+    }
+
+A `HEAD` request can also be made to this endpoint if only this information is desired.
+
 + Parameters
     + path: /root (string, mandatory) - resource in the container's filesystem to archive
 
@@ -979,10 +982,6 @@ Status Codes:
         under `/proc`, `/sys`, `/dev`, and mounts created by the user in the
         container.
 
-+ Request
-
-        GET /containers/8cce319429b2/archive?path=/root HTTP/1.1
-
 + Response 200 (application/x-tar)
 
        + Headers
@@ -993,20 +992,6 @@ Status Codes:
 
             {{ TAR STREAM }}
 
-            On success, a response header `X-Docker-Container-Path-Stat` will be set to a
-            base64-encoded JSON object containing some filesystem header information about
-            the archived resource. The above example value would decode to the following
-            JSON object (whitespace added for readability):
-
-                {
-                    "name": "root",
-                    "size": 4096,
-                    "mode": 2147484096,
-                    "mtime": "2014-02-27T20:51:23Z",
-                    "linkTarget": ""
-                }
-
-            A `HEAD` request can also be made to this endpoint if only this information is desired.
 
 ### Extract an archive of files or folders to a directory in a container [PUT /containers/{id}/archive{?path,noOverwriteDirNonDir}]
 
@@ -1139,34 +1124,25 @@ Status Codes
 + 200 - no error
 + 500 - server error
 
-+ Request (application/json)
+This object maps the hostname of a registry to an object containing the
+"username" and "password" for that registry. Multiple registries may
+be specified as the build may be based on an image requiring
+authentication to pull from any arbitrary registry. Only the registry
+domain name (and port if not the default "443") are required. However
+(for legacy reasons) the "official" Docker, Inc. hosted registry must
+be specified with both a "https://" prefix and a "/v1/" suffix even
+though Docker will prefer to use the v2 registry API.
 
-        POST /build HTTP/1.1
 
-        {{ TAR STREAM }}
++ Request (application/tar)
 
     + Headers
-                + Content-type: application/tar
-                + X-Registry-Config:
-                        {
-                            "docker.example.com": {
-                                "username": "janedoe",
-                                "password": "hunter2"
-                            },
-                            "https://index.docker.io/v1/": {
-                                "username": "mobydock",
-                                "password": "conta1n3rize14"
-                            }
-                        }
 
-                This object maps the hostname of a registry to an object containing the
-                "username" and "password" for that registry. Multiple registries may
-                be specified as the build may be based on an image requiring
-                authentication to pull from any arbitrary registry. Only the registry
-                domain name (and port if not the default "443") are required. However
-                (for legacy reasons) the "official" Docker, Inc. hosted registry must
-                be specified with both a "https://" prefix and a "/v1/" suffix even
-                though Docker will prefer to use the v2 registry API.
+            X-Registry-Config: {"docker.example.com": {"username": "janedoe", "password": "hunter2"}, "https://index.docker.io/v1/": {"username": "mobydock", "password": "conta1n3rize14"} }
+
+    + Body
+
+            {{ TAR STREAM }}
 
 + Response 200 (application/json)
 
@@ -1212,12 +1188,20 @@ Status Codes:
 + 200 - no error
 + 500 - server error
 
+When using this endpoint to pull an image from the registry, the `X-Registry-Auth` header can be used to include a base64-encoded AuthConfig object.
+
++ Parameters
+    + fromImage: ubuntu (string) - Name of the image to pull.
+    + fromSrc (string) - Source to import.  The value may be a URL from which the image can be retrieved or `-` to read the image from the request body.
+    + repo (string) - Repository name.
+    + tag (string) - Tag.
+    + registry (string) - The registry to pull from.
 
 + Request (application/json)
 
-        POST /images/create?fromImage=ubuntu HTTP/1.1
+    + Headers
 
-        When using this endpoint to pull an image from the registry, the `X-Registry-Auth` header can be used to include a base64-encoded AuthConfig object.
+            X-Registry-Auth: base64-encoded AuthConfig object
 
 
 + Response 200 (application/json)
@@ -1225,18 +1209,6 @@ Status Codes:
         {"status": "Pulling..."}
         {"status": "Pulling", "progress": "1 B/ 100 B", "progressDetail": {"current": 1, "total": 100}}
         {"error": "Invalid..."}
-
-
-
-+ Parameters
-    + fromImage - Name of the image to pull.
-    + fromSrc - Source to import.  The value may be a URL from which the image can be retrieved or `-` to read the image from the request body.
-    + repo - Repository name.
-    + tag - Tag.
-    + registry - The registry to pull from.
-
-+ Headers
-    + X-Registry-Auth: base64-encoded AuthConfig object
 
 ### Inspect an image [GET /images/{name}/json]
 
@@ -1355,11 +1327,10 @@ Status Codes:
 + 404 - no such image
 + 500 - server error
 
++ Parameters
+    + name: ubuntu (string)
 
 + Request (application/json)
-
-        GET /images/ubuntu/history HTTP/1.1
-
 
 + Response 200 (application/json)
 
@@ -1407,7 +1378,15 @@ Status Codes:
 + 404 - no such image
 + 500 - server error
 
++ Parameters
+    + name (string)
+    + tag: null (string) - The tag to associate with the image on the registry.
+
 + Request (application/json)
+
+        + Headers:
+
+            X-Registry-Auth: Include a base64-encoded AuthConfig. object.
 
 + Response 200 (application/json)
 
@@ -1418,13 +1397,6 @@ Status Codes:
 
         If you wish to push an image on to a private registry, that image must already have a tag into a repository which references that registry `hostname` and `port`.  This repository name should then be used in the URL. This duplicates the command line's flow.
 
-+ Parameters
-
-    +   tag: null (string) - The tag to associate with the image on the registry.
-
-+ Request Headers:
-
-    + X-Registry-Auth – Include a base64-encoded AuthConfig. object.
 
 ### Tag an image into a repository [POST /images/{name}/tag{?repo,force,tag}]
 
@@ -1466,6 +1438,10 @@ Status Codes:
 + 409 - conflict
 + 500 - server error
 
++ Parameters
+    + name: test (string)
+    + force: 0 (string) - 1/True/true or 0/False/false, default false
+    + noprune: 0 (string) - 1/True/true or 0/False/false, default false
 
 + Request (application/json)
 
@@ -1479,12 +1455,7 @@ Status Codes:
          {"Deleted": "53b4f83ac9"}
         ]
 
-+ Parameters
-    + name: test (string)
-    + force: 0 (string) - 1/True/true or 0/False/false, default false
-    + noprune: 0 (string) - 1/True/true or 0/False/false, default false
-
-### Search images [GET /images/search]
+### Search images [GET /images/search?{term}]
 
 Search for an image on [Docker Hub](https://hub.docker.com)
 
@@ -1493,10 +1464,10 @@ Status Codes:
 + 200 - no error
 + 500 - server error
 
++ Parameters
+  + term: sshd (string) - term to search
+
 + Request (application/json)
-
-        GET /images/search?term=sshd HTTP/1.1
-
 
 + Response 200 (application/json)
 
@@ -1525,10 +1496,8 @@ Status Codes:
         ...
         ]
 
-+ Parameters
-  + term: sshd (string) - term to search
 
-## 2.3 Misc [/]
+## Misc [/]
 
 ### Check auth configuration [POST /auth{?username,password,email,serveraddress}]
 
@@ -1575,54 +1544,54 @@ Status Codes:
 
 + Response 200 (application/json)
 
-    {
-        "Containers": 11,
-        "CpuCfsPeriod": true,
-        "CpuCfsQuota": true,
-        "Debug": false,
-        "DockerRootDir": "/var/lib/docker",
-        "Driver": "btrfs",
-        "DriverStatus": [[""]],
-        "ExecutionDriver": "native-0.1",
-        "ExperimentalBuild": false,
-        "HttpProxy": "http://test:test@localhost:8080",
-        "HttpsProxy": "https://test:test@localhost:8080",
-        "ID": "7TRN:IPZB:QYBB:VPBQ:UMPP:KARE:6ZNR:XE6T:7EWV:PKF4:ZOJD:TPYS",
-        "IPv4Forwarding": true,
-        "Images": 16,
-        "IndexServerAddress": "https://index.docker.io/v1/",
-        "InitPath": "/usr/bin/docker",
-        "InitSha1": "",
-        "KernelVersion": "3.12.0-1-amd64",
-        "Labels": [
-            "storage=ssd"
-        ],
-        "MemTotal": 2099236864,
-        "MemoryLimit": true,
-        "NCPU": 1,
-        "NEventsListener": 0,
-        "NFd": 11,
-        "NGoroutines": 21,
-        "Name": "prod-server-42",
-        "NoProxy": "9.81.1.160",
-        "OomKillDisable": true,
-        "OperatingSystem": "Boot2Docker",
-        "RegistryConfig": {
-            "IndexConfigs": {
-                "docker.io": {
-                    "Mirrors": null,
-                    "Name": "docker.io",
-                    "Official": true,
-                    "Secure": true
-                }
+        {
+            "Containers": 11,
+            "CpuCfsPeriod": true,
+            "CpuCfsQuota": true,
+            "Debug": false,
+            "DockerRootDir": "/var/lib/docker",
+            "Driver": "btrfs",
+            "DriverStatus": [[""]],
+            "ExecutionDriver": "native-0.1",
+            "ExperimentalBuild": false,
+            "HttpProxy": "http://test:test@localhost:8080",
+            "HttpsProxy": "https://test:test@localhost:8080",
+            "ID": "7TRN:IPZB:QYBB:VPBQ:UMPP:KARE:6ZNR:XE6T:7EWV:PKF4:ZOJD:TPYS",
+            "IPv4Forwarding": true,
+            "Images": 16,
+            "IndexServerAddress": "https://index.docker.io/v1/",
+            "InitPath": "/usr/bin/docker",
+            "InitSha1": "",
+            "KernelVersion": "3.12.0-1-amd64",
+            "Labels": [
+                "storage=ssd"
+            ],
+            "MemTotal": 2099236864,
+            "MemoryLimit": true,
+            "NCPU": 1,
+            "NEventsListener": 0,
+            "NFd": 11,
+            "NGoroutines": 21,
+            "Name": "prod-server-42",
+            "NoProxy": "9.81.1.160",
+            "OomKillDisable": true,
+            "OperatingSystem": "Boot2Docker",
+            "RegistryConfig": {
+                "IndexConfigs": {
+                    "docker.io": {
+                        "Mirrors": null,
+                        "Name": "docker.io",
+                        "Official": true,
+                        "Secure": true
+                    }
+                },
+                "InsecureRegistryCIDRs": [
+                    "127.0.0.0/8"
+                ]
             },
-            "InsecureRegistryCIDRs": [
-                "127.0.0.0/8"
-            ]
-        },
-        "SwapLimit": false,
-        "SystemTime": "2015-03-10T11:11:23.730591467-07:00"
-    }
+            "SwapLimit": false,
+            "SystemTime": "2015-03-10T11:11:23.730591467-07:00"
+        }
 
 
 ### Show the docker version information [GET /version]
@@ -1639,16 +1608,16 @@ Status Codes:
 
 + Response 200 (application/json)
 
-    {
-         "Version": "1.5.0",
-         "Os": "linux",
-         "KernelVersion": "3.18.5-tinycore64",
-         "GoVersion": "go1.4.1",
-         "GitCommit": "a8a31ef",
-         "Arch": "amd64",
-         "ApiVersion": "1.20",
-         "Experimental": false
-    }
+        {
+             "Version": "1.5.0",
+             "Os": "linux",
+             "KernelVersion": "3.18.5-tinycore64",
+             "GoVersion": "go1.4.1",
+             "GitCommit": "a8a31ef",
+             "Arch": "amd64",
+             "ApiVersion": "1.20",
+             "Experimental": false
+        }
 
 ### Ping the docker server [GET /_ping]
 
@@ -1676,38 +1645,38 @@ Status Codes:
 
 + Request (application/json)
 
-    {
-         "Hostname": "",
-         "Domainname": "",
-         "User": "",
-         "AttachStdin": false,
-         "AttachStdout": true,
-         "AttachStderr": true,
-         "Tty": false,
-         "OpenStdin": false,
-         "StdinOnce": false,
-         "Env": null,
-         "Cmd": [
-                 "date"
-         ],
-         "Mounts": [
-           {
-             "Source": "/data",
-             "Destination": "/data",
-             "Mode": "ro,Z",
-             "RW": false
-           }
-         ],
-         "Labels": {
-                 "key1": "value1",
-                 "key2": "value2"
-          },
-         "WorkingDir": "",
-         "NetworkDisabled": false,
-         "ExposedPorts": {
-                 "22/tcp": {}
-         }
-    }
+        {
+             "Hostname": "",
+             "Domainname": "",
+             "User": "",
+             "AttachStdin": false,
+             "AttachStdout": true,
+             "AttachStderr": true,
+             "Tty": false,
+             "OpenStdin": false,
+             "StdinOnce": false,
+             "Env": null,
+             "Cmd": [
+                     "date"
+             ],
+             "Mounts": [
+               {
+                 "Source": "/data",
+                 "Destination": "/data",
+                 "Mode": "ro,Z",
+                 "RW": false
+               }
+             ],
+             "Labels": {
+                     "key1": "value1",
+                     "key2": "value2"
+              },
+             "WorkingDir": "",
+             "NetworkDisabled": false,
+             "ExposedPorts": {
+                     "22/tcp": {}
+             }
+        }
 
 
 + Response 201 (application/vnd.docker.raw-stream)
@@ -1722,36 +1691,25 @@ Status Codes:
     + comment - commit message
     + author - author (e.g., "John Hannibal Smith <[hannibal@a-team.com](mailto:hannibal%40a-team.com)>")
 
-### Monitor Docker's events
-
-`GET /events`
+### Monitor Docker's events [GET /events{?since,until,filters}]
 
 Get container events from docker, either in real time via streaming, or via
 polling (using since).
 
 Docker containers report the following events:
 
-    attach, commit, copy, create, destroy, die, exec_create, exec_start, export, kill, oom, pause, rename, resize, restart, start, stop, top, unpause
+- attach, commit, copy, create, destroy, die, exec_create, exec_start, export, kill, oom, pause, rename, resize, restart, start, stop, top, unpause
 
 and Docker images report:
 
-    delete, import, pull, push, tag, untag
+- delete, import, pull, push, tag, untag
 
-+ Request
+Status Codes:
 
-    GET /events?since=1374067924
+- **200** – no error
+- **500** – server error
 
-+ Response
-
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-
-    {"status":"pull","id":"busybox:latest","time":1442421700,"timeNano":1442421700598988358}
-    {"status":"create","id":"5745704abe9caa5","from":"busybox","time":1442421716,"timeNano":1442421716853979870}
-    {"status":"attach","id":"5745704abe9caa5","from":"busybox","time":1442421716,"timeNano":1442421716894759198}
-    {"status":"start","id":"5745704abe9caa5","from":"busybox","time":1442421716,"timeNano":1442421716983607193}
-
-Query Parameters:
++ Parameters:
 
 -   **since** – Timestamp used for polling
 -   **until** – Timestamp used for polling
@@ -1760,14 +1718,14 @@ Query Parameters:
   -   `image=<string>`; -- image to filter
   -   `container=<string>`; -- container to filter
 
-Status Codes:
++ Response 200 (application/json)
 
--   **200** – no error
--   **500** – server error
+        {"status":"pull","id":"busybox:latest","time":1442421700,"timeNano":1442421700598988358}
+        {"status":"create","id":"5745704abe9caa5","from":"busybox","time":1442421716,"timeNano":1442421716853979870}
+        {"status":"attach","id":"5745704abe9caa5","from":"busybox","time":1442421716,"timeNano":1442421716894759198}
+        {"status":"start","id":"5745704abe9caa5","from":"busybox","time":1442421716,"timeNano":1442421716983607193}
 
-### Get a tarball containing all images in a repository
-
-`GET /images/(name)/get`
+### Get a tarball containing all images in a repository [GET /images/{name}/get]
 
 Get a tarball containing all images and metadata for the repository specified
 by `name`.
@@ -1779,25 +1737,20 @@ image (and its parents) are returned, but with the exclusion of the
 
 See the [image tarball format](#image-tarball-format) for more details.
 
-**Example request**
-
-    GET /images/ubuntu/get
-
-+ Response
-
-    HTTP/1.1 200 OK
-    Content-Type: application/x-tar
-
-    Binary data stream
-
 Status Codes:
 
 -   **200** – no error
 -   **500** – server error
 
-### Get a tarball containing all images.
++ Parameters
 
-`GET /images/get`
+    + name:ubuntu (string)
+
++ Response 200 (application/x-tar)
+
+        Binary data stream
+
+### Get a tarball containing all images. [GET /images/get{?names}]
 
 Get a tarball containing all images and metadata for one or more repositories.
 
@@ -1808,38 +1761,19 @@ would be no names referenced in the 'repositories' file for this image ID.
 
 See the [image tarball format](#image-tarball-format) for more details.
 
-**Example request**
-
-    GET /images/get?names=myname%2Fmyapp%3Alatest&names=busybox
-
-+ Response
-
-    HTTP/1.1 200 OK
-    Content-Type: application/x-tar
-
-    Binary data stream
-
 Status Codes:
 
 -   **200** – no error
 -   **500** – server error
 
-### Load a tarball with a set of images and tags into docker
++ Response 200 (application/x-tar)
 
-`POST /images/load`
+        Binary data stream
+
+### Load a tarball with a set of images and tags into docker [POST /images/load]
 
 Load a set of images and tags into a Docker repository.
 See the [image tarball format](#image-tarball-format) for more details.
-
-**Example request**
-
-    POST /images/load
-
-    Tarball in body
-
-+ Response
-
-    HTTP/1.1 200 OK
 
 Status Codes:
 
@@ -1867,6 +1801,14 @@ the root that contains a list of repository and tag names mapped to layer IDs.
 }
 ```
 
++ Request
+
+    + Body
+
+            Tarball in body
+
++ Response 200
+
 ### Exec Create [POST /containers/{id}/exec{?AttachStdin,AttachStdout,AttachStderr,Tty,Cmd}]
 
 Sets up an exec instance in a running container `id`
@@ -1876,37 +1818,32 @@ Status Codes
 + 201 - no error
 + 404 - no such container
 
-+ Request
-
-    POST /containers/e90e34656806/exec HTTP/1.1
-    Content-Type: application/json
-
-      {
-       "AttachStdin": false,
-       "AttachStdout": true,
-       "AttachStderr": true,
-       "Tty": false,
-       "Cmd": [
-                     "date"
-             ]
-      }
-
-+ Response 201
-
-    HTTP/1.1 201 OK
-    Content-Type: application/json
-
-    {
-         "Id": "f90e34656806",
-         "Warnings":[]
-    }
-
 + Parameters
+    + id: e90e34656806 (string)
     + AttachStdin - Boolean value, attaches to `stdin` of the `exec` command.
     + AttachStdout - Boolean value, attaches to `stdout` of the `exec` command.
     + AttachStderr - Boolean value, attaches to `stderr` of the `exec` command.
     + Tty - Boolean value to allocate a pseudo-TTY.
     + Cmd - Command to run specified as a string or an array of strings.
+
++ Request (application/json)
+
+          {
+           "AttachStdin": false,
+           "AttachStdout": true,
+           "AttachStderr": true,
+           "Tty": false,
+           "Cmd": [
+                         "date"
+                 ]
+          }
+
++ Response 201 (application/json)
+
+        {
+             "Id": "f90e34656806",
+             "Warnings":[]
+        }
 
 ### Exec Start [POST /exec/{id}/start{?detach,tty}]
 
@@ -1919,47 +1856,41 @@ Status Codes
 + 201 - no error
 + 404 - no such exec instance
 
-+ Request
-
-        POST /exec/e90e34656806/start HTTP/1.1
-        Content-Type: application/json
-
-        {
-         "Detach": false,
-         "Tty": false
-        }
-
-+ Response 201 (application/json)
+**Stream details**:
+Similar to the stream behavior of `POST /container/{id}/attach` API
 
 + Parameters
-    + Detach: false (boolean) - Detach from the `exec` command.
-    + Tty: false (boolean) - Boolean value to allocate a pseudo-TTY.
+    + id: e90e34656806 (string) - instance id
+    + detach: false (boolean) - Detach from the `exec` command.
+    + tty: false (boolean) - Boolean value to allocate a pseudo-TTY.
 
++ Request (application/json)
 
+            {
+             "Detach": false,
+             "Tty": false
+            }
 
-    **Stream details**:
-    Similar to the stream behavior of `POST /container/{id}/attach` API
++ Response 201 (application/json)
 
 ### Exec Resize [POST /exec/{id}/resize{?h,w}]
 
 Resizes the `tty` session used by the `exec` command `id`.  The unit is number of characters.
 This API is valid only if `tty` was specified as part of creating and starting the `exec` command.
 
-+ Request
-    POST /exec/e90e34656806/resize?h=40&w=80 HTTP/1.1
-    Content-Type: text/plain
+Status Codes:
 
-+ Response 201 (text/plain)
+-   **201** – no error
+-   **404** – no such exec instance
 
 + Parameters
     + id: e90e34656806 (string)
     + h: 40 (number) - height of `tty` session
     + w: 80 (number) - width
 
-Status Codes:
++ Request (text/plain)
 
--   **201** – no error
--   **404** – no such exec instance
++ Response 201 (text/plain)
 
 ### Exec Inspect [GET /exec/{id}/json]
 Return low-level information about the `exec` command `id`.
@@ -1970,11 +1901,12 @@ Status Codes:
 + 404 - no such exec instance
 + 500 - server error
 
-+ Request
++ Parameters
 
-        GET /exec/11fb006128e8ceb3942e7c58d77750f24210e35f879dd204ac975c184b820b39/json HTTP/1.1
+    + id: 11fb006128e8ceb3942e7c58d77750f24210e35f879dd204ac975c184b820b39 (string)
 
 + Response 200 (plain/text)
+
         {
           "ID" : "11fb006128e8ceb3942e7c58d77750f24210e35f879dd204ac975c184b820b39",
           "Running" : false,
@@ -2057,7 +1989,7 @@ Status Codes:
           }
         }
 
-## 2.4 Volumes
+## Group Volumes
 
 ### List volumes [GET /volumes{?filter}]
 
@@ -2066,11 +1998,11 @@ Status Codes
 + 200 - no error
 + 500 - server error
 
-+ Request
-
-        GET /volumes HTTP/1.1
++ Parameters
+    + filter: dangling=true (string) - JSON encoded value of the filters (a `map[string][]string`) to process on the volumes list. There is one available filter: `dangling=true`
 
 + Response 200 (application/json)
+
         {
             "Volumes": [
               {
@@ -2081,17 +2013,17 @@ Status Codes
             ]
         }
 
-+ Parameters
-    + filter: dangling=true (string) - JSON encoded value of the filters (a `map[string][]string`) to process on the volumes list. There is one available filter: `dangling=true`
-
 ### Create a volume [POST /volumes]
-
-Create a volume
 
 Status Codes:
 
 + 201 - no error
 + 500 - server error
+
++ Parameters
+    + Name: tardis (string) - The new volume's name. If not specified, Docker generates a name.
+    + Driver: local (string) - Name of the volume driver to use. Defaults to `local` for the name.
+    + DriverOpts: null (string) - A mapping of driver options and values. These options are passed directly to the driver and are driver specific.
 
 + Request (application/json)
 
@@ -2110,11 +2042,6 @@ Status Codes:
             "Mountpoint": "/var/lib/docker/volumes/tardis"
         }
 
-+ Parameters
-    + Name: tardis (string) - The new volume's name. If not specified, Docker generates a name.
-    + Driver: local (string) - Name of the volume driver to use. Defaults to `local` for the name.
-    + DriverOpts: null (string) - A mapping of driver options and values. These options are passed directly to the driver and are driver specific.
-
 ### Inspect a volume [GET /volumes/{name}]
 
 Return low-level information on the volume `name`
@@ -2125,8 +2052,8 @@ Status Codes
 + 404 - no such volume
 + 500 - server error
 
-+ Request
-        GET /volumes/tardis
++ Parameters
+    + name: tardis (string)
 
 + Response 200 (application/json)
 
@@ -2152,13 +2079,11 @@ Status Codes
 + 409 - volume is in use and cannot be removed
 + 500 - server error
 
-+ Request
-
-        DELETE /volumes/local/tardis HTTP/1.1
++ Parameters
+    + driver: local (string)
+    + name: tardis (string)
 
 + Response 204
-
-        HTTP/1.1 204 No Content
 
 # Group Going further
 
