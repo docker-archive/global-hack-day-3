@@ -1,14 +1,14 @@
-![Owler](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/DMM/images/owler.png?raw=true)
+![Owler](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/Owler/images/owler.png?raw=true)
 # Owler - The Docker Mobile Management App
 Owler is a multiplatform mobile app to manage docker using the Docker Remote API. It aim to facilitate the management and the monitoring of containers.
 ## Screenshots
-![Dashboard](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/DMM/images/dashboard.png?raw=true)
-![Containers](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/DMM/images/containers.png?raw=true)
-![Container Stop](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/DMM/images/containerStop.png?raw=true)
-![Container Inspect](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/DMM/images/containerInspect.png?raw=true)
-![Container Logs](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/DMM/images/containerLogs.png?raw=true)
-![Monitoring](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/DMM/images/containerMonitoring.png?raw=true)
-![Monitoring](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/DMM/images/monitoring.gif?raw=true)
+![Dashboard](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/Owler/images/dashboard.png?raw=true)
+![Containers](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/Owler/images/containers.png?raw=true)
+![Container Stop](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/Owler/images/containerStop.png?raw=true)
+![Container Inspect](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/Owler/images/containerInspect.png?raw=true)
+![Container Logs](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/Owler/images/containerLogs.png?raw=true)
+![Monitoring](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/Owler/images/containerMonitoring.png?raw=true)
+![Monitoring](https://github.com/GabrielRoquigny/global-hack-day-3/blob/master/Owler/images/monitoring.gif?raw=true)
 ## Dependencies 
 * Docker API v1.19+ (for stats with a stream to false)
 * A running docker daemon with -api-enable-cors flag
