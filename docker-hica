@@ -139,7 +139,7 @@ def HicaGetImages(images):
   :type images: dict
   """
   tags = filter(lambda y: y != [u'<none>:<none>'], [x['RepoTags'] for x in images])
-  return [a for b in tags for a in b]
+  return set([a for b in tags for a in b])
 
 _injector_registry = HicaLoadInjectors("injectors")
 
