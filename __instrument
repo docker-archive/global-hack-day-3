@@ -1,4 +1,4 @@
-SESSION_ID=`date +%s`; SESSION_ROOT=/tmp/maintenance/$SESSION_ID; mkdir -p $SESSION_ROOT; 
+SESSION_ID=`date +%s`; SESSION_ROOT=/tmp/record/$SESSION_ID; mkdir -p $SESSION_ROOT; 
 function __maintenance_mode() {
 	echo $EUID >> $SESSION_ROOT/euid &&
 	echo $BASH_COMMAND >> $SESSION_ROOT/cmd && 
