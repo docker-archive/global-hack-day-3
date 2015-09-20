@@ -6,7 +6,9 @@ Add built-in support to aliases to run complex one-liners with one word !
 
 The code we have upgraded to add built in support for aliases in the docker CLI is available right here : https://github.com/ZenikaOuest/docker/tree/aliases
 
-We have also added the man page that describes how it works and give a list of nice aliases (see below)
+We have also added the man page that describes how it works and give a list of nice aliases (see below).
+
+Bash auto completion have been updated to handle properly aliases completion.
 
 # the team
 
