@@ -1,12 +1,16 @@
 # docker global hack day #3
 
+Add built-in support to aliases to run complex one-liners with one word !
+
+# source code
+
 The code we have upgraded to add built in support for aliases in the docker CLI is available right here : https://github.com/ZenikaOuest/docker/tree/aliases
 
-We have also added the man page that describes how it works and give a list of nice aliases
+We have also added the man page that describes how it works and give a list of nice aliases (see below)
 
 # the team
 
-Guillaume GERBAUD / Armel GOURIOU / Mathieu POUSSE
+[Guillaume GERBAUD](https://twiter.com/ggerbaud) / [Armel GOURIOU](https://twiter.com/agouriou) / [Mathieu POUSSE](https://twiter.com/m_pousse)
 
 --------
 % DOCKER(1) Docker User Manuals
