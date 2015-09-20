@@ -7,9 +7,11 @@ and launcher tooling that understands said metadata to provide for
 smooth experience running containerized applications with tight
 integration with the host operating system.
 
-### Label Specification
+### Docs
 
 Versioned specification of all labels can be found in `docs/label.md`.
+
+Guidelines for Dockerfiles can be found in `docs/dockerfile-guidelines.md`.
 
 ### Examples
 
