@@ -74,6 +74,7 @@ def HicaParseArguments(labels):
   args.add_argument("hica_app_name")
   args.add_argument("--show-args", default=False, action='store_true')
   args.add_argument("--verbose", default=False, action='store_true')
+  args.add_argument("--yes", default=False, action='store_true')
 
   # parse now to catch --show-args
   p, _ = args.parse_known_args()
@@ -121,7 +122,7 @@ def HicaInjectConfiguration(labels, args, config):
       inj.inject_config(config, cfgs)
 
   instr = "The container requests the following capabilities: \n - " + "\n - ".join(caps) + "\nProceed? [y/Y/n]: "
-  if not caps or raw_input(instr) in ['y', 'Y']:
+  if args.yes or not caps or raw_input(instr) in ['y', 'Y']:
     return config
   else:
     print("*** Operation aborted!")
@@ -137,10 +138,11 @@ parsed = HicaParseArguments(labels)
 # base configuration
 # run the container as current user so that file system rights are fine
 # for bind mounted files
-config = HicaInjectConfiguration(labels, parsed, ['-it', '-u', '{0}:{0}'.format(str(os.getuid()))])
+config = HicaInjectConfiguration(labels, parsed, ['-i', '-u', '{0}:{0}'.format(str(os.getuid()))])
 runcmd = ["docker", "run"] + config + [name] + container_args
 
 if parsed.verbose:
   print("Executing: " + " ".join(runcmd))
 
-subprocess.call(runcmd)
+p = subprocess.Popen(runcmd, stdin=sys.stdin)
+out, err = p.communicate()
