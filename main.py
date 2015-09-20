@@ -62,8 +62,8 @@ def main():
     parser.add_argument('--application', '-a', help='Application run')
     parser.add_argument('--environment', '-e', help='Environment to use')
     subparsers = parser.add_subparsers(help='sub-command help')
-    parser_config = subparsers.add_parser('config', help='config help')
-    parser_run = subparsers.add_parser('run', help='add help')
+    parser_config = subparsers.add_parser('config', help='Configure an application')
+    parser_run = subparsers.add_parser('run', help='Run an container')
 
     parser_config.add_argument('--name', '-n', required=True, help='Configuration name')
     parser_config.add_argument('--environment', '-e', required=True, help='Environment configuration')
