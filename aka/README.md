@@ -73,25 +73,32 @@ Here is an example of creating, using and deleting aliases.
 Here is a list of what could be easily achieved with aliases:
 
 	: remove stopped containers
-    docker alias clean '!f() { docker rm $(docker ps -a -q) ; } ; f'
+    docker alias clean \
+           '!f() { docker rm $(docker ps -a -q) ; } ; f'
     
     : returns network information of a container (requires jq)
-    docker alias network '!f() { docker inspect $1 | jq ".[0].NetworkSettings | {ip: .IPAddress, ports: .Ports}" ; } ; f'
+    docker alias network \
+           '!f() { docker inspect $1 | jq ".[0].NetworkSettings | {ip: .IPAddress, ports: .Ports}" ; } ; f'
     
     : start a bash on a running container
-    docker alias join '!f() { docker exec -it $1 /bin/bash ; } ; f'
+    docker alias join \
+           '!f() { docker exec -it $1 /bin/bash ; } ; f'
     
     : return the last container id
-    docker alias last ps -l -q
+    docker alias last \
+           ps -l -q
     
     : starts your favorite container and join
-    docker alias ubuntu run -i -t --rm ubuntu /bin/bash
+    docker alias ubuntu \
+           run -i -t --rm ubuntu /bin/bash
     
     : go on strike and shutdown docker
-    docker alias onstrike '!f() { sudo service docker stop ; sudo service docker status ; } ; f'
+    docker alias onstrike \
+           '!f() { sudo service docker stop ; sudo service docker status ; } ; f'
     
     : go at work and start docker
-    docker alias atwork '!f() { sudo service docker start ; sudo service docker status ; } ; f' 
+    docker alias atwork \
+           '!f() { sudo service docker start ; sudo service docker status ; } ; f' 
 
 # HISTORY
 Originally created by Mathieu POUSSE, Armel GOURIOU and Guillaume GERBAUD during the global hack day #3
