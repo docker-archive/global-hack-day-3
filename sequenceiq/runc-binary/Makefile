@@ -2,9 +2,9 @@ VERSION=0.3
 
 build:
 	docker build -t sequenceiq/runc-bin .
-	#rm -rf build; mkdir -p build
-	#docker run sequenceiq/runc-bin cat /go/src/github.com/opencontainers/runc/runc-0.3.tgz > build/runc-0.3.tgz
-	#docker run sequenceiq/runc-bin cat /go/src/github.com/opencontainers/runc/runc > build/runc
+	rm -rf build; mkdir -p build
+	docker run sequenceiq/runc-bin cat /go/src/github.com/opencontainers/runc/runc-0.3.tgz > build/runc-0.3.tgz
+	docker run sequenceiq/runc-bin cat /go/src/github.com/opencontainers/runc/runc > build/runc
 
 deps:
 	go get github.com/progrium/gh-release
