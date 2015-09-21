@@ -40,7 +40,7 @@ be happy to help with the transition, including:
 ## Contributors
 
 - Ladislav Prskavec (ladislav@prskavec.net)
-- Vilibald Vanča (wvi@apiary.io)
+- Vilibald Wanča (wvi@apiary.io)
 - Naďa Jašíková (nada@apiary.io)
 
 ## Documentation
