@@ -62,7 +62,6 @@ class CSK_CLI(object):
         enhanced_container.enable_csk_by_copy(tools_container)
 
         enhanced_container.session()
-        print(tools_container.ip_address)
         tools_container.stop()
 
     def read_config(self):

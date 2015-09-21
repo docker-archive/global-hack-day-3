@@ -67,10 +67,11 @@ class Container(object):
 
     def enable_csk_by_copy(self, tools):
         self.tools = tools.container["Id"]
+        self.execute("mkdir -p /tmp/tools")
         content = d.copy(self.tools, "/")
         self._put_file(content.data)
         print("please run:\n  docker exec -ti %s /tmp/tools/%s/bin/bash" %(self.container["Id"], self.tools))
-        print("  export PATH=$PATH:/tmp/tools/%s/bin:/tmp/tools/%s/usr/bin" % self.tools)
+        print("  export PATH=$PATH:/tmp/tools/%s/bin:/tmp/tools/%s/usr/bin" % (self.tools, self.tools))
                 
     def execute(self, cmd):
         """ executes cmd in container and return its output """

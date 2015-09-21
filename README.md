@@ -1,12 +1,27 @@
 # container-swiss-knife
 
-A tool for making containers easy to debug/hack.
+A tool for making containers easy to debug/hack. It enables you to *temporaly* inject your desired set of tools into an application container debug/hack it and then remove stuff from a container.
 
 ## Quickstart
 
+1) setup a tools container
 ```
-docker build -t csk .
-docker run -d --rm csk
+docker build -t csk-tool Dockerfiles/debian-tools
+```
+2) setup a csk container
+```
+docker build -t csk Dockerfiles/csk/
+```
+
+3) enhance desired container with your tool and follow the instruction to use it! 
+```
+docker run <container to enhance>
+```
+4) hack it
+
+5) remove tools from a container
+```
+docker run --remove <container to enance>
 ```
 
 ## Motivation
