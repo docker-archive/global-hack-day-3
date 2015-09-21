@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+Current server stats.
+<strong>Total clients conected:</strong> {{total_clients}}
+<hr/>
+<strong> Client details: </strong> <br/>
+<ul>
+  {% for client_ip, containers in docker_arr.iteritems() %}
+  <li><strong>Client IP -- {{client_ip}}</strong> <br/>
+    <strong> No. of workers on this client: </strong>{{ containers.container_count }}<br/>
+    <ol>
+      {% for container_id, details in containers.container_details.iteritems() %}
+      <li>
+	<strong>ID: </strong>{{container_id}}<br />
+	<strong>Details: </strong>{{details}}
+      </li>
+      {% endfor %}
+    </ol>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %} 
