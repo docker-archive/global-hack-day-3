@@ -15,8 +15,11 @@ import tarfile
 
 ## record
 
-SESSION_TEMPLATE = """bash --init-file <(echo '{instrumentation}')"""
-INSTRUMENTATION = '''
+def record(container):
+
+    # construct the bash script that will instrument the user's session
+    RECORD_TEMPLATE = """bash --init-file <(echo '{instrumentation}')"""
+    INSTRUMENTATION = '''
 SESSION_ROOT=/tmp/record;
 mkdir -p $SESSION_ROOT;
 function __instrument() {
@@ -28,10 +31,10 @@ function __instrument() {
 };
 shopt -s extdebug;
 trap __instrument DEBUG;'''
-SESSION_COMMAND = SESSION_TEMPLATE.format(instrumentation = INSTRUMENTATION.replace('\n', ' '))
+    RECORD_COMMAND = SESSION_TEMPLATE.format(instrumentation = INSTRUMENTATION.replace('\n', ' '))
 
-def record(container):
-    os.execlp('docker', 'docker', 'exec', '-ti', container, 'bash', '-c', SESSION_COMMAND)
+    # use docker exec to drop the user into an instrumented bash session
+    os.execlp('docker', 'docker', 'exec', '-ti', container, 'bash', '-c', RECORD_COMMAND)
 
 ## replay
 
