@@ -7,6 +7,10 @@ A log driver that publish logs to mqtt broker
 
 There're lots of iot device using mqtt protocol to communicate with other devices or server, especially when the network is unstable. This project adds a log driver to docker. Currently we cannot add a log driver via an external plugin, so it's added into docker's source. After sending logs to the mqtt broker, we can use another mqtt client to subscribe the logs and forward to logstash, fluentd, or some hosted log services such like loggly.
 
+## P.S.
+
+docker is added as a git submodule. source code is here <https://github.com/waitingkuo/docker/tree/mqtt>
+
 
 ## Usage
 
