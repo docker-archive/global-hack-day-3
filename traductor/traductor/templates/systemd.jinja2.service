@@ -1,0 +1,17 @@
+[Unit]
+Description={{ service.description }}
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStartPre=/usr/bin/docker pull {{ service.image }}
+ExecStart=/opt/bin/systemd-docker --cgroups name=systemd run {{ service.options }} --rm --name %n {{ service.image }} {{ service.command }}
+Restart=always
+RestartSec=10s
+Type=notify
+NotifyAccess=all
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

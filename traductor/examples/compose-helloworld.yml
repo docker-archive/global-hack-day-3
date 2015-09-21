@@ -1,0 +1,4 @@
+helloworld:
+  image: adejonge/helloworld
+  ports:
+    - 8080:8080
