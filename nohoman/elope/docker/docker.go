@@ -6,6 +6,7 @@ import (
         "bytes"
 	"strings"
 	"os"
+        "github.com/craigbarrau/global-hack-day-3/nohoman/elope/executil"
 )
 
 var (
@@ -13,17 +14,17 @@ var (
 )
 
 func Cp(file, container, destination string) {
-        fmt.Printf("1  - Copying %v to %v:%v\n", file, container, destination)
-        do("sudo", "docker", "cp", file, container+":"+destination)
+        fmt.Printf("1  - Deploying %v to %v:%v\n", file, container, destination)
+        executil.Run("sudo", "docker", "cp", file, container+":"+destination)
 }
 
-func Build(dockerfile *os.File, image, tag string) {
-	fmt.Printf("\n c - Building image %v:%v\n", image, tag)
-	do("sudo", "docker", "build", "-t", image+":"+tag, "-f", dockerfile.Name(), ".")	
+func Build(dockerfile *os.File, image, tag, context string) {
+	fmt.Printf("\n e - Building image %v:%v\n", image, tag)
+	do("sudo", "docker", "build", "-t", image+":"+tag, "-f", dockerfile.Name(), context)	
 }
 
 func Push(image, tag string){
-	fmt.Printf("\n d - Pushing image %v:%v\n", image, tag) 
+	fmt.Printf("\n f - Pushing image %v:%v\n", image, tag) 
 }
 
 func PsFilterFormat(filter, format string) string {
