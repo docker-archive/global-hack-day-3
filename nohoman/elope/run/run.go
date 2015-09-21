@@ -1,18 +1,46 @@
 package run
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"strings"
 	"os"
+	"time"
         "github.com/craigbarrau/global-hack-day-3/nohoman/elope/common"
         "github.com/craigbarrau/global-hack-day-3/nohoman/elope/docker"
         "github.com/craigbarrau/global-hack-day-3/nohoman/elope/stringid"
 )
 
+func deploy(p common.Package, container string) {
+	docker.Cp(p.DeployableURI, container, p.Destination)
+	CreateDockerImage(p.DeployableURI, container, p.Destination)
+}
+
+func record(p common.Package, container string) {
+	this_deploy_metadir := common.Deployments_metadir+"/"+container+"/"+p.ID
+        deployments_metadir_exists,_ := common.Exists(this_deploy_metadir)
+        // TODO: Error handling
+        if deployments_metadir_exists != true {
+                os.MkdirAll(this_deploy_metadir, 0777)
+                // Make this debug log
+                fmt.Printf("Creating %v\n",common.Deployments_metadir)
+        }
+	t := time.Now()
+        mapD := map[string]string{"id": p.ID, "source-file": p.SourceFile, "deployable-uri": p.DeployableURI, "destination": p.Destination, "md5sum": p.Md5sum, "deployed": t.Format(time.RFC3339)}
+        mapB, _ := json.Marshal(mapD)
+        fmt.Println(string(mapB))
+
+        d1 := []byte(string(mapB))
+        error := ioutil.WriteFile(this_deploy_metadir+"/metadata.json", d1, 0644)
+        if error != nil {
+                fmt.Println(error)
+                os.Exit(1)
+        }
+}
+
 func Run(identifier, container string) {
         packages_metadir_exists,_ := common.Exists(common.Packages_metadir)
-        // TODO: Error handling
         var package_exists = false
 	var existing_package = common.Package{}
         if packages_metadir_exists != true {
@@ -35,14 +63,14 @@ func Run(identifier, container string) {
                         }
                 }
         }
-	if package_exists {
-		p := existing_package
-		docker.Cp(p.DeployableURI, container, p.Destination)
-		CreateDockerImage(p.DeployableURI, container, p.Destination)
-	} else {
-		fmt.Printf("No package found matching %v\n", identifier)	
-		os.Exit(1)
-	}
+        if package_exists {
+		record(existing_package,container)
+		deploy(existing_package,container)
+        } else {
+                fmt.Printf("No package found matching %v\n", identifier)
+                os.Exit(1)
+        }	
+
 }
 
 func CreateDockerImage(file, container, destination string) {

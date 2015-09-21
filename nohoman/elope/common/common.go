@@ -13,6 +13,7 @@ var (
         // TODO: Productise this path (e.g. /var/lib/elope)
         persistence_store = "/tmp/elope"
         Packages_metadir = persistence_store+"/packages"
+	Deployments_metadir = persistence_store+"/deployments"
 )
 
 type Package struct {
@@ -26,6 +27,8 @@ type Package struct {
         Comment string `json:"comment,omitempty"`
         // Created timestamp when image was created
         Created time.Time `json:"created"`
+        // Deployed timestamp when image was created
+        Deployed time.Time `json:"deployed"`
         // Destination
         Destination string `json:"destination,omitempty"`
         // Author
