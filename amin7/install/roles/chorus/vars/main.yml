@@ -1,0 +1,2 @@
+---
+ user_name: "{{ lookup('env','ANSIBLE_USER') }}"
