@@ -8,17 +8,30 @@ Add the ability to "dry run" a "docker pull" command, obtaining only the total s
 
 # Source code
 
-Source code can be found in the docker directory or in the https://github.com/srevereault/docker repository. Matching Pull Request on docker master is TODO.
+Source code can be found in the docker directory or in the https://github.com/srevereault/docker repository, ``pull-dry-run`` branch. The matching Pull Request on docker master can be found here: https://github.com/docker/docker/pull/16450.
 
 # Known limitations
 
-Currentlty only works with v2 registry. 
+Currently only works with v2 registry.
 
 Does not work if a background pull is already running on the same image (but displays a nice warning ;-) ).
 
-# History 
+# Example
 
-2015-09-21 - Initial version for Docker global hack day #3 
+```
+docker pull -d jenkins
+Using default tag: latest
+INFO[0005] POST /v1.21/images/create?dryRun=true&fromImage=jenkins%3Alatest
+INFO[0008] Image manifest for jenkins:latest has been verified
+**** Dry Run - nothing will be downloaded ****
+latest: Pulling from library/jenkins
+latest: Dry Run: 376344319 bytes to be downloaded, in 33 layers
+Status: Dry Run completed for jenkins:latest
+```
+
+# History
+
+2015-09-21 - Initial version for Docker global hack day #3
 
 -------
 
@@ -38,7 +51,6 @@ Does not work if a background pull is already running on the same image (but dis
 	-a, --all-tags=true|false
 	  Download all tagged images in the repository. The default is false.  
 	-d, --dry-run
-	  Don't download the image layers. Only display the total size to be downloaded 
+	  Don't download the image layers. Only display the total size to be downloaded
 	--help
 	  Print usage statement
-
