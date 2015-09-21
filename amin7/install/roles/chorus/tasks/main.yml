@@ -1,0 +1,45 @@
+---
+
+- name: Confirm docker is installed
+  sudo: True
+  command: docker ps
+
+- stat: path=/bin/chorus
+  register: chorus_symlink
+
+- name: Do not install on a master machine
+  fail: msg="This is machine is an chorus master node, not installing the webservice."
+  when: chorus_symlink.stat.exists == True
+
+- name: Stop Chorus Service (if it has already been installed)
+  sudo: True
+  ignore_errors: yes
+  service: name=chorus state=stopped
+
+- name: Install Chorus Service File
+  sudo: True
+  template: src=../webservice/chorus.service dest=/etc/init.d/chorus owner={{ user_name }} mode=0700
+
+- name: Install Chorus Webservice
+  sudo: True
+  copy: src=../webservice/webservice.py dest=/usr/bin/chorus_webservice.py owner={{ user_name }} mode=0700
+
+- name: Update rc links for Chorus service
+  sudo: True
+  command: chdir=/home/{{ user_name }} update-rc.d chorus defaults
+
+- name: Start Chorus Service
+  sudo: True
+  service: name=chorus state=started
+
+- name: Confirm service is up
+  sudo: "{{ user_name }}"
+  command: curl http://127.0.0.1:9009/healthy
+
+- name: Append the IP address to the chorus cache file (This will break on exotic OS installs)
+  local_action: shell echo "{{ ansible_eth0.ipv4.address }}" >> ~/.chorus/cache
+
+
+
+
+
