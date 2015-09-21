@@ -1,6 +1,11 @@
 # Docker+Slack
 
-A Slack integration to notify Docker events.
+A Slack integration to notify Docker events (starting and stopping containers for now).
+
+## Requirements
++ Docker
++ Docker Compose
++ Slack account
 
 ## How to get started
 
@@ -8,7 +13,6 @@ A Slack integration to notify Docker events.
 
 + Update `SLACK_URL` environemt variable in `docker-compose.yml` with the ` Webhook URL` you just got from Slack. 
 
-+ Run it 
-```
-docker-compose up -d
-```
++ Run it using Docker Compose : `docker-compose up -d`
+
+
