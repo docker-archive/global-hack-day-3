@@ -11,6 +11,7 @@ from setuptools import setup
 install_requires = [
     'argparse == 1.1',
     'PyYAML >= 3.10, < 4',
+    'docker-compose >=1.4.1',
 ]
 
 

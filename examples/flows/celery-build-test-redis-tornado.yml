@@ -1,8 +1,8 @@
 name: celery-build-test-tornado
 description: Workflow for building and testing celery pypi
 volumes:
-    - /Users/cindy.cao/workspace:/workspace
-    - /Users/cindy.cao/builds:/builds
+    - ~/workspace:/workspace
+    - ~/builds:/builds
 jobs:
     - build-celery-sdist:
         image: python:2.7
