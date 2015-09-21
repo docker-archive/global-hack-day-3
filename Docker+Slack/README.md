@@ -2,6 +2,8 @@
 
 A Slack integration to notify Docker events (starting and stopping containers for now).
 
+![slacker-1.0](https://www.dropbox.com/s/5lfvkta4mj3mss9/Slack.png)
+
 ## Requirements
 + Docker
 + Docker Compose
