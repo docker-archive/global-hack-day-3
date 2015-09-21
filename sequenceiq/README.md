@@ -17,7 +17,7 @@ Use-cases include:
 
 - Create a statically linked runc
 - Export a Docker container started from a specific image
-- Create a self-extracting binary with runc, rootfs, and config.yml
+- Create a self-extracting binary with runc, rootfs, runtime.json and config.json
 
 ## Statically linked Runc
 
