@@ -1,0 +1,126 @@
+commit 3bb2109138eaaff082ccffd3440ff45e2c42d733
+Author: Swapnil Daingade <sdaingade@maprtech.com>
+Date:   Sun Sep 20 19:24:43 2015 -0700
+
+    Docker patch for Myriad (EXPERIMENTAL)
+    
+    * Added a new configuration entry to the yml file named clusterId
+    * On receiving an offer, Myriad scheduler makes call to a script
+      that launches a NM docker container and configures storage and
+      networking for it.
+    
+    Needs testing
+
+diff --git a/myriad-scheduler/src/main/java/com/ebay/myriad/configuration/MyriadConfiguration.java b/myriad-scheduler/src/main/java/com/ebay/myriad/configuration/MyriadConfiguration.java
+index 58b407b..3271cfe 100644
+--- a/myriad-scheduler/src/main/java/com/ebay/myriad/configuration/MyriadConfiguration.java
++++ b/myriad-scheduler/src/main/java/com/ebay/myriad/configuration/MyriadConfiguration.java
+@@ -148,6 +148,8 @@ public class MyriadConfiguration {
+   @JsonProperty
+   private String mesosAuthenticationSecretFilename;
+ 
++  @JsonProperty
++  private String clusterId;
+ 
+   public MyriadConfiguration() {
+   }
+@@ -235,4 +237,7 @@ public class MyriadConfiguration {
+     return mesosAuthenticationPrincipal;
+   }
+ 
++  public String getClusterId() {
++    return clusterId;
++  }
+ }
+diff --git a/myriad-scheduler/src/main/java/com/ebay/myriad/scheduler/TaskFactory.java b/myriad-scheduler/src/main/java/com/ebay/myriad/scheduler/TaskFactory.java
+index 727dc9f..7198b51 100644
+--- a/myriad-scheduler/src/main/java/com/ebay/myriad/scheduler/TaskFactory.java
++++ b/myriad-scheduler/src/main/java/com/ebay/myriad/scheduler/TaskFactory.java
+@@ -1,12 +1,10 @@
+ package com.ebay.myriad.scheduler;
+ 
+ import com.ebay.myriad.configuration.MyriadConfiguration;
+-import com.ebay.myriad.configuration.MyriadExecutorConfiguration;
+ import com.ebay.myriad.state.NodeTask;
+ import com.google.common.base.Preconditions;
+ import org.apache.hadoop.yarn.conf.YarnConfiguration;
+ import org.apache.mesos.Protos.CommandInfo;
+-import org.apache.mesos.Protos.CommandInfo.URI;
+ import org.apache.mesos.Protos.ExecutorID;
+ import org.apache.mesos.Protos.ExecutorInfo;
+ import org.apache.mesos.Protos.FrameworkID;
+@@ -112,6 +110,18 @@ public interface TaskFactory {
+       }
+     }
+ 
++    private CommandInfo getCommandInfo(TaskID taskId) {
++      CommandInfo.Builder commandInfo = CommandInfo.newBuilder();
++      String cmd = "/scripts/docker_deploy.sh " + taskId + " " + cfg.getClusterId() + " " + "maprdocker.lab/yarn:nm";
++      commandInfo.setValue("echo \"" + cmd + "\";" + cmd);
++
++      if (cfg.getFrameworkUser().isPresent()) {
++        commandInfo.setUser(cfg.getFrameworkUser().get());
++      }
++      return commandInfo.build();
++    }
++
++/*
+     private CommandInfo getCommandInfo(NMProfile profile, NMPorts ports) {
+       MyriadExecutorConfiguration myriadExecutorConfiguration = cfg.getMyriadExecutorConfiguration();
+       CommandInfo.Builder commandInfo = CommandInfo.newBuilder();
+@@ -150,14 +160,15 @@ public interface TaskFactory {
+       }
+       return commandInfo.build();
+     }
++*/
+ 
+     @Override
+     public TaskInfo createTask(Offer offer, FrameworkID frameworkId, TaskID taskId, NodeTask nodeTask) {
+       Objects.requireNonNull(offer, "Offer should be non-null");
+       Objects.requireNonNull(nodeTask, "NodeTask should be non-null");
+ 
+-      NMPorts ports = getPorts(offer);
+-      LOGGER.debug(ports.toString());
++      //NMPorts ports = getPorts(offer);
++      //LOGGER.debug(ports.toString());
+ 
+       NMProfile profile = nodeTask.getProfile();
+       Scalar taskMemory = Scalar.newBuilder()
+@@ -167,8 +178,9 @@ public interface TaskFactory {
+           .setValue(taskUtils.getTaskCpus(profile))
+           .build();
+ 
+-      CommandInfo commandInfo = getCommandInfo(profile, ports);
+-      ExecutorInfo executorInfo = getExecutorInfoForSlave(frameworkId, offer, commandInfo);
++      //CommandInfo commandInfo = getCommandInfo(profile, ports);
++      //ExecutorInfo executorInfo = getExecutorInfoForSlave(frameworkId, offer, commandInfo);
++      CommandInfo commandInfo = getCommandInfo(taskId);
+ 
+       TaskInfo.Builder taskBuilder = TaskInfo.newBuilder()
+           .setName("task-" + taskId.getValue())
+@@ -186,6 +198,8 @@ public interface TaskFactory {
+                   .setType(Value.Type.SCALAR)
+                   .setScalar(taskMemory)
+                   .build())
++          .setCommand(commandInfo).build();
++/*                  
+           .addResources(
+               Resource.newBuilder().setName("ports")
+                   .setType(Value.Type.RANGES)
+@@ -207,6 +221,7 @@ public interface TaskFactory {
+                           .setEnd(ports.getShufflePort())
+                           .build())))
+           .setExecutor(executorInfo).build();
++*/          
+     }
+ 
+     @Override
+diff --git a/myriad-scheduler/src/main/resources/myriad-config-default.yml b/myriad-scheduler/src/main/resources/myriad-config-default.yml
+index 14b82b0..13f4bf9 100644
+--- a/myriad-scheduler/src/main/resources/myriad-config-default.yml
++++ b/myriad-scheduler/src/main/resources/myriad-config-default.yml
+@@ -44,3 +44,4 @@ yarnEnvironment:
+   #JAVA_HOME: /usr/lib/jvm/java-default #System dependent, but sometimes necessary
+ mesosAuthenticationPrincipal:
+ mesosAuthenticationSecretFilename:
++clusterId: green
