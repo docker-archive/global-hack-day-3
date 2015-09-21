@@ -2,7 +2,14 @@
 
 ## Goal
 
-@TODO@
+When building tools to interact with Docker APIs, you are left with Markdown API descriptions. In this project, we'd like to show how Markdown-based API Blueprint can be used for enabling machine consumption with a lot of benefits.
+
+Using the slightly modified documentation, we'll show how to access the available API capabilities from code without duplicating the work done in documentation. With this machine-readable version, API consuming gets easier and testing simpler. Since the format is both human and machine-readable, it is ensured that the documentation structure is consistent and comprehensible, containing all details needed to use the API correctly.
+
+Slightly modifying Docker API documentation to be machine-readable:
+- makes the documentation more consistent and comprehensive to the human reader
+- greatly facilitates API consumption
+- provides solid support for testing the API-consuming client without using the actual API implementation
 
 ## Contributors
 
