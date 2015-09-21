@@ -3,4 +3,4 @@ slacker:
  volumes:
     - /var/run/docker.sock:/var/run/docker.sock
  environment:
-    - SLACK_URL=https://hooks.slack.com/services/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
+    - SLACK_URL=https://hooks.slack.com/services/T0543....BdMCX3AFP7GSANBnNFRY
