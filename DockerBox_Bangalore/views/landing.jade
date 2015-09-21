@@ -1,0 +1,150 @@
+extends layout
+
+block content
+	#landing_page.page
+		include includes/header.jade
+			a.header_tab.selected(onclick="toggleTab(event, 'images_wrapper', 'servers_wrapper')") IMAGES
+			a.header_tab(onclick="toggleTab(event, 'servers_wrapper', 'images_wrapper')") SERVERS
+
+		.content
+			#images_wrapper
+				#image_details
+					b.label Name : 
+					span#name
+					br
+					b.label Created By : 
+					span#created_by
+					br
+					b.label Created On : 
+					span#created_on
+					br
+					b.label Last Updated By : 
+					span#last_updated_by
+					br
+					b.label Last Updated On : 
+					span#last_updated_on
+					br
+					br
+					a.hidden#clone(href='/clone/image/') Clone
+					br
+					div#clonenodes
+				
+				input.search(placeholder="Search")
+				#images.list
+					- var count = 0;
+					each doc in images.rows
+						.row(onclick="imageDetail(event)")
+							.cell=(++count)
+							- var buildStatus = doc.value.build_status;
+							.cell(class=(buildStatus == 'processing' ? 'disabled' : (buildStatus != 0 ? 'warning' : '')))
+								a.imagename(href='/discover/image/'+doc.value.name)=doc.value.name
+								- var cby = doc.value.created_by || {};cby.name = cby.name || ''; cby.email = cby.email || '';
+								.hidden.createdby=cby.name + ' ' + cby.email
+							if buildStatus == 'processing'
+								img.processing(src='/image/processing.gif')
+							#imagedatacell.cell.hidden=JSON.stringify(doc.value)
+							#imageclonedatacell.cell.hidden
+								- var clonedocs = images.clonemap[doc.value.name] || [];
+								- var clonecount = 0;
+								if clonedocs.length
+									b Cloned Images
+								each clonedoc in clonedocs
+									.row(onclick="cloneimageDetail(event)")
+										.cell=(++clonecount)
+										.cell
+											a(href='/discover/image/'+clonedoc.value.name)=clonedoc.value.name
+										#imagedatacell.cell.hidden=JSON.stringify(clonedoc.value)
+
+			#servers_wrapper.hidden
+				#server_details
+					b.label Name : 
+					span#name
+					br
+					b.label Created By : 
+					span#created_by
+					br
+					b.label Created On : 
+					span#created_on
+				
+				input.search(placeholder="Search")
+				#servers.list
+					- var count = 0;
+					each doc in servers.rows
+						.row(onclick="serverDetail(event)")
+							.cell=(++count)
+							.cell
+								a.servername(href='/discover/server/'+doc.value.name)=doc.value.name
+								- var cby = doc.value.created_by || {};cby.name = cby.name || ''; cby.email = cby.email || '';
+								.hidden.createdby=cby.name + ' ' + cby.email
+							- var imagesUsed = (doc.value.app.images_used || [doc.value.app.image]).join(',')
+							.cell.imagesused=imagesUsed
+							#serverdatacell.cell.hidden=JSON.stringify(doc.value)
+				
+	script(src="/js/list.js")
+	script
+		| function imageDetail(e, node) {
+		|	e = e || window.event;
+		| 	var n = node || e.currentTarget, 
+		| 	data = JSON.parse(n.querySelector('#imagedatacell').textContent || '{}'),
+		| 	clonedataHTML = n.querySelector('#imageclonedatacell') && n.querySelector('#imageclonedatacell').innerHTML,
+		| 	detail = document.querySelector('#image_details'),
+		|	previous = n.parentNode.querySelector('.selected');
+		| 
+		| 	previous && previous.classList.remove('selected');
+		| 	n.classList.add('selected');
+		| 	detail.querySelector('#name').textContent = data.name;
+		| 	detail.querySelector('#created_by').textContent = getUser(data.created_by);
+		| 	detail.querySelector('#created_on').textContent = data.created_on;
+		| 	detail.querySelector('#last_updated_by').textContent = getUser(data.last_updated_by);
+		| 	detail.querySelector('#last_updated_on').textContent = data.last_updated_on;
+		| 	detail.querySelector('#clone').href = '/clone/image/' + data.name;
+		| 	detail.querySelector('#clonenodes').innerHTML = clonedataHTML;
+		| }
+		| 
+		| function cloneimageDetail(e, node) {
+		|	e = e || window.event;
+		| 	var n = node || e.currentTarget, 
+		| 	data = JSON.parse(n.querySelector('#imagedatacell').textContent || '{}'),
+		| 	detail = document.querySelector('#image_details'),
+		|	previous = n.parentNode.querySelector('.selected');
+		| 
+		| 	previous && previous.classList.remove('selected');
+		| 	n.classList.add('selected');
+		| 	detail.querySelector('#name').textContent = data.name;
+		| 	detail.querySelector('#created_by').textContent = getUser(data.created_by);
+		| 	detail.querySelector('#created_on').textContent = data.created_on;
+		| 	detail.querySelector('#last_updated_by').textContent = getUser(data.last_updated_by);
+		| 	detail.querySelector('#last_updated_on').textContent = data.last_updated_on;
+		| }
+		| 
+		| function serverDetail(e, node) {
+		|	e = e || window.event;
+		| 	var n = node || e.currentTarget, 
+		| 	data = JSON.parse(n.querySelector('#serverdatacell').textContent || '{}'),
+		| 	detail = document.querySelector('#server_details'),
+		|	previous = n.parentNode.querySelector('.selected');
+		| 
+		| 	previous && previous.classList.remove('selected');
+		| 	n.classList.add('selected');
+		| 	detail.querySelector('#name').textContent = data.name;
+		| 	detail.querySelector('#created_by').textContent = getUser(data.created_by);
+		| 	detail.querySelector('#created_on').textContent = data.created_on;
+		| }
+		| 
+		| function getUser(user) {
+		| 	user = user || {};
+		| 	var name = user.name || '',
+		| 	email = user.email || '';
+		| 	return (email ? [name, ' <', email, '>'].join('') : name);
+		| }
+		| 
+		| imageDetail(null, document.querySelectorAll('#images .row')[0]);
+		| serverDetail(null, document.querySelectorAll('#servers .row')[0]);
+		| 
+		| // Init of search
+		| (new List('images_wrapper', {
+		| 	valueNames: [ 'imagename', 'createdby' ]
+		| }));
+		| (new List('servers_wrapper', {
+		| 	valueNames: [ 'servername', 'createdby', 'imagesused' ]
+		| }));

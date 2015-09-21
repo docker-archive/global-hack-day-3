@@ -1,0 +1,56 @@
+extends layout
+
+block assets
+	style
+		| .appblock > .appblock {
+		|	margin-left : 20px;
+		| }
+		| .pure-button {
+		|	margin-top : 20px;
+		| }
+		| input {
+		|	width: 100%;
+		| }
+
+block content
+	include includes/header.jade
+	.content
+		h2='Details for cloning ' + name 
+		.control-group
+			label Name
+			input#appname(placeholder='Name for your Image' required pattern="[A-Za-z0-9]*" data-validation="Any characters otherthan A-Z or a-z or 0-9 is not allowed for image name.")
+		if params
+			each param in params
+				.control-group
+					label=param.name
+					input.paramsinput(data-param=param.param data-name=param.name value=param.value)
+		.control-group
+			label Description
+			textarea#appdesc=description
+		.control-group
+			button.pure-button.pure-button-primary(onclick='submit(this)') Clone
+
+	script="var parentImageName = '" + name + "';"
+	script
+		| var processingNode = document.querySelector('#processing');
+		| function submit() {
+		|	if(!validate()) return;
+		|	var params = document.querySelectorAll('.paramsinput');
+		|	var data = {
+		|			parentImageName : parentImageName,
+		|			name : document.querySelector('#appname').value,
+		|			description : document.querySelector('#appdesc').value,
+		|			params : [].map.call(params, function(p){return {param:p.dataset.param, name:p.dataset.name, value:p.value};})
+		|	};
+		|	processingNode.classList.remove('hidden');
+		|	$.post('/clone/image', data, function(res){
+		|		if(res.redirect) {
+		|			window.location = res.redirect;
+		|		} else alert(JSON.stringify(res));
+		|	});
+		| }
+		| function validate() {
+		|	var name = document.querySelector('#appname');
+		|	if(!name.checkValidity()) alert(name.dataset.validation);
+		|	return name.checkValidity();
+		| }

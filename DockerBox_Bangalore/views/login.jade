@@ -1,0 +1,10 @@
+extends layout
+
+block content
+	#login_page.page
+		form(name="input", action="/login" method="post")
+			input.button(type="submit" value="Login" id="loginbutton")
+		#login_page_wrapper
+			h1 DockerBox
+			p Ridiculously simple system to deploy and test distributed micro-services
+		

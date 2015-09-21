@@ -1,0 +1,12 @@
+extends layout
+
+block content
+	include includes/header.jade
+	#configurationpage
+		h2.textcenter Configurations
+		form(enctype='application/json' action="/admin/configuration" method="post")
+			textarea(name='config')=JSON.stringify(config, null, 4)
+			br
+			input.button(type="submit" value="Update")
+		h3 Adding a new Node to the cluster
+		p!='1. Add the ip details in the format <b>{"internal_ip" : "", "public_ip" : ""}</b> to the nodes array in the cluster.<br>2. And run the command <b><i>' + newNodeSetup + '</i></b> as a root user in that node.<br><br><br><br><br>'

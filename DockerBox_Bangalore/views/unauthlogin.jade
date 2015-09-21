@@ -1,0 +1,14 @@
+extends layout
+
+block content
+	#unauthlogin_page.page
+		#login_page_wrapper
+			form(name='input', action='/unauthlogin' method='post')			 
+				.row
+					label Name
+					input(type='text' name='name')
+				.row
+					label Email
+					input(type='email' name='email')
+				input.button#loginbutton(type='submit' value='Sign In')
+		
