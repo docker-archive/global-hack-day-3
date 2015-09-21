@@ -12,7 +12,7 @@ Enterprise applications have SLA needs with respect to storage. A database appli
 
 We followed below guidelines:
 
-## Design Profiles top down
+## Flow SLAs top down
 
 We considered the following options:
 
@@ -26,9 +26,9 @@ We defined ``profile`` as a name that provides certain guarantees. We propose tw
 - ``default``: the application does not care about storage characteristics. We manifest cheapest storage option for this profile.
 - ``gold``: the application cares about performance. We provide suitable storage that will satisfy application's performance needs. 
 
-## As an application, or a scheduler, where do request a profile?
+## Single click activation
 
-We recommend driving profiles using Docker Compose via Docker Flocker plugin.
+We recommend using profiles with Docker Compose via Docker Flocker plugin.
 
 Examples:
 
@@ -43,11 +43,11 @@ docker run --name testapp --volume-driver=flocker -v cheapvolume@default:/data b
 ```
 will create a cheap volume without performance guarantees.
 
-Not specifying a profile in a volume's ``name`` defaults to ``default`` profile.
+The minimal change from existing functionality is that instead of specifying volume as ``-v name:/data``, you would tag along profile as ``-v name@profile:/data``. For backward compatibility and ease of use, not specifying a profile defaults to a ``default`` profile: ``-v name@default:/data`` is equivalent to ``-v name:/data``.
 
-The intepretation of ``gold`` and ``default`` will vary from backend to backend. For example, ``gold`` profile will translate to the following settings.
+The intepretation of ``gold`` and ``default`` will vary from backend to backend, the details of which are available to schedulers upon request. For example, ``gold`` profile will translate to the following settings.
 
-### EBS
+### [Amazon EBS](https://aws.amazon.com/ebs/)
 
 ```
 IOPS: volume_size*30,
@@ -55,7 +55,7 @@ encrypted: True,
 volume_type: io1
 ```
 
-### ScaleIO
+### [EMC ScaleIO](http://www.emc.com/storage/scaleio/index.htm)
 
 ```
 volume_type: u'thin_provision',
@@ -64,7 +64,7 @@ bandwidth: 1000000,
 ram_cache: True
 
 ```
-### Hedvig
+### [Hedvig](http://www.hedviginc.com/product)
 
 ```
 <dedup_enable>false</dedup_enable>
@@ -76,7 +76,7 @@ ram_cache: True
 
 ```
 
-### ConvergeIO
+### [ConvergeIO](http://www.convergeio.com/)
 
 ```
 iops:
@@ -153,6 +153,6 @@ We thank:
 
 - ClusterHQ Labs and Engineering, EMC, and Dell for facilitating productive collaboration.
 
-- Docker Inc for providing a venue for prototyping our collective thoughts and encouraging innovation.
+- Docker Inc for providing venue for prototyping our collective thoughts and encouraging innovation.
 
 - David Calavera (Docker) for feedback on the idea at SF Hack Day Kickoff.
