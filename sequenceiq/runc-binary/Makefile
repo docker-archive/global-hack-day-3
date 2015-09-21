@@ -8,6 +8,7 @@ build:
 	chmod +x build/runc
 
 deps:
+	go get -u github.com/jteeuwen/go-bindata/...
 	go get github.com/progrium/gh-release
 
 release: build
@@ -16,4 +17,8 @@ release: build
 	docker run sequenceiq/runc-bin cat /go/src/github.com/opencontainers/runc/runc > release/runc
 	chmod +x release/runc
 	gh-release create sequenceiq/global-hack-day-3  0.3
+
+bindata:
+	go-bindata include .deps/bin
+
 

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+: ${DEBUG:=1}
+: ${TEMP_DIR:=exploded}
+
+debug() {
+    [[ "$DEBUG" ]] && echo "[DEBUG] $@" 1>&2
+}
+
+
+create_tar() {
+  declare dockerImage=${1:? "required: docker image name as 1. parameter"}
+
+  local id=$(docker run -itd $dockerImage)
+  local exportedImage=container.tar
+  
+  debug "container id=$id"
+
+  docker export $id > $exportedImage
+  debug "container is exported as: $exportedImage"
+
+  docker rm -f $id &>/dev/null && debug "docker container is deleted: $id" || debug "container couldnt be deleted: $id"
+}
+
+
+create_dir() {
+    rm -rf $TEMP_DIR
+    mkdir -p $TEMP_DIR/rootfs
+
+    tar -xvf container.tar -C exploded/rootfs/
+    
+
+}
+
+main() {
+    #create_tar "$@"
+    create_dir
+}
+
+[[ "$0" == "$BASH_SOURCE" ]] && main "$@"
