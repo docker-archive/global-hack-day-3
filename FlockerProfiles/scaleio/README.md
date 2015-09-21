@@ -1,9 +1,17 @@
 # Design details of EMC ScaleIO implemtation
 
-ScaleIO can support different options for volumes. Profiles make up these different options
+#ScaleIO can support different options for volumes. Profiles make up these different options
+
+#Code
+```
+https://gist.github.com/wallnerryan/577a14ff5b3d31f4c3c0
+https://github.com/hackday-profilers/global-hack-day-3/tree/scaleio-docs
+https://github.com/emccorp/scaleio-flocker-driver/tree/scaleio-profiles-hackday
+https://github.com/wallnerryan/scaleio-py/tree/profiles_scaleiopy
+```
 
 (*supported options in PoC Hack)
-Available Options
+#Available Options
 - *IOPS
 - *Bandwidth
 - *Per Volume Ram Cache
@@ -23,7 +31,7 @@ or via Docker
 
 (These instructions do not include setting up flocker-docker-plugin or docker, please see https://docs.clusterhq.com/en/1.3.1/labs/docker-plugin.html)
 
-ScaleIO
+#ScaleIO
 ```
 git clone https://github.com/jonasrosland/vagrant-scaleio
 cd vagrant-scaleio
@@ -111,9 +119,10 @@ EOT
 /vagrant/venv/bin/flocker-control --verbose > /tmp/control.log 2>&1 &
 /vagrant/venv/bin/flocker-container-agent --verbose > /tmp/container.log 2>&1 &
 /vagrant/venv/bin/flocker-dataset-agent --verbose > /tmp/data.log 2>&1 &
+```
 
-Install flocker-tools
-
+#Install flocker-tools
+```
 virtualenv --python=/usr/bin/python2.7 /opt/flocker/flocker-tools
 /opt/flocker/flocker-tools/bin/pip install git+https://github.com/clusterhq/unofficial-flocker-tools.git
 ```
