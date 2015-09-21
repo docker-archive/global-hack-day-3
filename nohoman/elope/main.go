@@ -182,7 +182,6 @@ func main() {
 		fmt.Println("Commands:")
 		fmt.Println("    pack     Pack for incremental or full deployment")
 		fmt.Println("    run      Escape it all and deploy the way you want")
-		fmt.Println("    ls       List all pending or active deployments")
 		fmt.Println("    diff     See the differences made to the container from elope") 
 		fmt.Println("")
 	}
@@ -239,16 +238,6 @@ func main() {
                         os.Exit(1)
                 }		
 		container := args[1]
-		diff.Diff(container)		
-	} else if action == ls_action {
-	// TODO:
-	// Implement ls. By searching path /tmp/packages/
-	// Package ID | File | Destination | Latest | Pending Changes
-	// Implement watch.
-	// Implement retreat to delete packages single or all 
-	// Implement copy of pack so that it is a snapshot
-	// Implement destination container@<destination>
-	// Implement technology drivers
 	} else {
 		fmt.Println(action+" is not yet implemented or it may never be.")
 	}
