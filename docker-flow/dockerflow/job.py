@@ -93,25 +93,3 @@ class Job(object):
         with open(compose_file, 'w') as f:
             yaml.dump(compose, f, indent=4, default_flow_style=False)
         return compose_file
-
-
-j = Job(name="celery-sdist",
-      description="Job for build celery pypi package",
-      steps=[
-          'set -x',
-          'cd /workspace',
-          'git clone https://github.com/celery/celery',
-          'cd celery',
-          'python setup.py sdist',
-          'cp /workspace/celery/dist/*.egg /builds',
-      ],
-      output="/builds/celery-3.2.*.egg",
-      context={
-          "image": "python:2.7",
-          "volumes": {
-                    "/Users/cindy.cao/workspace": "/workspace",
-                    "/Users/cindy.cao/builds": "/builds",
-          },
-          "working_dir": "/workspace",
-      },
-)

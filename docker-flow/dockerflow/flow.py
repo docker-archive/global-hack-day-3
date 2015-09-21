@@ -91,7 +91,3 @@ class Flow(object):
             compose = job.compose()
             composed[job.name] = compose
         return composed
-
-
-yaml_file = "/Users/cindy.cao/proj/docker-flow/flows/celery-sdist-flow.yml"
-flow = Flow.from_yaml(yaml_file, context={"build_dir": "~/.docker-flow"})
