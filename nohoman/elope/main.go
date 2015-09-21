@@ -194,10 +194,10 @@ func Run(identifier, container string) {
                 files,_ := ioutil.ReadDir(packages_metadir)
                 for i := 0; i < len(files); i++ {
                         folder := files[i]
-			fmt.Println(folder.Name())
                         metadata_file := packages_metadir+"/"+folder.Name()+"/metadata.json"
+			p_meta_matches := strings.HasPrefix(folder.Name(), identifier) 
                         p_meta_exists,_ := exists(metadata_file)
-                        if p_meta_exists && identifier == folder.Name() {
+                        if p_meta_exists && p_meta_matches {
                                 p,_ := ReadPackageJSON(metadata_file)
                                 package_exists = true
 				existing_package = p
