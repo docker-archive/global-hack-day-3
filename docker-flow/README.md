@@ -138,5 +138,3 @@ A generated compose file can be manually re-run:
 cd ~/.docker-flow/build/celery-build-test-tornado
 docker-compose -f docker-compose-build-celery-sdist.yml up
 ```
-
->>>>>>> 2fabb7af4e643554bd60d05942d28669b0dd3bee
