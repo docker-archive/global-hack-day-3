@@ -33,7 +33,10 @@ const (
 type Package struct {
 	// ID a unique 64 character identifier of the image
 	ID string `json:"id"`
-	DeployableURI string `json:"deployable-uri"`
+	//DeployableURI the cached deployment URI
+	DeployableURI string `json:"deployable-uri"`	
+	// SourceFile the source of the file on the local filesystem
+	SourceFile string `json:"source-file"`
 	// Comment user added comment
 	Comment string `json:"comment,omitempty"`
 	// Created timestamp when image was created
@@ -105,10 +108,12 @@ func Pack(name, file, destination string) string {
 		for i := 0; i < len(files); i++ {
 			folder := files[i]
 			metadata_file := packages_metadir+"/"+folder.Name()+"/metadata.json"	
+			fmt.Printf("Reading %v\n",metadata_file)
 			p_meta_exists,_ := exists(metadata_file)
 			if p_meta_exists == true {
-				p,_ := ReadPackageJSON(metadata_file)	
-				if p.DeployableURI == file {
+				p,_ := ReadPackageJSON(metadata_file)
+				fmt.Printf("Comparing %v with %v\n",file,p.SourceFile)	
+				if p.SourceFile == file {
 					package_exists = true
 					existing_package_id = p.ID				
 				}
