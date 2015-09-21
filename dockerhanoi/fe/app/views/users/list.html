@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header" translate="views.users.list.Users"></h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading" translate="views.users.list.ListOfUsers">
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th translate="views.users.list.Username"></th>
+                                <th translate="views.users.list.Name"></th>
+                                <th translate="views.users.list.CreatedAt"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="user in users">
+                                <td>{{ user.id }}</td>
+                                <td><a ui-sref="dashboard.user_view({id: user.id})">{{ user.username }}</a></td>
+                                <td>{{ user.firstname +  ' ' + user.lastname }}</td>
+                                <td>{{ user.createdAt }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+                <div class="row">
+                    <div class="pull-right">
+                        <pagination style="margin-right: 20px" total-items="count" items-per-page="limit" ng-model="current_page" ng-change="pageChanged()" max-size="5" boundary-links="true" rotate="false"></pagination>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>

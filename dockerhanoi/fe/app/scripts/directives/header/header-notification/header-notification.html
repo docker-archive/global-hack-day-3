@@ -1,0 +1,35 @@
+<ul class="nav navbar-top-links navbar-right">
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+            <li ng-repeat="app in apps"><a ui-sref="dashboard.app_view({id: app.id})"><i class="fa fa-pencil fa-fw"></i> {{app.appName}}</a>
+            </li>
+            <li class="divider" ng-hide="apps.length == 0"></li>
+            <li>
+                <a ui-sref="dockerize.start">
+                    <i class="fa fa-plus fa-fw"></i>
+                    Dockerize your App
+                </a>
+            </li>
+        </ul>
+        <!-- /.dropdown-tasks -->
+    </li>
+    <!-- /.dropdown -->
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+            <li><a ui-sref="dashboard.user_setting"><i class="fa fa-gear fa-fw"></i> Settings</a>
+            </li>
+            <li class="divider"></li>
+            <li><a ui-sref="login"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            </li>
+        </ul>
+        <!-- /.dropdown-user -->
+    </li>
+    <!-- /.dropdown -->
+</ul>
+
