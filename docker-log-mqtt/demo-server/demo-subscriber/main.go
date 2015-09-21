@@ -29,6 +29,8 @@ func init() {
 	mqttTopicFilter = args[1]
 	logstashAddress = args[2]
 
+	time.Sleep(2 * time.Second)
+
 }
 
 const hexLetters = "0123456789abcdef"
@@ -76,7 +78,7 @@ func main() {
 			fmt.Printf("Failed to marshal %s: %s\n", message, err)
 			return
 		}
-		fmt.Println("log:", string(messageBytes))
+		fmt.Println("Received log:", string(messageBytes))
 		conn.Write(messageBytes)
 	})
 
