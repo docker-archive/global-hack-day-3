@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"os"
-	//"os/exec"
+	"path/filepath"
 	"fmt"
 	"time"
 	"io"
@@ -143,13 +143,17 @@ func Pack(name, file, destination string) string {
         } else {
                 fmt.Println(packages_metadir+" exists! This should never happen. Exiting...")
                 os.Exit(1)
-        }
+        }	
 
         contents_cached := this_package_metadir+"/contents"
-        cp(file, contents_cached)
+
+        abs_file,_ := filepath.Abs(file)
+	fmt.Println(abs_file)
+	fmt.Println(file)
+        cp(abs_file, contents_cached)
         md5sum := md5sum(contents_cached)
 
-	mapD := map[string]string{"id": sanitised_id, "deployable-uri": file, "destination": destination, "create": t.Format(time.RFC3339), "md5sum": md5sum}
+	mapD := map[string]string{"id": sanitised_id, "source-file": abs_file, "deployable-uri": contents_cached, "destination": destination, "create": t.Format(time.RFC3339), "md5sum": md5sum}
 	mapB, _ := json.Marshal(mapD)
 	fmt.Println(string(mapB))
 
@@ -241,7 +245,6 @@ func CreateDockerFile(image_name, file, destination string) *os.File {
 func main() {
 	var Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: %s COMMAND [arg...] [OPTIONS]\n", os.Args[0])
-		// flag.PrintDefaults()
 		fmt.Println("\nFast and flexible Docker deployments without the ceremony\n")
 		fmt.Println("Commands:")
 		fmt.Println("    pack     Pack for incremental or full deployment")
