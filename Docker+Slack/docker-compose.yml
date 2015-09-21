@@ -1,0 +1,6 @@
+slacker:
+ build: .
+ volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+ environment:
+    - SLACK_URL=https://hooks.slack.com/services/T0543....BdMCX3AFP7GSANBnNFRY
