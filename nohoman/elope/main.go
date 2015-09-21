@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"encoding/json"
 	"os"
 	"path/filepath"
@@ -145,11 +146,12 @@ func Pack(name, file, destination string) string {
                 os.Exit(1)
         }	
 
-        contents_cached := this_package_metadir+"/contents"
+        filepieces := strings.Split(file, "/")
+        filename := filepieces[len(filepieces)-1]
+
+        contents_cached := this_package_metadir+"/"+filename
 
         abs_file,_ := filepath.Abs(file)
-	fmt.Println(abs_file)
-	fmt.Println(file)
         cp(abs_file, contents_cached)
         md5sum := md5sum(contents_cached)
 
@@ -158,12 +160,12 @@ func Pack(name, file, destination string) string {
 	fmt.Println(string(mapB))
 
 	d1 := []byte(string(mapB))
-	error := ioutil.WriteFile(this_package_metadir+"/metadata.json", d1, 0644)
-
+	error := ioutil.WriteFile(this_package_metadir+"/metadata.json", d1, 0644)	
         if error != nil {
 		fmt.Println(error)
 		os.Exit(1)
 	}
+
 	return sanitised_id
 }
 
@@ -206,9 +208,8 @@ func Run(identifier, container string) {
         }
 	if package_exists {
 		p := existing_package
-		//p,_ := ReadPackageJSON(packages_metadir+"/"+identifier+"/metadata.json")	
 		docker.Cp(p.DeployableURI, container, p.Destination)
-		CreateDockerImage(packages_metadir+"/"+p.ID+"/contents", container, p.Destination)
+		CreateDockerImage(p.DeployableURI, container, p.Destination)
 	} else {
 		fmt.Printf("No package found matching %v\n", identifier)	
 		os.Exit(1)
@@ -220,25 +221,39 @@ func CreateDockerImage(file, container, destination string) {
 	// Make this part of debug
         fmt.Println(" a - Retrieving image for running container")
 	image_name := docker.PsFilterFormat("[name="+container+"]","{{.Image}}")
-	//image_name,_ := do("sudo", "docker", "ps", "--filter=[name="+container+"]", "--format=\"{{.Image}}\"")
 
-	dfile := CreateDockerFile(image_name, file, destination)
+
+	fmt.Println(" b - Creating temporary Docker context")
+	id := stringid.GenerateRandomID()
+	tmp_docker_context := "/tmp/"+id
+	os.MkdirAll(tmp_docker_context, 0777)
+        filepieces := strings.Split(file, "/")
+        filename := filepieces[len(filepieces)-1]
+
+	fmt.Println(" c - Pulling snapshot package into Docker context")
+	cp(file, tmp_docker_context+"/"+filename)	
+		
+	dfile := CreateDockerFile(image_name, filename, destination, tmp_docker_context)
         // Make this part of debug
         fmt.Printf("Temporary Dockerfile at %v\n",dfile.Name())       	
-        docker.Build(dfile, container, "latest") 
+        docker.Build(dfile, container, "latest", tmp_docker_context) 
 	// Run Docker tag as <image name>_<container name>:latest
 	// TODO: accept -t imagename:tag
 	// Implement push when the flag is set
-	//docker.Push(container, "latest") 
+	//docker.Push(container, "latest")
+	//os.RemoveAll(tmp_docker_context)	 
 }
 
-func CreateDockerFile(image_name, file, destination string) *os.File {
-	// TODO: Fix this hack and get the string after / 
-	// The below works but only if the file exists at pwd e.g. sample.war
-	filename := file
-        contents := "FROM "+image_name+"\nADD "+file+" "+destination+"/"+filename
-        fmt.Printf("\n b - Generating Dockerfile\n### BEGIN FILE\n%v\n### END FILE\n", contents)
-        dfile,_ := ioutil.TempFile("/tmp", "Dockerfile")
+func CreateDockerFile(image_name, filename, destination, tmp_build_context string) *os.File {
+	contents := "FROM "+image_name+"\nADD "+filename+" "+destination+"/"+filename
+        fmt.Printf("\n d - Generating Dockerfile\n### BEGIN FILE\n%v\n### END FILE\n", contents)
+        dfile,_ := ioutil.TempFile(tmp_build_context, "Dockerfile")
+        d1 := []byte(contents)
+        error := ioutil.WriteFile(dfile.Name(), d1, 0644)		
+        if error != nil {
+                fmt.Println(error)
+                os.Exit(1)
+        }
 	return dfile	
 }
 
