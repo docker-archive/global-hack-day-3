@@ -8,8 +8,8 @@ mosquitto:
     - ./mosquitto/log:/mqtt/log
     - ./mosquitto/data/:/mqtt/data/
 
-mqtt2logstash:
-  build: mqtt2logstash
+subscriber:
+  build: subscriber
   command: app "mosquitto:1883" "docker-log/#" "logstash:5000"
   links:
     - mosquitto
