@@ -34,7 +34,7 @@ mosquitto:
 
 mqtt2logstash:
   build: mqtt2logstash
-  command: app mosquitto:1883 docker-log/# logstash:5000
+  command: app "mosquitto:1883" "docker-log/#" "logstash:5000"
   links:
     - logstash
     - mosquitto
