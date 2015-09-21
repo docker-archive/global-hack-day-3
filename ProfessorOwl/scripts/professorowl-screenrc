@@ -1,0 +1,8 @@
+# implements https://github.com/booyaa/ProfessorOwl/blob/master/SETUP.md#screen--tmux--bff
+# FIXME: needs testing
+startup_message off
+
+screen -t fail2ban tail -f /var/log/fail2ban.log
+screen -t tmux-rw su -l prowl -c 'tmux new -A -s prowl'
+screen -t gotty su -l prowl -c 'gotty --permit-write --credential prowl:s3cr-3tfoo --random-url --reconnect tmux attach -r -t prowl'
+screen -t prowl su -l prowl -c 'scripts/poc.sh'
