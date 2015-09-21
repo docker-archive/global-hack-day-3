@@ -1,0 +1,19 @@
+countdown-lb:
+  ports:
+  - 8000:80
+  labels:
+    io.rancher.scheduler.affinity:host_label: lb=true
+    io.rancher.loadbalancer.target.countdown-v3: '80'
+  restart: always
+  tty: true
+  image: rancher/load-balancer-service
+  stdin_open: true
+  links:
+  - countdown-v3
+countdown-v3:
+  restart: always
+  labels:
+    io.rancher.scheduler.global: 'true'
+  tty: true
+  image: flaccid/countdown_example:v3
+  stdin_open: true
