@@ -1,0 +1,3 @@
+dmt:
+  build: Dockerfile
+  image: harbur/docker-multi-tenancy
