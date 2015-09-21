@@ -165,21 +165,6 @@ func exists(path string) (bool, error) {
 func Run(identifier, container string) {
 	fmt.Println("Using " + identifier)
 	p,_ := ReadPackageJSON(packages_metadir+"/"+identifier+"/metadata.json")	
-	//packageJSON, err := ioutil.ReadFile(packages_metadir+"/"+identifier+".json")
-	//if err != nil {
-	//	fmt.Printf("Error reading file: %v", err)
-	//	os.Exit(1)
-	//}
-	//var p Package
-	//error := json.Unmarshal(packageJSON, &p)
-	//if error != nil {
-	//	fmt.Printf("Error reading json: %v", error)
-	//	os.Exit(1)
-	//}
-	//fmt.Println(p.ID)
-	//fmt.Println(p.DeployableURI)
-	//s := string(packageJSON[:])
-	//fmt.Println(s)
 	docker.Cp(p.DeployableURI, container, p.Destination)
 	CreateDockerImage(p.DeployableURI, container, p.Destination)
 }
