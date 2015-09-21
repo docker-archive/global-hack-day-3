@@ -1,0 +1,3 @@
+server01-hostname=server01,region=hcm,env=production-ccu:warning=1000,critical=1500,time=15-mem:warning=80,critical=95,time=5
+suker_container-hostname=suker01,region=hcm,env=production-email:tan.luong1989@gmail.com,luonghuutan05051989@gmail.com-ccu:warning=10,critical=300,time=15-loadavg:warning=10,critical=20,time=10-disk:warning=50,critical=80,time=10-cpuusage:warning=5,critical=20,time=10-memory:warning=100,critical=1000,time=10
+suker1-hostname=suker01,region=hcm,env=production-email:tan.luong1989@gmail.com,luonghuutan05051989@gmail.com-disk:warning=50,critical=70,time=10
