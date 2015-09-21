@@ -40,5 +40,5 @@ This is a submission for the 3rd edition of the Docker Global Hack Day
 * `cd` to `nohoman\elope`
 * Run `go install`
 * Now `elope` is installed under `~gocode/bin`
-* Run `elope~ to see the usage menu
+* Run `elope` to see the usage menu
 
