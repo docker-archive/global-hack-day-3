@@ -1,0 +1,23 @@
+---
+#sample config file
+version: 0.1
+log:
+  level: info
+  file: /tmp/godoauth.log
+storage:
+  vault:
+    proto: http
+    host: 127.0.0.1
+    port: 8200
+    auth_token: dbXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX
+http:
+  timeout: 5s
+  addr: :5002
+  tls:
+    certificate: certs/server.pem
+    key: certs/server.key
+token:
+   issuer: Token
+   expiration: 800
+   certificate: certs/server.pem
+   key: certs/server.key
