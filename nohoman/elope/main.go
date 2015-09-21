@@ -3,13 +3,14 @@ package main
 import (
 	"encoding/json"
 	"os"
-	"os/exec"
+	//"os/exec"
 	"fmt"
 	"time"
 	"io"
 	"io/ioutil"
 	"github.com/craigbarrau/global-hack-day-3/nohoman/elope/docker"
         "github.com/craigbarrau/global-hack-day-3/nohoman/elope/executil"
+        "github.com/craigbarrau/global-hack-day-3/nohoman/elope/stringid"
 )
 
 var (
@@ -120,11 +121,13 @@ func Pack(name, file, destination string) string {
 		return existing_package_id
 	}
 
-	id, err := exec.Command("uuidgen").Output()
-	if err != nil {
-		fmt.Println("Issue accessing uuidgen")
-		os.Exit(1)
-	}
+	id := stringid.GenerateRandomID()
+	// Replace os-dependent implementation with the one above
+	//id, err := exec.Command("uuidgen").Output()
+	//if err != nil {
+	//	fmt.Println("Issue accessing uuidgen")
+	//	os.Exit(1)
+	//}
 
 	// Move the writing of Package JSON to a separate function
 	t := time.Now()
@@ -173,10 +176,39 @@ func exists(path string) (bool, error) {
 }
 
 func Run(identifier, container string) {
-	fmt.Println("Using " + identifier)
-	p,_ := ReadPackageJSON(packages_metadir+"/"+identifier+"/metadata.json")	
-	docker.Cp(p.DeployableURI, container, p.Destination)
-	CreateDockerImage(p.DeployableURI, container, p.Destination)
+        packages_metadir_exists,_ := exists(packages_metadir)
+        // TODO: Error handling
+        var package_exists = false
+	var existing_package = Package{}
+        if packages_metadir_exists != true {
+                os.MkdirAll(packages_metadir, 0777)
+                // Make this debug log
+                fmt.Printf("Creating %v\n",packages_metadir)
+        } else {
+                files,_ := ioutil.ReadDir(packages_metadir)
+                for i := 0; i < len(files); i++ {
+                        folder := files[i]
+			fmt.Println(folder.Name())
+                        metadata_file := packages_metadir+"/"+folder.Name()+"/metadata.json"
+                        p_meta_exists,_ := exists(metadata_file)
+                        if p_meta_exists && identifier == folder.Name() {
+                                p,_ := ReadPackageJSON(metadata_file)
+                                package_exists = true
+				existing_package = p
+                        } else {
+                                // Write debugging messages here?`
+                        }
+                }
+        }
+	if package_exists {
+		p := existing_package
+		//p,_ := ReadPackageJSON(packages_metadir+"/"+identifier+"/metadata.json")	
+		docker.Cp(p.DeployableURI, container, p.Destination)
+		CreateDockerImage(packages_metadir+"/"+p.ID+"/contents", container, p.Destination)
+	} else {
+		fmt.Printf("No package found matching %v\n", identifier)	
+		os.Exit(1)
+	}
 }
 
 func CreateDockerImage(file, container, destination string) {
