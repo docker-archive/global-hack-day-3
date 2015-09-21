@@ -12,7 +12,7 @@ func Cp(file, container, destination string) {
 }
 
 func Build(dockerfile *os.File, image, tag, context string) {
-	fmt.Printf("\n e - Building image %v:%v\n", image, tag)
+	fmt.Printf(" e - Building image %v:%v\n", image, tag)
 	executil.Run("sudo", "docker", "build", "-t", image+":"+tag, "-f", dockerfile.Name(), context)	
 }
 

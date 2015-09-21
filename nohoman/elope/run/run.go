@@ -12,6 +12,10 @@ import (
         "github.com/craigbarrau/global-hack-day-3/nohoman/elope/stringid"
 )
 
+var (
+	verbose = false
+)
+
 func deploy(p common.Package, container string) {
 	docker.Cp(p.DeployableURI, container, p.Destination)
 	CreateDockerImage(p.DeployableURI, container, p.Destination)
@@ -23,13 +27,16 @@ func record(p common.Package, container string) {
         // TODO: Error handling
         if deployments_metadir_exists != true {
                 os.MkdirAll(this_deploy_metadir, 0777)
-                // Make this debug log
-                fmt.Printf("Creating %v\n",common.Deployments_metadir)
+		if verbose {
+                	fmt.Printf("Creating %v\n",common.Deployments_metadir)
+		}
         }
 	t := time.Now()
         mapD := map[string]string{"id": p.ID, "source-file": p.SourceFile, "deployable-uri": p.DeployableURI, "destination": p.Destination, "md5sum": p.Md5sum, "deployed": t.Format(time.RFC3339)}
         mapB, _ := json.Marshal(mapD)
-        fmt.Println(string(mapB))
+	if verbose { 
+        	fmt.Println(string(mapB))
+	}
 
         d1 := []byte(string(mapB))
         error := ioutil.WriteFile(this_deploy_metadir+"/metadata.json", d1, 0644)
@@ -91,8 +98,9 @@ func CreateDockerImage(file, container, destination string) {
 	common.Cp(file, tmp_docker_context+"/"+filename)	
 		
 	dfile := CreateDockerFile(image_name, filename, destination, tmp_docker_context)
-        // Make this part of debug
-        fmt.Printf("Temporary Dockerfile at %v\n",dfile.Name())       	
+	if verbose {
+	        fmt.Printf("Temporary Dockerfile at %v\n",dfile.Name())       	
+	}
         docker.Build(dfile, container, "latest", tmp_docker_context) 
 	// Run Docker tag as <image name>_<container name>:latest
 	// TODO: accept -t imagename:tag
@@ -103,7 +111,10 @@ func CreateDockerImage(file, container, destination string) {
 
 func CreateDockerFile(image_name, filename, destination, tmp_build_context string) *os.File {
 	contents := "FROM "+image_name+"\nADD "+filename+" "+destination+"/"+filename
-        fmt.Printf("\n d - Generating Dockerfile\n### BEGIN FILE\n%v\n### END FILE\n", contents)
+	fmt.Println(" d - Generating Dockerfile")
+	if verbose {
+        	fmt.Printf("### BEGIN FILE\n%v\n### END FILE\n", contents)
+	}
         dfile,_ := ioutil.TempFile(tmp_build_context, "Dockerfile")
         d1 := []byte(contents)
         error := ioutil.WriteFile(dfile.Name(), d1, 0644)		
