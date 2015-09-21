@@ -16,6 +16,8 @@ var logstashAddress string
 var mqttTopicFilter string
 
 func init() {
+	fmt.Println("init...")
+
 	flag.Parse()
 	args := flag.Args()
 	if len(args) != 3 {
@@ -25,6 +27,7 @@ func init() {
 	mqttAddress = args[0]
 	mqttTopicFilter = args[1]
 	logstashAddress = args[2]
+
 }
 
 func main() {
