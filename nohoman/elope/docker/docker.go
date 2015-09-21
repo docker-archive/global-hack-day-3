@@ -27,11 +27,11 @@ func Push(image, tag string){
 }
 
 func PsFilterFormat(filter, format string) string {
-        image_name,_ := do("sudo", "docker", "ps", "--filter="+filter, "--format=\""+format+"\"")
+        image_name := do("sudo", "docker", "ps", "--filter="+filter, "--format=\""+format+"\"")
 	return image_name
 }
 
-func do(exe string, args ...string) (string, error) {
+func do(exe string, args ...string) string {
         cmd := exec.Command(exe, args...)
         if verbose {
         //      cmd.Stdout = os.Stdout
@@ -40,10 +40,17 @@ func do(exe string, args ...string) (string, error) {
                 fmt.Printf("     [ %v %v ]\n", exe, strings.Join(args, " "))
         }
         var out bytes.Buffer
+	var outE bytes.Buffer
         cmd.Stdout = &out
+	cmd.Stderr = &outE
         err := cmd.Run()
-        if err != nil {
-                return out.String(), err
-        }
-        return out.String(), nil
+	if err != nil {
+		if outE.Len() > 0 {
+			fmt.Printf("Error occurred during execution: %s", outE.String())
+		} else {
+			fmt.Printf("Exception occurred: %v", err.Error())
+		}
+		os.Exit(1)
+	}
+        return out.String()
 }
