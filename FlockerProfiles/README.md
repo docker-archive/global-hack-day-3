@@ -1,12 +1,12 @@
 # FlockerProfiles
 
-Storage Profiles to support SLAs.
+Enable containerized enterprise application SLAs using storage profiles.
 
 Team Members: Madhuri Yechuri (ClusterHQ), Ryan Wallner (EMC), Sean McGinnis (Dell)
 
 # Motivation
 
-Enterprise applications have SLA needs with respect to storage. A database application and log analytics application are not created equal. Top of the line storage provides have knobs available to cater to these SLA-specific needs. What is missing from this equation is the ability to have a mapping of application SLA to backend storage feature set needed to service the SLA.
+Enterprise applications have SLA needs with respect to storage. For example, a database application and a log analytics application are not created equal. Top of the line storage providers have knobs to deliver application-specific SLA needs. What is missing from this equation is the ability to have a mapping of application SLA to backend storage feature set needed to service the SLA.
 
 # Design
 
@@ -21,14 +21,14 @@ We considered the following options:
 
 We went with option 2 because it offered cleaner design.
 
-We defined ``profile`` as a name that provides certain guarantees. We propose two profiles in this POC:
+We defined ``profile`` as a name that describes the set of storage features most important to the application. We propose two profiles in this POC:
 
-- ``default``: the application does not care about storage characteristics. We manifest cheapest storage option for this profile.
-- ``gold``: the application cares about performance. We provide suitable storage that will satisfy application's performance needs. 
+- ``default``: application does not care about storage characteristics. We manifest cheapest storage option for this profile.
+- ``gold``: application's SLA depends on high (IOPS) storage performance. We provide suitable storage that will satisfy application's performance needs.
 
 ## Single click activation
 
-We recommend using profiles with Docker Compose via Docker Flocker plugin.
+We recommend using FlockerProfiles with Docker Compose via Docker Flocker plugin.
 
 Examples:
 
@@ -41,26 +41,26 @@ will create a high performance volume for MongoDB.
 ```
 docker run --name testapp --volume-driver=flocker -v cheapvolume@default:/data busybox sh -c "echo hello > /data/state.txt"
 ```
-will create a cheap volume without performance guarantees.
+will create a cheap volume for your test container.
 
 The minimal change from existing functionality is that instead of specifying volume as ``-v name:/data``, you would tag along profile as ``-v name@profile:/data``. For backward compatibility and ease of use, not specifying a profile defaults to a ``default`` profile: ``-v name@default:/data`` is equivalent to ``-v name:/data``.
 
-The intepretation of ``gold`` and ``default`` will vary from backend to backend, the details of which are available to schedulers upon request. For example, ``gold`` profile will translate to the following settings.
+The intepretation of ``gold`` and ``default`` will vary from backend to backend, the details of which will be [made available](https://github.com/ClusterHQ/flocker/compare/profile_metadata#diff-3f0c0887dbd1be3781b80c091915bd2fR612) to schedulers upon request. For example, ``gold`` profile will translate to the following settings.
 
 ### [Amazon EBS](https://aws.amazon.com/ebs/)
 
 ```
-IOPS: volume_size*30,
-encrypted: True,
+IOPS: volume_size*30
+encrypted: True
 volume_type: io1
 ```
 
 ### [EMC ScaleIO](http://www.emc.com/storage/scaleio/index.htm)
 
 ```
-volume_type: u'thin_provision',
-IOPS: 10000,
-bandwidth: 1000000,
+volume_type: thin_provision
+IOPS: 10000
+bandwidth: 1000000
 ram_cache: True
 
 ```
@@ -94,7 +94,7 @@ max: 10
 type: SSD
 ```
 
-The beauty of a profile is that these individual settings are masked out to the user. As far as the user (application) is concerned, ``gold`` will provide a volume suitable for high performance workloads.
+The advantage of using a FlockerProfile is that these individual settings are masked out to the user. As far as the user (application) is concerned, ``gold`` will provide a volume suitable for high performance workloads.
 
 # Prototype Implementations
 
@@ -109,6 +109,8 @@ We demostrate our POC using 3 popular storage enviroments: Amazon EBS, EMC Scale
 [ScaleIO Prototype](https://github.com/emccorp/scaleio-flocker-driver/tree/scaleio-profiles-hackday)
 
 ## OpenStack Cinder
+
+[Cinder Prototype](https://github.com/ClusterHQ/flocker/commit/1b5ef85b8874f1ba3b4cf42d39f3583dd9134904)
 
 # Whats next
 
