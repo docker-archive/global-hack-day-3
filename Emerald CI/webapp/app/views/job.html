@@ -1,0 +1,26 @@
+      <div class="row">
+        <div id="project">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="row">
+                <div class="col-md-10"><h1>{{ project.name }}</h1></div>
+                <div class="col-md-2 text-right"><h1><a class="btn btn-primary" href="https://github.com/{{ project.name }}"><i class="fa fa-github"></i></a></h1></div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="panel panel-{{ job.state | buildResultFilter }} current-job" ui-sref="project.build.job({ projectId: project.id, buildId: build.id, jobId: build.latest_job.id })">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-md-10">{{ build.short_description }}</div>
+                    <div class="col-md-2 text-right">{{ job.state }}</div>
+                  </div>
+                </div>
+                <div class="panel-body" id="le-terminal">
+<div class="terminalOutput" ng-bind-html="terminalOutputPreload"></div>
+<div class="terminalOutput" ng-bind-html="terminalOutputWebsocket"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

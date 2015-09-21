@@ -1,0 +1,218 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activemodel (4.2.4)
+      activesupport (= 4.2.4)
+      builder (~> 3.1)
+    activerecord (4.2.4)
+      activemodel (= 4.2.4)
+      activesupport (= 4.2.4)
+      arel (~> 6.0)
+    activesupport (4.2.4)
+      i18n (~> 0.7)
+      json (~> 1.7, >= 1.7.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.3, >= 0.3.4)
+      tzinfo (~> 1.1)
+    addressable (2.3.8)
+    amq-protocol (2.0.0)
+    arel (6.0.3)
+    ast (2.1.0)
+    astrolabe (1.3.1)
+      parser (~> 2.2)
+    bcrypt (3.1.10)
+    bcrypt (3.1.10-java)
+    builder (3.2.2)
+    bunny (2.2.0)
+      amq-protocol (>= 2.0.0)
+    celluloid (0.17.1.2)
+      bundler
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      dotenv
+      nenv
+      rspec-logsplit (>= 0.1.2)
+      timers (>= 4.1.1)
+    celluloid-essentials (0.20.2.1)
+      bundler
+      dotenv
+      nenv
+      rspec-logsplit (>= 0.1.2)
+      timers (>= 4.1.1)
+    celluloid-extras (0.20.1)
+      bundler
+      dotenv
+      nenv
+      rspec-logsplit (>= 0.1.2)
+      timers (>= 4.1.1)
+    celluloid-fsm (0.20.1)
+      bundler
+      dotenv
+      nenv
+      rspec-logsplit (>= 0.1.2)
+      timers (>= 4.1.1)
+    celluloid-pool (0.20.1)
+      bundler
+      dotenv
+      nenv
+      rspec-logsplit (>= 0.1.2)
+      timers (>= 4.1.1)
+    celluloid-supervision (0.20.1.1)
+      bundler
+      dotenv
+      nenv
+      rspec-logsplit (>= 0.1.2)
+      timers (>= 4.1.1)
+    climate_control (0.0.3)
+      activesupport (>= 3.0)
+    codeclimate-test-reporter (0.4.8)
+      simplecov (>= 0.7.1, < 1.0.0)
+    connection_pool (2.2.0)
+    database_cleaner (1.5.0)
+    diff-lcs (1.2.5)
+    docile (1.1.5)
+    docker-api (1.22.4)
+      excon (>= 0.38.0)
+      json
+    dotenv (2.0.2)
+    eventmachine (1.0.8)
+    eventmachine (1.0.8-java)
+    excon (0.45.4)
+    factory_girl (4.5.0)
+      activesupport (>= 3.0.0)
+    faraday (0.9.1)
+      multipart-post (>= 1.2, < 3)
+    faye-websocket (0.10.0)
+      eventmachine (>= 0.12.0)
+      websocket-driver (>= 0.5.1)
+    hitimes (1.2.3)
+    hitimes (1.2.3-java)
+    i18n (0.7.0)
+    json (1.8.3)
+    json (1.8.3-java)
+    minitest (5.8.0)
+    multipart-post (2.0.0)
+    nenv (0.2.0)
+    octokit (4.1.0)
+      sawyer (~> 0.6.0, >= 0.5.3)
+    parser (2.2.2.6)
+      ast (>= 1.1, < 3.0)
+    pg (0.18.3)
+    powerpack (0.1.1)
+    puma (2.13.4)
+    puma (2.13.4-java)
+    rack (1.6.4)
+    rack-cors (0.4.0)
+    rack-flash3 (1.0.5)
+      rack
+    rack-protection (1.5.3)
+      rack
+    rack-test (0.6.3)
+      rack (>= 1.0)
+    rainbow (2.0.0)
+    rake (10.4.2)
+    redis (3.2.1)
+    redis-namespace (1.5.2)
+      redis (~> 3.0, >= 3.0.4)
+    rspec (3.3.0)
+      rspec-core (~> 3.3.0)
+      rspec-expectations (~> 3.3.0)
+      rspec-mocks (~> 3.3.0)
+    rspec-core (3.3.2)
+      rspec-support (~> 3.3.0)
+    rspec-expectations (3.3.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.3.0)
+    rspec-logsplit (0.1.3)
+    rspec-mocks (3.3.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.3.0)
+    rspec-support (3.3.0)
+    rubocop (0.34.1)
+      astrolabe (~> 1.3)
+      parser (>= 2.2.2.5, < 3.0)
+      powerpack (~> 0.1)
+      rainbow (>= 1.99.1, < 3.0)
+      ruby-progressbar (~> 1.4)
+    ruby-progressbar (1.7.5)
+    sawyer (0.6.0)
+      addressable (~> 2.3.5)
+      faraday (~> 0.8, < 0.10)
+    sidekiq (3.5.0)
+      celluloid (~> 0.17.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      json (~> 1.0)
+      redis (~> 3.2, >= 3.2.1)
+      redis-namespace (~> 1.5, >= 1.5.2)
+    simplecov (0.10.0)
+      docile (~> 1.1.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
+    sinatra (1.4.6)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (>= 1.3, < 3)
+    sinatra-activerecord (2.0.8)
+      activerecord (>= 3.2)
+      sinatra (~> 1.0)
+    sinatra_auth_github (1.2.0)
+      sinatra (~> 1.0)
+      warden-github (~> 1.2.0)
+    thread_safe (0.3.5)
+    thread_safe (0.3.5-java)
+    tilt (2.0.1)
+    timers (4.1.1)
+      hitimes
+    tzinfo (1.2.2)
+      thread_safe (~> 0.1)
+    warden (1.2.3)
+      rack (>= 1.0)
+    warden-github (1.2.0)
+      activesupport (> 3.0)
+      octokit (> 2.1.0)
+      warden (> 1.0)
+    websocket-driver (0.6.2)
+      websocket-extensions (>= 0.1.0)
+    websocket-driver (0.6.2-java)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.2)
+    yard (0.8.7.6)
+
+PLATFORMS
+  java
+  ruby
+
+DEPENDENCIES
+  activemodel
+  activerecord
+  bcrypt
+  bundler
+  bunny
+  climate_control
+  codeclimate-test-reporter
+  database_cleaner
+  docker-api
+  factory_girl
+  faye-websocket
+  pg
+  puma
+  rack-cors
+  rack-flash3
+  rack-test
+  rake
+  rspec
+  rubocop
+  sidekiq
+  simplecov
+  sinatra
+  sinatra-activerecord
+  sinatra_auth_github
+  warden
+  yard
+
+BUNDLED WITH
+   1.10.6

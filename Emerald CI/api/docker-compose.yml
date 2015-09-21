@@ -1,0 +1,50 @@
+rabbitmq:
+  image: rabbitmq:management
+  ports:
+    - 15672:15672
+    - 5672:5672
+  environment:
+    - RABBITMQ_DEFAULT_USER=emeraldci
+    - RABBITMQ_DEFAULT_PASS=secure
+    - RABBITMQ_DEFAULT_VHOST=emeraldci
+db:
+  image: postgres:9.4
+  ports:
+    - 5432:5432
+  environment:
+    - POSTGRES_USER=emeraldci
+    - POSTGRES_PASSWORD=secure
+redis:
+  image: redis
+  ports:
+    - 6379:6379
+docker:
+  image: emeraldci/docker-socat
+  ports:
+    - 2375:2375
+  privileged: true
+  tty: true
+  stdin_open: true
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+api:
+  build: .
+  dockerfile: Dockerfile.dev
+  command: api
+  volumes:
+    - .:/usr/src/app
+  ports:
+    - 8080:5000
+  links:
+    - rabbitmq:rabbitmq
+    - db:db
+    - redis:redis
+  environment:
+    - RACK_ENV=development
+    - SESSION_SECRET=supersavesecret
+    - RABBITMQ_URL=amqp://emeraldci:secure@rabbitmq/emeraldci
+    - GITHUB_CLIENT_ID=eac688d4a4c1e3ab3d58
+    - GITHUB_CLIENT_SECRET=66bd563aae639ca76e5005e8091fe9cfc0efbd44
+    - DATABASE_URL=postgres://emeraldci:secure@db/emeraldci
+    - REDIS_URL=redis://redis
+    - FRONTEND_URL=https://localhost:8080/

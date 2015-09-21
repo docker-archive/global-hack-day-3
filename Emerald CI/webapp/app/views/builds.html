@@ -1,0 +1,41 @@
+      <div class="row">
+        <div id="project">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="row">
+                <div class="col-md-10"><h1>{{ project.name }}</h1></div>
+                <div class="col-md-2 text-right"><h1><a class="btn btn-primary" href="https://github.com/{{ project.name }}"><i class="fa fa-github"></i></a></h1></div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-10"><h2>Builds</h2></div>
+                <div class="col-md-2 text-right"><h2><a class="btn btn-primary" ng-click="manuallyTriggerBuild()">Trigger Build</a></h2></div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="container build-list">
+                    <h3 class="text-center" ng-if="builds.length == 0"><br /><br />No build for this project yet.<br /><br />Either manually trigger a build or push a commit to GitHub.</h3>
+                    <div class="row" ng-repeat="build in builds">
+                      <div class="panel panel-{{ build.latest_job.state | buildResultFilter }} build" ui-sref="project.build.job({ projectId: project.id, buildId: build.id, jobId: build.latest_job.id })">
+                        <div class="panel-heading">
+                          <div class="row">
+                            <div class="col-md-10">{{ build.short_description }}</div>
+                            <div class="col-md-2 text-right">{{ build.latest_job.state }}</div>
+                          </div>
+                        </div>
+                        <div class="panel-body">
+                          <div class="row">
+                            <div class="col-md-10">Job.{{ build.latest_job.id }}</div>
+                            <div class="col-md-2 text-right">{{ build.commit.slice(0,8) }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

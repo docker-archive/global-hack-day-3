@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Projects <a class="btn btn-primary" ui-sref="add_project"><i class="fa fa-plus"></i> ADD</a></h2>
+      <div id="project-list">
+        <div class="row">
+          <h3 class="text-center" ng-if="projects.length == 0"><br /><br />No projects yet.<br /><br />Go ahead and <a ui-sref="add_project">add</a> one!</h3>
+          <div class="panel panel-{{ project.latest_build.latest_job.state | buildResultFilter }} project" ng-repeat="project in projects" ui-sref="project.builds({ projectId: project.id })">
+            <div class="panel-heading">
+              <div class="row">
+                <div class="col-md-10"><i class="fa fa-github"></i> {{ project.name }}</div>
+                <div class="col-md-2 text-right">{{ project.latest_build.latest_job.state }}</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-10">
+                  {{ project.latest_build.short_description }}
+                  <span ng-if="!project.latest_build">No build for this project yet. Either manually trigger a build or push a commit to GitHub.</span>
+                </div>
+                <div class="col-md-2 text-right">
+                  {{ project.latest_build.commit.slice(0, 8) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
