@@ -2,7 +2,7 @@
 
 ## How to build Swarm with the custom discovery
 
-1. Get the customized swarm repo with 
+1. Get the [customized swarm repo](https://github.com/christophelec/swarm) with 
   ```
   go get github.com/christophelec/docker/swarm
   ``` 
@@ -45,4 +45,3 @@ docker run -p 2375:2375 -p 7946:7946 -d docker-global-discovery ./swarm join ser
 Where 135.24.45.8 is the IP of a node we want to connect to, and 135.24.45.7 is the IP of *the host of the container*.
 
 We use the IP of the host of the container to make sure other serf agent will be able to contact us, because the internal Docker IP requires linking to be accessible.
-
