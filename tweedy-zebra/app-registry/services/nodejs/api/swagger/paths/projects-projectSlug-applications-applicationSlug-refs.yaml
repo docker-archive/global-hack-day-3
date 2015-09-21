@@ -1,0 +1,69 @@
+get:
+  x-swagger-router-controller: "RefsController"
+  description: "Reads all Ref objects under the specified Application object."
+  operationId: "ReadAllRefsByApplicationSlug"
+  summary: "Read all Refs by Application slug"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  parameters:
+  - name: "projectSlug"
+    description: "The unique Project slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "applicationSlug"
+    description: "The Application slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  responses:
+    200:
+      description: "Success."
+      schema:
+        type: "object"
+        additionalProperties:
+          $ref: "../definitions/RefObject.yaml"
+    405:
+      description: "Validation exception"
+    500:
+      description: "Validation exception"
+    default:
+      description: "Error"
+post:
+  x-swagger-router-controller: "RefsController"
+  description: "Creates a new Ref object under the specified Application object."
+  operationId: "CreateRefByPermalink"
+  summary: "Create Ref by permalink"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  parameters:
+  - name: "projectSlug"
+    description: "The unique Project slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "applicationSlug"
+    description: "The Application slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "body"
+    description: "A qualified Ref object"
+    schema:
+      $ref: "../definitions/RefObject.yaml"
+    in: "body"
+  responses:
+    200:
+      description: "Success."
+      schema:
+        $ref: "../definitions/ApplicationObject.yaml"
+    405:
+      description: "Validation exception"
+    default:
+      description: "Error"
+      schema:
+        $ref: "../definitions/ErrorResponse.yaml"

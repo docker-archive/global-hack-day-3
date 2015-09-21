@@ -1,0 +1,26 @@
+ProjectObject:
+   $ref: "./ProjectObject.yaml"
+ProjectRequest:
+   $ref: "./ProjectRequest.yaml"
+ApplicationObject:
+   $ref: "./ApplicationObject.yaml"
+RefObject:
+   $ref: "./RefObject.yaml"
+InstanceObject:
+   $ref: "./InstanceObject.yaml"
+TestRunnerObject:
+   $ref: "./TestRunnerObject.yaml"
+ScriptObject:
+   $ref: "./ScriptObject.yaml"
+AuditObject:
+   $ref: "./AuditObject.yaml"
+ServiceObject:
+   $ref: "./ServiceObject.yaml"
+PatchObjects:
+   $ref: "./PatchObjects.yaml"
+PatchObject:
+   $ref: "./PatchObject.yaml"
+ErrorResponse:
+   $ref: "./ErrorResponse.yaml"
+RemoteObject:
+   $ref: "./RemoteObject.yaml"

@@ -1,0 +1,57 @@
+# dotfiles
+
+USAGE: dotfiles sub-commmand [file]
+
+# high level summary
+
+dotilfes is a command line utility that helps you manage your dotfiles by keeping them in a repo, 
+and symlinking out to common locations on your filesystem, and providing convenience functions to manage them.
+It is meant to address the pain of being a user that commonly accesses many different systems and likes their 
+environemnt set up just so. If  you make any change to any dotfile on any machine, dotfiles can help you make 
+sure that change is not lost, and is easily propagated across all your machines.
+
+There is no magic. This is simply a program that tries to use git, symlinks, and wrapper commands in a smart way.
+
+# how dotfiles works
+
+dotfiles helps you manage your dotfiles by:
+	1. keeping them in ~/.dotfiles as a git repository
+	2. Loading them when you start bash shell session
+	3. Symlinking certain files to your home directory
+	4. Providing convenient commands to enable, disable, list, and edit those files
+
+## Keeping them in a git repository
+
+All your dotfiles are kept in ~/.dotfiles which is a git repo. My remote is
+https://github.com/sean9999/dotfiles but yours should be a fork. dotfiles 
+are very personal, so it probably makes sense to have a personal fork.
+
+## Loading them when you start bash shell session
+
+All files loaded at startup are kept in ~/.dotfiles/available and symlinked to
+in ~/.dotfiles/enabled. At startup, the system runs through ~/.dotfiles/enabled
+via a small bit of code it places in ~/.bash_profile. See ~/.dotfiles/bootstrap
+for the exact code.
+
+## Symlinking certain files to your home directory
+
+In addition to the above mentioned files which are designed to set up your shell
+environemnt, dotfiles can manage files normally kept in your home directory. A
+good example is ~/.gitconfig, which is used by git to determine it\'s global config
+settings.
+
+## Providing convenient commands to enable, disable, list, and edit those files
+
+To get more information on each sub-command, do:
+
+$ dotfiles help [sub-command]
+
+### sub-commands
+
+1. ls ( list all dotfiles that are managed by the app )
+2. cat ( output the contents of a dotfile )
+3. enable ( create a symlink to a file in ~/.dotfiles/available/ and place it in ~/.dotfiles/enabled/ )
+4. disable ( remove said symlink )
+5. edit ( launch your default text editor )
+6. help ( show this help screen or help on a particular sub-command )
+7. bootstrap ( executes ~/.dotfiles/bootstrap which operates on files in ~/.dotfiles/enabled and ~/.dotfiles/home )

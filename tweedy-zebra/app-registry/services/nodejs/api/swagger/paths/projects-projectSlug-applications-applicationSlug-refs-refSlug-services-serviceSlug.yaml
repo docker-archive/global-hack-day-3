@@ -1,0 +1,121 @@
+get:
+  x-swagger-router-controller: "ServicesController"
+  description: "Returns the named Service."
+  operationId: "ReadServiceByPermalink"
+  summary: "Read Service by permalink"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  parameters:
+  - name: "projectSlug"
+    description: "The unique Project slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "applicationSlug"
+    description: "The Application slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "refSlug"
+    description: "The Ref slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "serviceSlug"
+    description: "The Service slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  responses:
+    200:
+      description: "Success."
+      schema:
+        $ref: "../definitions/ServiceObject.yaml"
+    405:
+      description: "Validation exception"
+    default:
+      description: "Error"
+      schema:
+        $ref: "../definitions/ErrorResponse.yaml"
+put:
+  x-swagger-router-controller: "ServicesController"
+  description: "Updates the named Service."
+  operationId: "UpdateServiceByPermalink"
+  summary: "Update Service by permalink"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  parameters:
+  - name: "projectSlug"
+    description: "The unique Project slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "applicationSlug"
+    description: "The Application slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "refSlug"
+    description: "The Ref slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "serviceSlug"
+    description: "The Service slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  responses:
+    200:
+      description: "Success."
+      schema:
+        $ref: "../definitions/ServiceObject.yaml"
+    405:
+      description: "Validation exception"
+    default:
+      description: "Error"
+      schema:
+        $ref: "../definitions/ErrorResponse.yaml"
+delete:
+  x-swagger-router-controller: "ServicesController"
+  description: "Delete the named Service."
+  operationId: "DeleteServiceByPermalink"
+  summary: "Delete Service by permalink"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  parameters:
+  - name: "projectSlug"
+    description: "The unique Project slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "applicationSlug"
+    description: "The Application slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "refSlug"
+    description: "The Ref slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "serviceSlug"
+    description: "The Service slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  responses:
+    200:
+      description: "Success."
+    405:
+      description: "Validation exception"
+    default:
+      description: "Error"
+      schema:
+        $ref: "../definitions/ErrorResponse.yaml"

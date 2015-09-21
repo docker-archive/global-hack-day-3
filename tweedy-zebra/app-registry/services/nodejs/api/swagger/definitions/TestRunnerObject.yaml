@@ -1,0 +1,4 @@
+description: "Describes entry points for a class of test runners. Typically an object embodies an individual platform, framework or language."
+type: "object"
+additionalProperties:
+  type: "string"

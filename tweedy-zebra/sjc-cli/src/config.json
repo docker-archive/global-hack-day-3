@@ -1,0 +1,26 @@
+{
+	"machineName": "dev",
+	"soundEffects": {
+		"volume": 0.2
+	},
+	"test": {
+		"timeout": 100
+	},
+	"message": {
+		"error": {
+			"char": "❗",
+			"colour": "red",
+			"sound": "bad"
+		},
+		"success": {
+			"char": "✅",
+			"colour": "green",
+			"sound": "good"
+		},
+		"default": {
+			"char": "⭐",
+			"colour": false,
+			"sound": "neutral"
+		}
+	}
+}

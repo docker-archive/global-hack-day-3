@@ -1,0 +1,33 @@
+{
+  "name": "reverseproxy",
+  "version": "1.0.0",
+  "description": "A front-end for dockerized web apps",
+  "main": "reverseproxy.js",
+  "scripts": {
+    "start": "pm2 --no-daemon -e logz/err.log -o logz/out.log start reverseproxy.js",
+    "oldstart": "node reverseproxy.js",
+    "test": "test reverseproxy.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stjosephcontent/orchestra-reverse-proxy"
+  },
+  "keywords": [
+    "Reverse",
+    "Proxy",
+    "Docker"
+  ],
+  "author": "Sean Macdonald <sean.macdonald@stjoseph.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stjosephcontent/orchestra-reverse-proxy/issues"
+  },
+  "homepage": "https://github.com/stjosephcontent/orchestra-reverse-proxy",
+  "dependencies": {
+    "http-proxy": "^1.10.1",
+    "dockerode": "^2.2.2",
+    "hostile": "^1.0.2",
+    "http-proxy": "^1.10.1",
+    "qs": "*"
+  }
+}

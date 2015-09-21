@@ -1,0 +1,2 @@
+This command runs the executable `bootstrap` in this project's directory (~/.dotfiles)
+This is automatically run when you start your shell, so you don't normally need to run this, unless you just made a change and you want dotfiles to symlink new files in ~/.dotfiles/home or re-process files in ~/.dotfiles/enabled. After doing that you need to re-load your shell by opening a new Terminal window.

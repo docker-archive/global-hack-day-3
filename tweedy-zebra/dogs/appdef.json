@@ -1,0 +1,19 @@
+{
+    "orchestra": {
+        "version": "0.0.1"
+    },
+    "project": {
+        "name": "tester",
+        "slug": "tester"
+    },
+    "name": "dogs",
+    "slug": "dogs",
+    "services": {
+        "nodejs": {
+            "build": "services/nodejs",
+            "ambassador": true,
+            "ports": [8888],
+            "volumes": [ "./services/apache/domains/colours/web:/var/www/html", "./logz:/var/log/apache2" ]     
+        }
+    }
+}

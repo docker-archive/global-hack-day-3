@@ -1,0 +1,15 @@
+{
+  "name": "@sean9999/dogs-nodejs",
+  "version": "1.0.0",
+  "description": "nodejs service for dogs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --harmony index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "static-now": "^0.3.0"
+  }
+}

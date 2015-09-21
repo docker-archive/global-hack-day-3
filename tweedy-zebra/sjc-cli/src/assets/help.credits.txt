@@ -1,0 +1,6 @@
+Copyright (c) 2015 Sean Macdonald <sean@crazyhorsecoding.com>
+written by Sean Macdonald <sean@crazyhorsecoding.com>
+issues: https://github.com/sean9999/dotfiles/issues
+repository: https://github.com/sean9999/dotfiles
+prior art: https://github.com/mathiasbynens/dotfiles
+prior art: https://github.com/paulirish/dotfiles

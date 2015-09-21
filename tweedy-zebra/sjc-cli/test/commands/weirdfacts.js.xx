@@ -1,0 +1,47 @@
+var commandName = 'weirdfacts';
+
+describe(commandName+" suite",function(){
+
+    var child_process = require('child_process');
+
+    it('should display 7 weird facts',function(done) {
+
+        var proc = child_process.spawn('sjc',['weirdfacts','7'],{encoding:'utf8'});
+
+        proc.stdout.setEncoding('utf8');
+        proc.stderr.setEncoding('utf8');
+
+        var lines = [];
+
+        var containingStarWars = function(line) {
+            return /Star Wars/.test(line);
+        };
+
+        proc.stdout.on('data',function(data){
+            lines = lines.concat(data.split("\n"));
+        });
+
+        proc.stderr.on('data',function(data){
+            console.error(data);
+            expect(true).toBe(false);
+            done();
+        });
+
+        proc.on('close',function(exitCode){
+            expect(lines.length).toBe(7);
+            expect(lines.filter(containingStarWars)).toBe(1);
+            done();
+        });
+
+        /*
+        var proc = child_process.exec('sjc weirdfacts 7',{},function (error, stdout, stderr){
+            var lines = stdout.split("\n").filter(function(line){ return (line.length); });
+            expect(lines.length).toBe(7);
+            expect(stdout).toMatch(/Star Wars/g);
+            done();
+        });
+        */
+        
+    },7000);
+
+});

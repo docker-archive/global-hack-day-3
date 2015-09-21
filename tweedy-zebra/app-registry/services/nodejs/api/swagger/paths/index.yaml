@@ -1,0 +1,16 @@
+/projects:
+   $ref: "./projects.yaml"    
+/projects/{projectSlug}:
+   $ref: "./projects-projectSlug.yaml"
+/projects/{projectSlug}/applications:
+   $ref: "./projects-projectSlug-applications.yaml"
+/projects/{projectSlug}/applications/{applicationSlug}:
+   $ref: "./projects-projectSlug-applications-applicationSlug.yaml"
+/projects/{projectSlug}/applications/{applicationSlug}/refs:
+   $ref: "./projects-projectSlug-applications-applicationSlug-refs.yaml"
+/projects/{projectSlug}/applications/{applicationSlug}/refs/{refSlug}:
+   $ref: "./projects-projectSlug-applications-applicationSlug-refs-refSlug.yaml"
+/projects/{projectSlug}/applications/{applicationSlug}/refs/{refSlug}/services:
+   $ref: "./projects-projectSlug-applications-applicationSlug-refs-refSlug-services.yaml"
+/projects/{projectSlug}/applications/{applicationSlug}/refs/{refSlug}/services/{serviceSlug}:
+   $ref: "./projects-projectSlug-applications-applicationSlug-refs-refSlug-services-serviceSlug.yaml"

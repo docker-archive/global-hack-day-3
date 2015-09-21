@@ -1,0 +1,20 @@
+description: "Use for Project POSTs and PUTs"
+type: "object"
+properties:
+  name:
+    description: "Name of the Project."
+    type: "string"
+  slug:
+    description: "Unique lowercase dash-separated version of the name property."
+    type: "string"
+  description:
+    description: ""
+    type: "string"
+  homepage:
+    description: ""
+    type: "string"
+  tags:
+    description: ""
+    type: "array"
+    items:
+      type: "string"

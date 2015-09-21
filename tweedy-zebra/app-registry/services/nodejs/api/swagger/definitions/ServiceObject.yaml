@@ -1,0 +1,24 @@
+description: "tbd"
+type: "object"
+additionalProperties: false
+properties:
+  image:
+    description: "Pointer to the docker image for this service."
+    type: "string"
+  description:
+    description: "The description of the service."
+    type: "string"
+  comments:
+    description: "Additional comments and useful information about the service."
+    type: "string"
+  startup:
+    description: "Script, command or executable to launch."
+    type: "string"
+  port:
+    description: "The generic port exposed by this service."
+    type: "string"
+  protocols:
+    description: "A list of protocol handlers (e.g. http and https)."
+    type: "array"
+    items:
+      type: "string"

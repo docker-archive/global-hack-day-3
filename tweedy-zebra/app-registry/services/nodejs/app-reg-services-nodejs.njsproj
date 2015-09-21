@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{d9f0c39c-a9dc-4855-8408-f9249f18aaf9}</ProjectGuid>
+    <ProjectHome />
+    <ProjectView>ShowAllFiles</ProjectView>
+    <StartupFile>app.js</StartupFile>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Content Include=".editorconfig" />
+    <Content Include="build.sh" />
+    <Content Include="config.json" />
+    <Content Include="Dockerfile" />
+    <Content Include="gulp-schema.sh" />
+    <Content Include="package.json" />
+    <Compile Include="app.js" />
+    <Compile Include="config\mongodb\sample-project.js" />
+    <Compile Include="gulpfile.js" />
+    <Compile Include="api\controllers\ApplicationsController.js" />
+    <Compile Include="api\controllers\ProjectsController.js" />
+    <Compile Include="api\controllers\RefsController.js" />
+    <Compile Include="api\controllers\ServicesController.js" />
+    <Compile Include="api\helpers\ApplicationModel.js" />
+    <Compile Include="api\helpers\MongoWrapper.js" />
+    <Compile Include="api\helpers\ProjectModel.js" />
+    <Compile Include="api\helpers\RefModel.js" />
+    <Compile Include="api\helpers\ServiceModel.js" />
+    <Content Include="api\mocks\ApplicationCollection.json" />
+    <Content Include="api\mocks\HostsCollection.json" />
+    <Content Include="api\mocks\mock-data.json" />
+    <Content Include="api\mocks\ProjectCollection.json" />
+    <Content Include="api\mocks\ServiceCollection.json" />
+    <Compile Include="api\mocks\ProjectsController.js" />
+    <Content Include="api\swagger\swagger.json" />
+    <Content Include="api\swagger\README.md" />
+    <Compile Include="config\mongodb\collections.js" />
+    <Compile Include="config\mongodb\projects.js" />
+    <Compile Include="config\mongodb\services.js" />
+    <Content Include="run.sh" />
+    <Content Include="shell.sh" />
+    <Content Include="test\test.x\app-reg.dev.postman_environment.json" />
+    <Content Include="test\test.x\SJC%20Application%20Registry.json.postman_collection.json" />
+    <Compile Include="test\api\client\applications-test.js" />
+    <Compile Include="test\api\client\applications-{application-name}-test.js" />
+    <Content Include="test\api\controllers\README.md" />
+    <Compile Include="test\api\controllers\ApplicationController.js" />
+    <Content Include="test\api\helpers\README.md" />
+    <Compile Include="test\api\helpers\AppReg.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="api" />
+    <Folder Include="api\controllers" />
+    <Folder Include="api\helpers" />
+    <Folder Include="api\mocks" />
+    <Folder Include="api\swagger" />
+    <Folder Include="api\swagger\definitions" />
+    <Folder Include="api\swagger\info" />
+    <Folder Include="api\swagger\paths" />
+    <Folder Include="config" />
+    <Folder Include="config\mongodb" />
+    <Folder Include="test" />
+    <Folder Include="test\api" />
+    <Folder Include="test\api\client" />
+    <Folder Include="test\api\controllers" />
+    <Folder Include="test\api\helpers" />
+    <Folder Include="test\test.x" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,52 @@
+{
+  "name": "application-registry",
+  "version": "0.1.1",
+  "description": "Registry as a Service providing daemon-like assistance to SJC CLI via HTTPS RESTful API.",
+  "main": "app.js",
+  "directories": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "tbd"
+  },
+  "keywords": [
+    "sjc",
+    "raas",
+    "appreg",
+    "sjc-cli"
+  ],
+  "author": "Troy Forster",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.14.0",
+    "express": "^4.12.3",
+    "fast-json-patch": "^0.5.4",
+    "jsonpatch-to-mongodb": "https://github.com/stjosephcontent/jsonpatch-to-mongodb.git",
+    "mongodb": "^2.0.42",
+    "nconf": "^0.7.2",
+    "swagger-express-mw": "0.0.x",
+    "swagger-tools": "^0.9.5"
+  },
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "dotenv": "^1.2.0",
+    "gulp": "^3.9.0",
+    "gulp-clean": "^0.3.1",
+    "gulp-groc": "^0.4.1",
+    "gulp-stripbom": "^1.0.4",
+    "gulp-swagger": "0.0.6",
+    "gulp-yaml": "^0.2.4",
+    "install": "^0.1.8",
+    "json-refs": "^1.0.5",
+    "json-schema-ref-parser": "^1.0.3",
+    "mocha": "^2.2.5",
+    "request": "^2.58.0",
+    "should": "^5.2.0",
+    "supertest": "^0.15.0",
+    "yaml-js": "^0.1.1",
+    "z-schema": "^3.12.0"
+  }
+}

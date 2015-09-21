@@ -1,0 +1,11 @@
+﻿description: "(One of) the Git remote(s) this instance is tied to."
+type: "object"
+properties:
+  ssh:
+    description: "The Git/SSH URL if it exists."
+    type: "string"
+    format: "uri"
+  https:
+    description: "The HTTPS URL if it exists."
+    type: "string"
+    format: "uri"

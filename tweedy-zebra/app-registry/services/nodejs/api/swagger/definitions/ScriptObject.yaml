@@ -1,0 +1,4 @@
+description: "Describes SJC executable scripts"
+type: "object"
+additionalProperties:
+  type: "string"
