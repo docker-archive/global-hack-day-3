@@ -1,0 +1,57 @@
+<ion-nav-bar>
+</ion-nav-bar>
+<ion-view view-title="Details">
+  <ion-nav-buttons side="right">
+    <a class="button button-icon icon ion-heart"
+       href="#/tab/monitoring/{{container.Id}}"
+       ng-show="container.State.Running"></a>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Name</h2>
+      {{container.Name}}
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>StartedAt</h2>
+      {{container.State.StartedAt | date :'medium'}}
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Status</h2>
+      {{getStatus()}}
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Image</h2>
+      {{container.Config.Image}}
+    </ion-item>
+    <ion-item class="item-remove-animate item-icon-right"
+              type="item-text-wrap"
+              href="#/tab/logs/{{container.Id}}"
+              ng-show="container.State.Running">
+      Logs
+      <i class="icon ion-chevron-right icon-accessory"></i>
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Path</h2>
+      {{container.Path}}
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Hostname</h2>
+      {{container.Config.Hostname}}
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Ip Adress</h2>
+      {{container.NetworkSettings.IPAddress}}
+    </ion-item>
+    <ion-item type="item-text-wrap">
+      <h2>Entrypoint</h2>
+      {{container.Config.Entrypoint}}
+    </ion-item>
+  </ion-content>
+</ion-view>

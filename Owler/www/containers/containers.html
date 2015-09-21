@@ -1,0 +1,32 @@
+<ion-view view-title="Containers">
+  <ion-content>
+    <ion-list>
+      <ion-refresher
+        pulling-text="Pull to refresh..."
+        on-refresh="refresh()">
+      </ion-refresher>
+
+      <ion-item class="item-remove-animate item-avatar item-icon-right"
+                ng-repeat="container in containers"
+                type="item-text-wrap"
+                href="#/tab/containers/{{container.Id}}">
+        <h2>{{container.Names[0]}}</h2>
+
+        <p>
+          {{container.Image}}, <span
+          class="item-energized">{{container.Status}}</span>
+        </p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+        <ion-option-button class="button-positive" ng-show="!isUp(container)"
+                           ng-click="startContainer(container)">
+          Start
+        </ion-option-button>
+        <ion-option-button class="button-assertive" ng-show="isUp(container)"
+                           ng-click="stopContainer(container)">
+          Stop
+        </ion-option-button>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

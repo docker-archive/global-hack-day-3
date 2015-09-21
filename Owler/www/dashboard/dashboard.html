@@ -1,0 +1,29 @@
+<ion-view view-title="Owl'er - Docker Mobile App">
+  <ion-content class="padding">
+    <div class="list card">
+      <div class="item item-divider item-calm"><b>Infos</b></div>
+      <div class="item item-body">
+        <div>
+          <b>OS</b> : {{info.OperatingSystem}}
+        </div>
+        <div>
+          <b>Containers</b> : {{info.Containers}}
+        </div>
+        <div>
+          <b>Images</b> : {{info.Images}}
+        </div>
+      </div>
+    </div>
+    <div class="list card">
+      <div class="item item-divider item-calm"><b>Docker version</b></div>
+      <div class="item item-body">
+        <div>
+          <b>Version</b> : {{version.Version}}
+        </div>
+        <div>
+          <b>API Version</b> : {{version.ApiVersion}}
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

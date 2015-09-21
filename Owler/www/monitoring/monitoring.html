@@ -1,0 +1,30 @@
+<ion-view view-title="Monitoring">
+  <ion-content>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>CPU (%)</h2>
+      <canvas id="cpu" class="chart chart-line" chart-data="cpu"
+              chart-labels="blank_label" chart-legend="false"
+              chart-series="cpuSeries">
+      </canvas>
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Memory (%)</h2>
+      <canvas id="memory" class="chart chart-line" chart-data="memory"
+              chart-labels="blank_label" chart-legend="false"
+              chart-series="memorySeries"
+              chart-click="onClick">
+      </canvas>
+    </ion-item>
+    <ion-item class="item-remove-animate"
+              type="item-text-wrap">
+      <h2>Network (kB)</h2>
+      <canvas id="lan" class="chart chart-line" chart-data="lan"
+              chart-labels="blank_label" chart-legend="false"
+              chart-series="lanSeries"
+              chart-click="onClick">
+      </canvas>
+    </ion-item>
+  </ion-content>
+</ion-view>

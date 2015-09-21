@@ -1,0 +1,19 @@
+<ion-view view-title="Connection settings">
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">DOCKER HOST</span>
+          <input type="text" placeholder="DOCKER HOST" ng-model="AppConfig.DOCKER_HOST">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">DOCKER PORT</span>
+          <input type="number" placeholder="DOCKER PORT" ng-model="AppConfig.DOCKER_PORT">
+        </label>
+        <button class="button button-positive" ng-click="testConnection()">
+          Test connection
+        </button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

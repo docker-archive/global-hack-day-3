@@ -1,0 +1,46 @@
+<ion-nav-bar>
+</ion-nav-bar>
+<ion-view view-title="Logs">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon icon ion-refresh"
+            ng-click="refresh()">
+
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+
+    <div class="card">
+      <div class="item item-button-right item-divider item-dark">
+        <b>Standard</b>
+        <button class="button button-clear button-light"
+                ng-click="getLog(true, true)">
+          <i class="icon ion-more"></i>
+        </button>
+      </div>
+      <div class="item item-body">
+        <div ng-show="!standard.length">No Logs</div>
+
+        <div ng-repeat="log in standard track by $index">
+          {{log}}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="item item-button-right item-divider item-dark">
+        <b>Errors</b>
+        <button class="button button-clear button-light"
+                ng-click="getLog(true, true)">
+          <i class="icon ion-more"></i>
+        </button>
+      </div>
+      <div class="item item-body">
+        <div ng-show="!errors.length">No Logs</div>
+        <div ng-repeat="log in errors track by $index">
+          {{log}}
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
