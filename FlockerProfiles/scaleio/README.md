@@ -21,6 +21,7 @@ or via Docker
 
 # How to Run the Example
 
+(These instructions do not include setting up flocker-docker-plugin or docker, please see https://docs.clusterhq.com/en/1.3.1/labs/docker-plugin.html)
 
 ScaleIO
 ```
@@ -65,16 +66,16 @@ source venv/bin/activate
 ```
 mkdir /etc/flocker
 cd /etc/flocker
-flocker-ca initialize mycluster
-flocker-ca create-control-certificate mycluster.localdomain
+/vagrant/venv/bin/flocker-ca initialize mycluster
+/vagrant/venv/bin/flocker-ca create-control-certificate mycluster.localdomain
 cp control-mycluster.localdomain.crt control-service.crt
 cp control-mycluster.localdomain.key control-service.key
-flocker-ca create-api-certificate vagrantuser
+/vagrant/venv/bin/flocker-ca create-api-certificate vagrantuser
 cp vagrantuser.crt user.crt
 cp vagrantuser.key user.key
 chmod 0700 /etc/flocker
 chmod 0600 /etc/flocker/control-service.key
-flocker-ca create-node-certificate
+/vagrant/venv/bin/flocker-ca create-node-certificate
 ls -1 . | egrep '[A-Za-z0-9]*?-[A-Za-z0-9]*?-[A-Za-z0-9]*?-[A-Za-z0-9]*?-[A-Za-z0-9]*?.crt' | xargs -I {} cp {} /etc/flocker/node.crt
 ls -1 . | egrep '[A-Za-z0-9]*?-[A-Za-z0-9]*?-[A-Za-z0-9]*?-[A-Za-z0-9]*?-[A-Za-z0-9]*?.key' | xargs -I {} cp {} /etc/flocker/node.key
 chmod 0600 /etc/flocker/node.key
@@ -116,4 +117,3 @@ Install flocker-tools
 virtualenv --python=/usr/bin/python2.7 /opt/flocker/flocker-tools
 /opt/flocker/flocker-tools/bin/pip install git+https://github.com/clusterhq/unofficial-flocker-tools.git
 ```
-
