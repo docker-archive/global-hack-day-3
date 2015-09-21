@@ -5,6 +5,7 @@ build:
 	rm -rf build; mkdir -p build
 	docker run sequenceiq/runc-bin cat /go/src/github.com/opencontainers/runc/runc-0.3.tgz > build/runc-0.3.tgz
 	docker run sequenceiq/runc-bin cat /go/src/github.com/opencontainers/runc/runc > build/runc
+	chmod +x build/runc
 
 deps:
 	go get github.com/progrium/gh-release
