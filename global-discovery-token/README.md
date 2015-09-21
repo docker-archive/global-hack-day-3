@@ -72,3 +72,4 @@ Now, possible improvements include :
 * Streamline build/deployment
 * Merge our swarm improvements with the original repo
 * Stop using sh scripts
+* Make things easier with the network (Weaves?)
