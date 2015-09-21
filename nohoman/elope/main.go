@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"fmt"
 	"time"
+	"io"
 	"io/ioutil"
 	"github.com/craigbarrau/global-hack-day-3/nohoman/elope/docker"
 )
@@ -21,8 +22,8 @@ const (
 	ls_action = "ls"
 
 	// TODO: Productise this path (e.g. /var/lib/elope)
-	persistence_store = "/tmp"
-        packages_metadir = persistence_store+"/elope"
+	persistence_store = "/tmp/elope"
+        packages_metadir = persistence_store+"/packages"
 	tomcat = "/usr/local/tomcat/webapps" 
 )
 
@@ -51,31 +52,101 @@ func NewPackageJSON(src []byte) (*Package, error) {
 	return ret, nil
 }
 
+func ReadPackageJSON(file string) (Package, error) {
+        packageJSON, err := ioutil.ReadFile(file)
+        if err != nil {
+                fmt.Printf("Error reading file: %v", err)
+                return Package{}, err
+        }
+        var p Package
+        error := json.Unmarshal(packageJSON, &p)
+        if error != nil {
+                fmt.Printf("Error reading json: %v", error)
+                return Package{}, error
+        }
+	return p, nil
+}
+
+func cp(src, dst string) error {
+	s, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	// no need to check errors on read only file, we already got everything
+	// we need from the filesystem, so nothing can go wrong now.
+	defer s.Close()
+	d, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	if _, err := io.Copy(d, s); err != nil {
+		d.Close()
+		return err
+	}
+	return d.Close()
+}
+
 func Pack(name, file, destination string) string {
         packages_metadir_exists,_ := exists(packages_metadir)
         // TODO: Error handling
+	var package_exists = false
+	var existing_package_id = ""
         if packages_metadir_exists != true {
-                os.Mkdir(packages_metadir, 0777)
+                os.MkdirAll(packages_metadir, 0777)
                 // Make this debug log
                 fmt.Printf("Creating %v\n",packages_metadir)
         } else {
-                fmt.Println(packages_metadir+" exists!")
-        }
+	        files,_ := ioutil.ReadDir(packages_metadir)
+		for i := 0; i < len(files); i++ {
+			folder := files[i]
+			metadata_file := packages_metadir+"/"+folder.Name()+"/metadata.json"	
+			p_meta_exists,_ := exists(metadata_file)
+			if p_meta_exists == true {
+				p,_ := ReadPackageJSON(metadata_file)	
+				if p.DeployableURI == file {
+					package_exists = true
+					existing_package_id = p.ID				
+				}
+			} else {
+				// Write debugging messages here?
+			}
+		}
+	}
+
+	if package_exists {
+		return existing_package_id
+	}
 
 	id, err := exec.Command("uuidgen").Output()
 	if err != nil {
 		fmt.Println("Issue accessing uuidgen")
 		os.Exit(1)
 	}
+
 	// Move the writing of Package JSON to a separate function
 	t := time.Now()
 	sanitised_id := string(id)[:len(id)-1]
+
+        this_package_metadir := packages_metadir+"/"+sanitised_id
+        this_package_metadir_exists,_ := exists(this_package_metadir)
+        // TODO: Error handling
+        if this_package_metadir_exists != true {
+                os.MkdirAll(this_package_metadir, 0777)
+                // Make this debug log
+                fmt.Printf("Creating %v\n",this_package_metadir)
+        } else {
+                fmt.Println(packages_metadir+" exists! This should never happen. Exiting...")
+                os.Exit(1)
+        }
+
 	mapD := map[string]string{"id": sanitised_id, "deployable-uri": file, "destination": destination, "create": t.Format(time.RFC3339)}
 	mapB, _ := json.Marshal(mapD)
 	fmt.Println(string(mapB))
 
 	d1 := []byte(string(mapB))
-	error := ioutil.WriteFile(packages_metadir+"/"+sanitised_id+".json", d1, 0644)
+	error := ioutil.WriteFile(this_package_metadir+"/metadata.json", d1, 0644)
+
+	cp(file, this_package_metadir+"/contents")
 
         if error != nil {
 		fmt.Println(error)
@@ -93,21 +164,22 @@ func exists(path string) (bool, error) {
 
 func Run(identifier, container string) {
 	fmt.Println("Using " + identifier)
-	packageJSON, err := ioutil.ReadFile(packages_metadir+"/"+identifier+".json")
-	if err != nil {
-		fmt.Printf("Error reading file: %v", err)
-		os.Exit(1)
-	}
-	var p Package
-	error := json.Unmarshal(packageJSON, &p)
-	if error != nil {
-		fmt.Printf("Error reading json: %v", error)
-		os.Exit(1)
-	}
-	fmt.Println(p.ID)
-	fmt.Println(p.DeployableURI)
-	s := string(packageJSON[:])
-	fmt.Println(s)
+	p,_ := ReadPackageJSON(packages_metadir+"/"+identifier+"/metadata.json")	
+	//packageJSON, err := ioutil.ReadFile(packages_metadir+"/"+identifier+".json")
+	//if err != nil {
+	//	fmt.Printf("Error reading file: %v", err)
+	//	os.Exit(1)
+	//}
+	//var p Package
+	//error := json.Unmarshal(packageJSON, &p)
+	//if error != nil {
+	//	fmt.Printf("Error reading json: %v", error)
+	//	os.Exit(1)
+	//}
+	//fmt.Println(p.ID)
+	//fmt.Println(p.DeployableURI)
+	//s := string(packageJSON[:])
+	//fmt.Println(s)
 	docker.Cp(p.DeployableURI, container, p.Destination)
 	CreateDockerImage(p.DeployableURI, container, p.Destination)
 }
@@ -173,7 +245,7 @@ func main() {
 		var destination = ""
 		//if numArgs > 2 {
 			destination = args[2]
-			fmt.Println("Using destination %v", destination)
+			fmt.Printf("Using destination %v\n", destination)
 		//}
 		id := Pack("random_name", file, destination)
 		fmt.Println(id)
