@@ -14,7 +14,7 @@
 
 API Blueprint is a documentation-oriented web API description language. The API Blueprint is essentially a set of semantic assumptions laid on top of the Markdown syntax used to describe a web API.
 
-- Using [Aglio](https://github.com/danielgtaylor/aglio) we generate this [version](http://go-apiblueprint-go.github.io/DockerRemoteAPI/) or you can see [version in Apiary](http://docs.dockerremote.apiary.io/).
+- Using [Aglio](https://github.com/danielgtaylor/aglio) we generate this [version](http://go-apiblueprint-go.github.io/DockerRemoteAPI/) or you can see [version in Apiary](http://docs.dockerremoteapi.apiary.io/).
 
 ## References
 
