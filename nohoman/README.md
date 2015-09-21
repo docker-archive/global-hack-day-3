@@ -37,7 +37,7 @@ This is a submission for the 3rd edition of the Docker Global Hack Day
 ## How to build and run
 * Setup `$GOPATH` to point to a location like `~gopath`
 * Setup a local path such as `~gocode/src/github.com/craigbarrau/global-hack-day-3/nohoman`
-* `cd` to `nohoman`
+* `cd` to `nohoman\elope`
 * Run `go install`
 * Now `elope` is installed under `~gocode/bin`
 * Run `elope~ to see the usage menu
