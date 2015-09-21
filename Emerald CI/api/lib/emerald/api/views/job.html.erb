@@ -1,0 +1,11 @@
+    <script type="text/javascript">
+      var scheme   = "<%= @scheme %>";
+      var uri      = scheme + window.document.location.host + "/jobs/<%= @job_id %>/subscribe";
+      var ws       = new WebSocket(uri);
+      ws.onmessage = function(message) {
+        console.log(message);
+        $("#le-terminal").append(JSON.parse(message.data).payload.log);
+      };
+    </script>
+    <pre><code id="le-terminal">
+    </pre></code>

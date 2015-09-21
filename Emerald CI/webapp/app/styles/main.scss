@@ -1,0 +1,98 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+@import "components-font-awesome/scss/font-awesome.scss";
+// endbower
+
+body {
+  padding: 0;
+}
+
+#le-terminal {
+  white-space: pre;
+  padding: 20px;
+  background: #2a2a2a;
+  color: white;
+  overflow-x: scroll;
+}
+
+.bold {
+  font-weight: bold;
+}
+.black {
+  color: black;
+}
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+.yellow {
+  color: yellow;
+}
+.blue {
+  color: blue;
+}
+.magenta {
+  color: magenta;
+}
+.cyan {
+  color: cyan;
+}
+.white {
+  color: white;
+}
+.grey {
+  color: grey;
+}
+
+.navbar-brand #brand {
+  color: white;
+}
+
+#icon {
+  width: 40px;
+  height: 40px;
+  float: left;
+  margin-top: -5px;
+  padding: 5px;
+}
+
+.project.project:hover,
+.panel.build:hover,
+.panel.job:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+h2 .btn {
+  margin-top: -5px;
+}
+
+.build {
+  margin: 10px 10px;
+}
+
+.btn.add-repo {
+  margin-top: -5px;
+}
+
+.current-job .panel-body:before,
+.current-job .panel-body:after {
+  content: none;
+}
+
+.terminalOutput:first-child {
+  margin-top: -27px;
+}
+
+.terminalOutput:last-child {
+  margin-top: -20px;
+  margin-bottom: -55px;
+}
+
+li.profile {
+  margin-top: -5px;
+}
+

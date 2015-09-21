@@ -1,0 +1,2 @@
+service: web
+command: rake

@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+      <h2>Available GitHub Repos</h2>
+    </div>
+    <div class="col-md-2 text-right">
+      <h2><a class="btn btn-primary sync-repo" ng-click="sync()"><i class="fa fa-refresh"></i> SYNC REPOS</a></h2>
+    </div>
+    <div class="col-md-12">
+      <h3 class="text-center" style="line-height: 2;" ng-if="github_repos.length == 0"><br />If you do not see any repos you have either not synced repos or you have no GitHub repos. If you have not synced you can go ahead <a href="" ng-click="sync()">and do so</a>.</h3>
+      <div class="row" ng-repeat="repo in github_repos">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-10">{{ repo.full_name }}</div>
+              <div class="col-md-2 text-right"><a class="btn btn-primary add-repo" ng-click="add(repo.github_repo_id)">add</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

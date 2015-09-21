@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     version="1.1"
+     xml:lang="en"
+     height="500"
+     width="500">
+  <polygon points="1,100 100,1 150,100 100,150" style="fill:#00CC66;" />
+  <polygon points="100,1 150,100 350,100 400,1" style="fill:#00FF99;" />
+  <polygon points="400,1 499,100 400,150 350,100" style="fill:#00CC66;" />
+  <polygon points="400,150 499,100 499,400 400,350" style="fill:#00FF99;" />
+  <polygon points="400,350 499,400 400,499 350,400" style="fill:#00CC66;" />
+  <polygon points="350,400 400,499 100,499 150,400" style="fill:#00FF99;" />
+  <polygon points="150,400 100,499 1,400 100,350" style="fill:#00CC66;" />
+  <polygon points="1,400 100,350 100,150 1,100" style="fill:#00FF99;" />
+  <polygon points="100,150 150,100 350,100 400,150 400,350 350,400 150,400 100,350" style="fill:#66FF00;" />
+</svg>

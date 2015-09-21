@@ -1,0 +1,15 @@
+rabbitmq:
+  image: rabbitmq:management
+  ports:
+    - 15672:15672
+    - 5672:5672
+  environment:
+    - RABBITMQ_DEFAULT_USER=emeraldci
+    - RABBITMQ_DEFAULT_PASS=secure
+    - RABBITMQ_DEFAULT_VHOST=emeraldci
+fluentd:
+  build: .
+  ports:
+    - 24224:24224
+  links:
+    - rabbitmq:rabbitmq
