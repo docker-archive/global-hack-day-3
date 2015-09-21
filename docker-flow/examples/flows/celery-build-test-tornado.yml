@@ -1,0 +1,35 @@
+name: celery-build-test-flow
+description: Workflow for building and testing celery pypi
+volumes:
+    - ~/workspace:/workspace
+    - ~/builds:/builds
+jobs:
+    - build-celery-sdist:
+        image: python:2.7
+        working_dir: /workspace
+        steps:
+           - set -x
+           - cd /workspace
+           - rm -rf /workspace/*
+           - git clone https://github.com/celery/celery
+           - cd celery
+           - python setup.py sdist
+           - cp /workspace/celery/dist/* /builds
+        output: /builds/celery-*.tar.gz
+    - functest-tornado-celery: 
+        image: python:2.7
+        requires: 
+          - image: redis
+          - file: /build/celery-3.2.0a2.tar.gz
+        environment: 
+          - REDIS_IP: $DOCKER_HOST
+          - REDIS_PORT: 6379
+        steps: 
+          - pip install /build/celery-3.2.0a2.tar.gz
+          - pip install requests
+          - cd /workspace
+          - git clone https://github.com/mher/tornado-celery
+          - cd tornado-celery
+          - CELERY_RESULT_BACKEND=redis://192.168.99.109:6379 python examples/tasks.py worker & 
+          - cd examples && CELERY_RESULT_BACKEND=redis:// python -m tcelery -A tasks &
+          - python tests/functests.py
