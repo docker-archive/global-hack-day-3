@@ -92,14 +92,14 @@ func main() {
         println(listTagsForRepository(c, repoName))
       },
     },
-    {
-      Name:    "rmt",
-      Usage:   "Remove tag for image",
-      Flags: app.Flags,
-      Action:  func(c *cli.Context) {
-        println("Do the work of removing a tag for an image")
-      },
-    },
+    // {
+    //   Name:    "rmt",
+    //   Usage:   "Remove tag for image",
+    //   Flags: app.Flags,
+    //   Action:  func(c *cli.Context) {
+    //     println("Do the work of removing a tag for an image")
+    //   },
+    // },
     // {
     //   Name:    "lsm",
     //   Usage:   "List manifests for repository and tag",
