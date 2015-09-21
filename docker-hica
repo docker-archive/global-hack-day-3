@@ -53,6 +53,7 @@ def HicaGetBaseArgparse():
   args.add_argument("--show-args", help='show possible arguments for the specified "hica_app_name"', default=False, action='store_true')
   args.add_argument("--verbose", help='print additional information', default=False, action='store_true')
   args.add_argument("--yes", help='bypass the capability review check', default=False, action='store_true')
+  args.add_argument("--user", help="user:group to run as ({0}:{0})".format(str(os.getuid())), default='{0}:{0}'.format(str(os.getuid())))
   return args
 
 def HicaGetImageName():
@@ -155,7 +156,7 @@ parsed = HicaParseArguments(labels)
 # base configuration
 # run the container as current user so that file system rights are fine
 # for bind mounted files
-config = HicaInjectConfiguration(labels, parsed, ['-i', '-u', '{0}:{0}'.format(str(os.getuid()))])
+config = HicaInjectConfiguration(labels, parsed, ['-i', '-u', parsed.user])
 runcmd = ["docker", "run"] + config + [name] + container_args
 
 if parsed.verbose:
