@@ -19,3 +19,5 @@ RUN unzip serf.zip
 RUN mv serf /usr/local/bin
 
 RUN rm serf.zip
+
+ENTRYPOINT ["./swarm"]
