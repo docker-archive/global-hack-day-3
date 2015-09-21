@@ -1,0 +1,15 @@
+mosquitto:
+  image: toke/mosquitto:latest
+  ports:
+    - "1883:1883"
+    - "9001:9001"
+  volumes:
+    - ./mosquitto/config:/mqtt/config:ro
+    - ./mosquitto/log:/mqtt/log
+    - ./mosquitto/data/:/mqtt/data/
+
+subscriber:
+  build: subscriber
+  command: app "mosquitto:1883" "docker-log/#"
+  links:
+    - mosquitto
