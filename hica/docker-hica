@@ -1,0 +1,166 @@
+#!/usr/bin/python -tt
+# vim: set fileencoding=utf-8
+# Pavel Odvody <podvody@redhat.com>
+#
+# HICA - Host integrated container applications
+#
+# MIT License (C) 2015
+
+import os, sys, docker, argparse, imp, subprocess
+from base import *
+
+# adjust for container arguments passed after the -- delimeter
+container_args = []
+sliceat = 0
+for i, arg in enumerate(sys.argv[1:]):
+  if sliceat:
+    container_args.append(arg)
+  if arg == '--':
+    sliceat = i + 1
+
+if sliceat:
+  sys.argv = sys.argv[:sliceat]
+
+# create docker client for inspecting images
+dock = docker.Client()
+_injector_registry  = {}
+
+def HicaLoadInjectors(path):
+  """ Load all Python modules from `path`
+
+  :param path: Relative path to module directory
+  "type path: str
+  """
+
+  r = {}
+  for inj in os.listdir(os.path.join(os.getcwd(), path)):
+    modname, suffix = inj.rsplit('.', 1)
+    if suffix == 'py':
+      fullpath = os.path.join(os.getcwd(), path)
+      f, filename, description = imp.find_module(modname, [fullpath])
+      m = imp.load_module(modname, open(filename, 'U'), filename, description)
+      try:
+        m.register(r)
+      except AttributeError:
+        print ("Module {0} does not implement `register(context)`".format(modname))
+  return r
+
+def HicaGetBaseArgparse():
+  """ Provides with common `argparse` settings  """
+
+  args = argparse.ArgumentParser()
+  args.add_argument("hica_app_name")
+  args.add_argument("--show-args", help='show possible arguments for the specified "hica_app_name"', default=False, action='store_true')
+  args.add_argument("--verbose", help='print additional information', default=False, action='store_true')
+  args.add_argument("--yes", help='bypass the capability review check', default=False, action='store_true')
+  args.add_argument("--user", help="user:group to run as ({0}:{0})".format(str(os.getuid())), default='{0}:{0}'.format(str(os.getuid())))
+  return args
+
+def HicaGetImageName():
+  """ Get image name so that we can fetch labels from it """
+
+  args = HicaGetBaseArgparse()
+  p, _ = args.parse_known_args()
+  return p.hica_app_name
+
+def HicaGetLabelsFromImage(image):
+  """ Get labels from image as list
+
+  :param image: Docker image
+  :type image: dict
+  """
+
+  return [k for (k, _) in image['Config']['Labels'].iteritems()]
+
+def HicaParseArguments(labels):
+  """ Parse argument and optionally show usage and terminate with `0`
+  return code
+
+  :param labels: `Labels` read from the `Image`
+  :type labels: list(str)
+  """
+
+  args = HicaGetBaseArgparse()
+  # parse now to catch --show-args
+  p, _ = args.parse_known_args()
+
+  # add needed argparsers
+  for label in labels:
+    if label in _injector_registry:
+      inj = _injector_registry[label]
+      for (arg, typ, defval) in inj.get_injected_args():
+        if arg:
+          args.add_argument(arg, default=defval)
+
+  # now that we added the argparsers we can print usage and bail
+  if p.show_args:
+    args.print_usage()
+    sys.exit(0)
+
+  return args.parse_args()
+
+def HicaInjectConfiguration(labels, args, config):
+  """ Inject configuration parameters for `labels` with values
+  obtained from `args` into the `config` array
+
+  :param labels: `Labels` read from the `Image`
+  :type labels: list(str)
+  :param args: Result of `parse_args` operation
+  :type args: argparse.ArgumentParser
+  :param config: Array where to inject configuration parameters
+  :type config: list(str)
+  """
+
+  caps = []
+  # map params from argparse back to injectors
+  for label in labels:
+    if label in _injector_registry:
+      inj = _injector_registry[label]
+      cfgs = []
+      caps.append(inj.get_description())
+      for (arg, typ, defval) in inj.get_injected_args():
+        if arg:
+          x = getattr(args, arg[2:].replace("-", "_"))
+          cfgs.append((typ, x))
+        else:
+          cfgs.append((typ, defval))
+      inj.inject_config(config, cfgs)
+
+  instr = "The container requests the following capabilities: \n - " + "\n - ".join(caps) + "\nProceed? [y/Y/n]: "
+  if args.yes or not caps or raw_input(instr) in ['y', 'Y']:
+    return config
+  else:
+    print("*** Operation aborted!")
+    sys.exit(1)
+
+def HicaGetImages(images):
+  """ Gets a list of all image names
+
+  :param images: all docker images
+  :type images: dict
+  """
+  tags = filter(lambda y: y != [u'<none>:<none>'], [x['RepoTags'] for x in images])
+  return set([a for b in tags for a in b])
+
+_injector_registry = HicaLoadInjectors("injectors")
+
+name = HicaGetImageName()
+if name not in HicaGetImages(dock.images(all=True)):
+  print("*** Image '{0}' not found locally, bailing!".format(name))
+  sys.exit(1)
+
+image = dock.inspect_image(name)
+
+labels = HicaGetLabelsFromImage(image)
+parsed = HicaParseArguments(labels)
+# base configuration
+# run the container as current user so that file system rights are fine
+# for bind mounted files
+config = HicaInjectConfiguration(labels, parsed, ['-i', '-u', parsed.user])
+runcmd = ["docker", "run"] + config + [name] + container_args
+
+if parsed.verbose:
+  print("Executing: " + " ".join(runcmd))
+
+p = subprocess.Popen(runcmd, stdin=sys.stdin)
+out, err = p.communicate()
