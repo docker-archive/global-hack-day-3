@@ -32,23 +32,39 @@ https://github.com/wallnerryan/scaleio-py/tree/profiles_scaleiopy
 (These instructions do not include setting up flocker-docker-plugin or docker, please see https://docs.clusterhq.com/en/1.3.1/labs/docker-plugin.html)
 
 ## ScaleIO
+
+ScaleIO
 ```
-git clone https://github.com/jonasrosland/vagrant-scaleio
+git clone https://github.com/wallnerryan/scaleio-vagrant-profiles
 cd vagrant-scaleio
 vagrant up
 vagrant ssh mdm1
-cd /vagrant/scaleio/ScaleIO_1.32_Gateway_for_Linux_Download
 sudo su
-export GATEWAY_ADMIN_PASSWORD=Scaleio123
-rpm -Uv EMC-ScaleIO-gateway-1.32-402.1.noarch.rpm 
-sed -i 's/mdm.ip.addresses=/mdm.ip.addresses='192.168.50.12','192.168.50.13'/' /opt/emc/scaleio/gateway/webapps/ROOT/WEB-INF/classes/gatewayUser.properties
-service scaleio-gateway restart
+systemctl enable firewalld
+systemctl start firewalld
+firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -j ACCEPT
+firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -j ACCEPT
+# Docker port
+firewall-cmd --permanent --zone=public --add-port=4243/tcp
+# ScaleIO ports needs to be open
+firewall-cmd --permanent --zone=public --add-port=6611/tcp
+firewall-cmd --permanent --zone=public --add-port=9011/tcp
+firewall-cmd --permanent --zone=public --add-port=7072/tcp
+firewall-cmd --permanent --zone=public --add-port=443/tcp
+firewall-cmd --permanent --zone=public --add-port=22/tcp
+# Flocker ports
+firewall-cmd --permanent --zone=public --add-port=4523/tcp
+firewall-cmd --permanent --zone=public --add-port=4524/tcp
+firewall-cmd --reload
 ```
 
 (Make sure ScaleIO Cluster is all the way up first)
 ## Flocker Node
 ```
+git clone https://github.com/wallnerryan/profiles-poc
+cd profiles-poc
 (Enable Flocker Dev Node to connect to ScaleIO)
+git clone -b profile_metadata https://github.com/ClusterHQ/flocker
 cd flocker/flocker
 cp ../../flocker-Vagrantfile ./Vagrantfile
 cp ../../numactl-libs-2.0.9-4.el7.x86_64.rpm .
@@ -98,7 +114,7 @@ cd scaleio-flocker-driver/
 /vagrant/venv/bin/python setup.py install
 
 cd ../scaleio-py
-(might need to repeat)
+(might need to repeat, or pip install instead)
 /vagrant/venv/bin/python setup.py install
 
 touch /etc/flocker/agent.yml
@@ -125,4 +141,23 @@ EOT
 ```
 virtualenv --python=/usr/bin/python2.7 /opt/flocker/flocker-tools
 /opt/flocker/flocker-tools/bin/pip install git+https://github.com/clusterhq/unofficial-flocker-tools.git
+cd /etc/flocker
+```
+
+## Run flocker commands.
+```
+/opt/flocker/flocker-tools/bin/flocker-volumes --control-service localhost list-nodes
+SERVER     ADDRESS   
+7f719abb   127.0.0.1 
+
+/opt/flocker/flocker-tools/bin/flocker-volumes --control-service localhost create --node=7f719 -s 8589934592 --metadata="name=test"
+created dataset in configuration, manually poll state with 'flocker-volumes list' to see it show up.
+```
+Default is thickly provisioned with no cache
+![alt tag](http://s8.postimg.org/nk1l7ut1x/normal.png)
+![alt tag](http://s8.postimg.org/7xabuhf9x/provision_default.png)
+
+```
+/opt/flocker/flocker-tools/bin/flocker-volumes --control-service localhost create --node=7f719 -s 8589934592 --metadata="name=test@gold"
+created dataset in configuration, manually poll state with 'flocker-volumes list' to see it show up.
 ```
