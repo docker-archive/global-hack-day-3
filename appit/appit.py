@@ -118,6 +118,7 @@ if __name__ == '__main__':
 		username = orig_username + "_mozilla"
 		pull_data()
 	elif COMMAND == "push":
+		os.system("docker push appit/firefox")
 		get_cred()
 		orig_username = username
 		# Push .cache
