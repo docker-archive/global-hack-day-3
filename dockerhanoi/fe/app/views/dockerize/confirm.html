@@ -1,0 +1,38 @@
+<div class="container" style="padding-top: 20px;">
+    <div class="row">
+        <div>
+            <p>
+            <strong translate="views.dockerize.confirm.ComposeYourDockerFiles"></strong>
+            <span class="pull-right text-muted">60% Complete</span>
+            </p>
+            <div class="progress progress-striped active" style="width: 100%">
+                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                    <span class="sr-only">60% Complete</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-8">
+        </div>
+        <div class="col-xs-4" class="pull-right">
+            <a class="btn btn-block btn-success" ui-sref="dockerize.deploy">
+                <i class="fa fa-paper-plane"></i> <span translate="views.dockerize.github.Next"></span>
+            </a>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 20px;">
+        <section>
+            <strong translate="views.dockerize.confirm.DockerFile"></strong>
+            <div ui-ace="" ng-model="appData.dockerFile">
+            </div>
+        </section>
+    </div>
+    <div class="row" style="margin-bottom: 20px;">
+        <section>
+            <strong translate="views.dockerize.confirm.DockerCompose"></strong>
+            <div ui-ace="" ng-model="appData.dockerCompose">
+            </div>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+{
+    "server": {
+        "port": 3001
+    },
+    "redis": {
+        "host": "192.168.1.191",
+        "port": "6379",
+        "password": "",
+        "prefix": "q"
+    },
+    "db": {
+        "dialect": "sqlite",
+        "storage": "./db/db.sqlite",
+        "database": "",
+        "username": "",
+        "password": ""
+    },
+    "logs": "/home/thanhson1085/projects/dockerize-app/logs/",
+    "repositories": "/home/thanhson1085/projects/dockerize-app/repositories/",
+    "bash": {
+        "deploy": "/home/thanhson1085/projects/dockerize-app/bash/deploy.sh"
+    },
+    "github": {
+        "client_secret": ""
+    },
+    "unauthorization": ["/api/v1/users/login", "/api/v1/users/create", "/api/v1/logs"],
+    "mailer": {
+        "from": "no-reply@example.com",
+        "host": "smtp.gmail.com",
+        "secureConnection": true,
+        "port": 465,
+        "transportMethod": "SMTP",
+        "auth": {
+            "user": "gmail.user@gmail.com",
+            "pass": "userpass"
+        }
+    }
+}

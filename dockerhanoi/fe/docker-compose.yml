@@ -1,0 +1,14 @@
+angular-admin-seed:
+    build: ./
+    ports:
+        - "9000:9000"
+        - "3000:3000"
+    links:
+        - redis
+    environment:
+        NODE_ENV: "dev"
+
+redis:
+    image: redis:latest
+    ports:
+        - "6379:6379"

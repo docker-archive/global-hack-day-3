@@ -1,0 +1,14 @@
+be:
+    image: ghd3/be:0.1
+#    ports:
+#        - "9000:9001"
+#    links:
+#        - redis
+#    environment:
+#        NODE_ENV: "default"
+
+#redis:
+#    image: redis:latest
+#    ports:
+#        - "6379:6379"
+

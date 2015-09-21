@@ -1,0 +1,54 @@
+{
+  "name": "angular-admin-seed",
+  "version": "1.0.0",
+  "appPath": "app",
+  "homepage": "https://github.com/thanhson1085/angular-admin-seed",
+  "description": "A seed application with angularjs and sb admin 2",
+  "moduleType": [
+    "es6"
+  ],
+  "authors": [
+    "Nguyen Sy Thanh Son <thanhson1085@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "angular": "~1.4.3",
+    "angular-animate": "~1.4.3",
+    "angular-bootstrap": "~0.13.3",
+    "angular-chart.js": "~0.7.3",
+    "angular-cookies": "~1.4.3",
+    "angular-dynamic-locale": "~0.1.27",
+    "angular-i18n": "~1.4.5",
+    "angular-loading-bar": "~0.8.0",
+    "angular-mocks": "~1.4.3",
+    "angular-resource": "~1.4.3",
+    "angular-route": "~1.4.3",
+    "angular-sanitize": "~1.4.3",
+    "angular-scenario": "~1.4.3",
+    "angular-toggle-switch": "~1.3.0",
+    "angular-touch": "~1.4.3",
+    "angular-translate": "~2.7.2",
+    "angular-translate-handler-log": "~2.7.2",
+    "angular-translate-loader-static-files": "~2.7.2",
+    "angular-translate-storage-local": "~2.7.2",
+    "angular-ui-ace": "~0.2.3",
+    "angular-ui-router": "~0.2.15",
+    "angular-websocket": "~1.0.13",
+    "angular-xeditable": "~0.1.9",
+    "bootstrap": "~3.3.5",
+    "es5-shim": "~4.1.10",
+    "font-awesome": "~4.4.0",
+    "json3": "~3.3.2",
+    "metisMenu": "~2.1.0",
+    "ng-file-upload": "~7.0.13",
+    "oclazyload": "~1.0.4"
+  },
+  "resolutions": {
+    "angular": "~1.4.3"
+  }
+}

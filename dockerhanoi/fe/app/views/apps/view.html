@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header" translate="views.app.view.App" translate-value-name="{{app.appName}}"></h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+                <div class="table-responsive">
+                    <div ng-show="update_message" class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        {{update_message}}
+                    </div>
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <td class="col-xs-4" translate="views.apps.view.ID"></td>
+                            <td class="col-xs-8">{{app.id}}</td>
+                        </tr>
+                        <tr>
+                            <td translate="views.apps.view.AppName"></td>
+                            <td>{{app.appName}}</td>
+                        </tr>
+                        <tr>
+                            <td translate="views.apps.view.HtmlUrl"></td>
+                            <td>{{app.htmlUrl}}</td>
+                        </tr>
+                        <tr>
+                            <td translate="views.apps.view.GitUrl"></td>
+                            <td>{{app.gitUrl}}</td>
+                        </tr>
+                        <tr>
+                            <td translate="views.apps.view.Dockerfile"></td>
+                            <td><a href="#" editable-textarea="app.dockerFile" onaftersave="updateApp()">{{app.dockerFile || 'empty'}}</a></td>
+                        </tr>
+                        <tr>
+                            <td translate="views.apps.view.DockerCompose"></td>
+                            <td><a href="#" editable-textarea="app.dockerCompose" onaftersave="updateApp()">{{app.dockerCompose || 'empty'}}</a></td>
+                        </tr>
+                        <tr>
+                            <td translate="views.apps.view.AwsAccessKeyId"></td>
+                            <td><a href="#" editable-text="app.awsAccessKeyId" onaftersave="updateApp()">{{app.awsAccessKeyId || 'empty'}}</a></td>
+                        </tr>
+                        <tr>
+                            <td translate="views.apps.view.AwsSecretAccessKey"></td>
+                            <td><a href="#" editable-text="app.awsSecretAccessKey" onaftersave="updateApp()">{{app.awsSecretAccessKey || 'empty'}}</a></td>
+                        </tr>
+                        <tr>
+                            <td translate="views.apps.view.AwsVpcId"></td>
+                            <td><a href="#" editable-text="app.awsVpcId" onaftersave="updateApp()">{{app.awsVpcId || 'empty'}}</a></td>
+                        </tr>
+                        <tr>
+                            <td translate="views.dockerize.deploy.AwsRegion"></td>
+                            <td><a href="#" editable-text="app.awsRegion" onaftersave="updateApp()">{{app.awsRegion || 'empty'}}</a></td>
+                        </tr>
+                        <tr>
+                            <td translate="views.dockerize.deploy.AwsSubnetId"></td>
+                            <td><a href="#" editable-text="app.awsSubnetId" onaftersave="updateApp()">{{app.awsSubnetId || 'empty'}}</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+    </div>
+    <div class="pull-right">
+        <a ng-click="deploy()" class="btn btn-block btn-success">
+            <i class="fa fa-play"></i> <span translate="views.apps.view.DeployYourApplication"></span>
+        </a>
+    </div>
+    <div class="clearfix"></div>
+</div>

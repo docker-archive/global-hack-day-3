@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header" translate="views.app.deploy.App" translate-value-name="{{app.appName}}"></h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row form-group">
+    <div class="col-md-1">
+        <label for="sel1">Web app:</label>
+    </div>
+    <div class="col-md-3">
+        <select class="form-control" id="sel1">
+            <option>Web app 1</option>
+            <option>Web app 2</option>
+            <option>Web app 3</option>
+            <option>Web app 4</option>
+        </select>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="row form-group">
+    <div class="col-md-1">
+        <label for="sel1">Container:</label>
+    </div>
+    <div class="col-md-3">
+        <select class="form-control" id="sel1">
+            <option>Container 1</option>
+            <option>Container 2</option>
+            <option>Container 3</option>
+            <option>Container 4</option>
+        </select>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="row form-group">
+    <div class="col-md-12">
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>Web App</th>
+                <th>Container</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="danger">
+                <td>Web app 1</td>
+                <td>Container 1</td>
+                <td>Could not connect to ....................</td>
+            </tr>
+            <tr class="danger">
+                <td>Web app 1</td>
+                <td>Container 1</td>
+                <td class="has-error">Variable xxx is undefined</td>
+            </tr>
+            <tr class="success">
+                <td>Web app 1</td>
+                <td>Container 1</td>
+                <td class="has-error">Deployed successfully</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

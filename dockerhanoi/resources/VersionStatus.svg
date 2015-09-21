@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="66" height="18">
+	<rect x="0" fill="#229922" width="66" height="18" rx="3"/>
+	<path fill="none" stroke="#ffffff" d="M4.2,10.5 c0.7,2.6,3,4.5,5.8,4.5c3.3,0,6-2.7,6-6s-2.7-6-6-6C7.2,3,4.9,4.9,4.2,7.5" stroke-width="1.4"/>
+	<path fill="none" stroke="#ffffff" d="M9,11L7,9 M13,7 l-4,4" stroke-width="1.2"/>
+	<text x="20" y="13" fill="#ffffff" font-family="Helvetica, Arial, sans-serif" font-size="12">ALPHA</text>
+</svg>

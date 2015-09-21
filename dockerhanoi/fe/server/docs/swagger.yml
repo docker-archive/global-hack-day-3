@@ -1,0 +1,188 @@
+swagger: '2.0'
+info:
+  title: User API
+  description: Happy to code User API
+  version: '1.0.0'
+# the domain of the service
+# host: api.sonnguyen.ws
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /
+produces:
+  - application/json
+paths:
+  /api/v1/users/login:
+    post:
+      summary: Login with your account
+      description: |
+          Happy to access The System
+      parameters:
+        - name: username
+          in: formData
+          description: username for login
+          required: true
+          type: string
+          format: string
+        - name: password
+          in: formData
+          description: password for login
+          required: true
+          type: string
+          format: string
+      responses:
+        200:
+            description: Returns a access token
+        401:
+            description: Unauthorized
+        400:
+            description: Bad Request
+        406:
+            description: Not Acceptable
+        500:
+            description: Server Internal error
+      tags:
+        - Users
+  /api/v1/users/create:
+    post:
+      summary: Create a new account
+      description: |
+          Register a new account to use the system
+      parameters:
+        - name: username
+          in: formData
+          description: username is a email
+          required: true
+          type: string
+          format: string
+        - name: password
+          in: formData
+          description: password for login
+          required: true
+          type: string
+          format: string
+        - name: firstname
+          in: formData
+          description: firstname for new user
+          required: false
+          type: string
+          format: string
+        - name: lastname
+          in: formData
+          description: firstname for new user
+          required: false
+          type: string
+          format: string
+      responses:
+        200:
+            description: Returns user info
+        401:
+            description: Unauthorized
+        400:
+            description: Bad Request
+        406:
+            description: Not Acceptable
+        500:
+            description: Server Internal error
+      tags:
+        - Users
+  /api/v1/users/list/{page}/{limit}:
+    get:
+      summary: List user accounts
+      description: |
+          Show user accounts
+      parameters:
+        - name: page
+          in: path
+          description: page number
+          required: false
+          type: string
+          format: string
+        - name: limit
+          in: path
+          description: limit of record
+          required: false
+          type: string
+          format: string
+      responses:
+        200:
+            description: Returns list of user
+        401:
+            description: Unauthorized
+        400:
+            description: Bad Request
+        406:
+            description: Not Acceptable
+        500:
+            description: Server Internal error
+      tags:
+        - Users
+  /api/v1/users/view/{id}:
+    get:
+      summary: User details
+      description: |
+          Show user details
+      parameters:
+        - name: id
+          in: path
+          description: page number
+          required: false
+          type: string
+          format: string
+      responses:
+        200:
+            description: Returns user details
+        401:
+            description: Unauthorized
+        400:
+            description: Bad Request
+        406:
+            description: Not Acceptable
+        500:
+            description: Server Internal error
+      tags:
+        - Users
+  /api/v1/users/update/{id}:
+    put:
+      summary: Update user information
+      description: |
+          Update user information
+      parameters:
+        - name: id
+          in: path
+          description: User Id
+          required: true
+          type: string
+          format: string
+        - name: password
+          in: formData
+          description: password for login
+          required: true
+          type: string
+          format: string
+        - name: firstname
+          in: formData
+          description: firstname for new user
+          required: true
+          type: string
+          format: string
+        - name: lastname
+          in: formData
+          description: firstname for new user
+          required: true
+          type: string
+          format: string
+      responses:
+        200:
+            description: Returns user info
+        401:
+            description: Unauthorized
+        400:
+            description: Bad Request
+        406:
+            description: Not Acceptable
+        500:
+            description: Server Internal error
+      tags:
+        - Users

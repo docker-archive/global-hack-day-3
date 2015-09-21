@@ -1,0 +1,44 @@
+{
+    "services":{
+        "websockets": {
+            "logs": "ws://192.168.1.191:3001/api/v1/logs"
+        },
+        "users": {
+            "list": "http://192.168.1.191:3000/api/v1/users/list/:page/:limit",
+            "login": "http://192.168.1.191:3000/api/v1/users/login",
+            "get": "http://192.168.1.191:3000/api/v1/users/view/:id",
+            "create": "http://192.168.1.191:3000/api/v1/users/create",
+            "update": "http://192.168.1.191:3000/api/v1/users/update/:id",
+            "github": "http://192.168.1.191:3001/api/v1/users/github"
+        },
+        "apps": {
+            "list": "http://192.168.1.191:3001/api/v1/apps/list/:UserId/:page/:limit",
+            "get": "http://192.168.1.191:3001/api/v1/apps/view/:id",
+            "deploy": "http://192.168.1.191:3001/api/v1/apps/deploy/:id",
+            "getByAppName": "http://192.168.1.191:3001/api/v1/apps/getByAppName?appName=:appName",
+            "create": "http://192.168.1.191:3001/api/v1/apps/create",
+            "update": "http://192.168.1.191:3001/api/v1/apps/update/:id"
+        },
+        "deploys": {
+            "list": "http://192.168.1.191:3001/api/v1/deploys/list/:AppId/:page/:limit",
+            "get": "http://192.168.1.191:3001/api/v1/deploys/view/:id",
+            "create": "http://192.168.1.191:3001/api/v1/deploys/create",
+            "update": "http://192.168.1.191:3001/api/v1/deploys/update/:id"
+        }
+    },
+    "pagination":{
+        "limit": 10
+    },
+    "locales": {
+        "locales": {
+            "vi_VN": "Việt Nam",
+            "en_US": "English"
+        },
+        "preferredLocale": "en_US"
+    },
+    "github": {
+        "client_id": "",
+        "redirect_url": ""
+    },
+    "debug_mode": true
+}
