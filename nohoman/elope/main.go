@@ -175,7 +175,7 @@ func Pack(name, file, destination string) string {
 }
 
 func md5sum(contents_cached string) string {
-	output,_ := executil.Run("md5sum", contents_cached)
+	output := executil.Run("md5sum", contents_cached)
 	return output[:len(output)-1]
 }
 

@@ -1,6 +1,7 @@
 package executil
 
 import (
+	"os"
         "os/exec"
         "fmt"
         "bytes"
@@ -11,7 +12,7 @@ var (
 	verbose = true
 )
 
-func Run(exe string, args ...string) (string, error) {
+func Run(exe string, args ...string) string {
         cmd := exec.Command(exe, args...)
         if verbose {
         //      cmd.Stdout = os.Stdout
@@ -20,10 +21,18 @@ func Run(exe string, args ...string) (string, error) {
                 fmt.Printf("     [ %v %v ]\n", exe, strings.Join(args, " "))
         }
         var out bytes.Buffer
+        var outE bytes.Buffer
         cmd.Stdout = &out
+        cmd.Stderr = &outE
         err := cmd.Run()
         if err != nil {
-                return out.String(), err
+                if outE.Len() > 0 {
+                        fmt.Printf("Error occurred during execution: %s", outE.String())
+                } else {
+                        fmt.Printf("Exception occurred: %v", err.Error())
+                }
+                os.Exit(1)
         }
-        return out.String(), nil
+        return out.String()
 }
+
