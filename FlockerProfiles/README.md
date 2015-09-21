@@ -8,10 +8,6 @@ Team Members: Madhuri Yechuri (ClusterHQ), Ryan Wallner (EMC), Sean McGinnis (De
 
 Enterprise applications have SLA needs with respect to storage. For example, a database application and a log analytics application are not created equal. Top of the line storage providers have knobs to deliver application-specific SLA needs. What is missing from this equation is the ability to have a mapping of application SLA to backend storage feature set needed to service the SLA.
 
-# Demo
-
-[![FlockerProfiles on EBS](http://img.youtube.com/vi/nOByh6UMUl0/0.jpg)](https://youtu.be/nOByh6UMUl0)
-
 # Design
 
 We followed below guidelines:
@@ -48,6 +44,11 @@ docker run --name testapp --volume-driver=flocker -v cheapvolume@default:/data b
 will create a cheap volume for your test container.
 
 The minimal change from existing functionality is that instead of specifying volume as ``-v name:/data``, you would tag along profile as ``-v name@profile:/data``. For backward compatibility and ease of use, not specifying a profile defaults to a ``default`` profile: ``-v name@default:/data`` is equivalent to ``-v name:/data``.
+
+### Demo
+
+[![FlockerProfiles on EBS](http://img.youtube.com/vi/nOByh6UMUl0/0.jpg)](https://youtu.be/nOByh6UMUl0)
+
 
 The intepretation of ``gold`` and ``default`` will vary from backend to backend, the details of which will be [made available](https://github.com/ClusterHQ/flocker/compare/profile_metadata#diff-3f0c0887dbd1be3781b80c091915bd2fR612) to schedulers upon request. For example, ``gold`` profile will translate to the following settings.
 
