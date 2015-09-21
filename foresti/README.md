@@ -1,29 +1,32 @@
-# Godoauth - Go Docker Token Auth Config
+# godoauth - Go Docker Token Auth Config
 
-## Intro
+Godoauth is a [token authenticator](https://github.com/docker/distribution/blob/master/docs/spec/auth/token.md) (introduced in Docker Registry v2) which uses [Vault](https://www.vaultproject.io/) as a backend, developed as part of the Docker Global Hack Day #3 in Sydney.
 
-As part of the Docker Global Hack Day #3 in Sydney we developed a [token](https://github.com/docker/distribution/blob/master/docs/spec/auth/token.md) authenticator intoduced in registry v2 using [vault](https://www.vaultproject.io/) as a backend. Vault is a tool for securely accessing secrets.
-
-Benefits of using the new token authentication introduced in registry v2 is a fine-grained access control to your private registry. That's specially important in bigger teams where you share your registry with different projects.
+The new [token auth](https://github.com/docker/distribution/blob/master/docs/spec/auth/token.md) allows for fine-grained access control for private registries, especially important in large teams when many different projects share a registry.
 
 
 ## Setup
 
 Requirements:
- * [vault](https://www.vaultproject.io/) server
- * [private registry](https://github.com/docker/distribution)
- * docker 1.6+
+ * [Vault](https://www.vaultproject.io/) server
+ * [Docker Private Registry](https://github.com/docker/distribution)
+ * [Docker 1.6+](https://www.docker.com)
+ * [Go 1.4+](https://www.golang.org) (only tested on 1.5.1)
 
+If you haven't setup Go before, you need to first [install Go](https://golang.org/doc/install) and set a `GOPATH` (see [https://golang.org/doc/code.html#GOPATH](https://golang.org/doc/code.html#GOPATH)).
 
-To start the Go DOcker AUTHentication Service
+```bash
+go get -u -f -t github.com/n1tr0g/...
+```
+
+This will fetch the code and build the command line tools into `$GOPATH/bin` (assumed to be in your `PATH` already). To start the Go Docker Authentication Service:
 
     docker run -d -p 5002:5002 --restart=always --name godoauth \
       -v `pwd`/config:/etc/docker/godoauth golja/godoauth
 
-### List of configuration options
+## Configuration
 
-This section lists all the configuration options.
-
+Configuration is specified in a [YAML file](https://en.wikipedia.org/wiki/YAML) which can be set using the (`-config` option).
 
     ---
     version: 0.1
@@ -50,7 +53,7 @@ This section lists all the configuration options.
 
 In some instances a configuration option is **optional**
 
-#### Version
+### Version
 
     version: 0.1
 
@@ -58,7 +61,7 @@ The `version` option is **optional**. It specifies the configuration's version.
 It is expected to remain a top-level field, to allow for a consistent version
 check before parsing the remainder of the configuration file.
 
-#### log
+### log
 
 The `log` subsection is **optional** and configures the behavior of the logging system. 
 The logging system outputs everything to stdout. You can adjust the granularity and format
@@ -100,9 +103,9 @@ with this configuration section.
   </tr>
 </table>
 
-#### storage
+### storage
 
-The `storage` subsection is **required** and it configure the data backend. Currently only vault is supported, but this may change in the future.
+The `storage` subsection is **required** and it configures the data backend. Currently only `vault` is supported, but this may change in the future.
 
     storage:
       vault:
@@ -111,7 +114,7 @@ The `storage` subsection is **required** and it configure the data backend. Curr
         port: 8200
         auth_token: dbXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX
 
-##### vault
+#### vault
 
 <table>
   <tr>
@@ -168,10 +171,10 @@ The `storage` subsection is **required** and it configure the data backend. Curr
 </table>
 
 
-#### http
+### http
 
-The `http` option details the configuration for the HTTP(S) server that
-hosts the token authentication.
+The `http` option contains the config for the HTTP(S) server that
+hosts token authentication.
 
     http:
       addr: :5002
@@ -194,7 +197,7 @@ hosts the token authentication.
       yes
     </td>
     <td>
-     The address for which the server should accept connections.
+     The bind address for the server.
     </td>
   </tr>
   <tr>
@@ -210,9 +213,9 @@ hosts the token authentication.
   </tr>
 </table>
 
-##### tls
+#### tls
 
-The `tls` struct within `http` is **optional**. Use this to configure TLS
+The `tls` struct within `http` is **optional** and is used setup TLS
 for the server.
 
 <table>
@@ -229,7 +232,7 @@ for the server.
       yes
     </td>
     <td>
-       Absolute path to x509 cert file
+       Absolute path to x509 cert file.
     </td>
   </tr>
     <tr>
@@ -245,9 +248,9 @@ for the server.
   </tr>
 </table>
 
-#### token
+### token
 
-The `token` subsection is **required** and details the JWT token specific options.
+The `token` subsection is **required** and contains the JWT token specific options.
 
     token:
        issuer: Token
@@ -269,7 +272,7 @@ The `token` subsection is **required** and details the JWT token specific option
       yes
     </td>
     <td>
-       Issuer of the token. This value *must* be the same on the registry. Usually
+       Issuer of the token. This value <b>must</b> be the same on the registry. Usually
        you pass it as REGISTRY_AUTH_TOKEN_ISSUER=Issuer
     </td>
   </tr>
@@ -281,7 +284,7 @@ The `token` subsection is **required** and details the JWT token specific option
       yes
     </td>
     <td>
-       Time in seconds defining how long the token is valid.
+       Token lifetime in in seconds.
     </td>
   </tr>
   <tr>
@@ -311,9 +314,9 @@ The `token` subsection is **required** and details the JWT token specific option
 
 ## Development
 
-If you want to try godoauth you will need the last Docker, vault and a working go environment.
+If you want to contribute to `godoauth` you will need the latest Docker, Vault and a working Go environment.
 
-### Create dev SSL certs
+### Create Development SSL Certificates
 
 ```bash
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.pem
@@ -321,11 +324,11 @@ mkdir certs
 cp server.pem server.key certs
 ```
 
-**NOTE**: If you plan to test godoauth on different host then you will need a properly signed SSL or add the following parametes to the docker daemon ```--insecure-registry private.registry.io:5000```
+**NOTE**: If you plan to test godoauth on a different host you will need a properly signed SSL or you must add ```--insecure-registry private.registry.io:5000``` to the docker daemon parameters.
 
-### Registry v2
+## Docker Registry v2
 
-On your docker host start Registry v2
+On your Docker host start Registry v2
 
 ```
 docker run -d -p 5000:5000 --restart=always --name registry \
@@ -342,7 +345,8 @@ docker run -d -p 5000:5000 --restart=always --name registry \
 ```
 
 ### Vault
-For development purpose you can run vault locally in the development mode. All data will be stored in memory and there is no need to unseal the server.
+
+For development purposes you can run Vault locally in development mode. All data will be stored in memory and there is no need to unseal the server.
 
 #### Install
 
@@ -359,9 +363,7 @@ vault server -devel
 ./vault mount -path registry generic
 ```
 
-The path mount point name must match the service name defined in the registry above. The auth service was
-designed in that way that it can support token authentication for multiple private registry. The only
-thing to do is to add another mount point in vault with corresponding users.
+The path mount point must match the service name defined in the registry above. The auth service has been designed to support multiple private registries, simply add another mount point in vault with corresponding users.
 
 #### Add sample users
 
@@ -369,31 +371,9 @@ thing to do is to add another mount point in vault with corresponding users.
 vault write registry/foo password=bar access="repository:linux/app:*;repository:linux/db:pull"
 ```
 
-This command will add the user *foo* with password *bar* to the registry service with full access to
-linux/app image and pull permission to linux/db image.
+This will add the user *foo* with password *bar* to the registry service with full access to
+`linux/app` image and pull permission to `linux/db` image.
 
-
-### godoath
-
-#### Build and Test
-
-Make sure you have Go installed if not visit [golang](https://golang.org/doc/install) page for more info. To then build the project, execute the following commands:
-
-```bash
-export GOPATH=$HOME/gocodez
-mkdir -p $GOPATH/src/github.com/n1tr0g
-cd $GOPATH/src/github.com/n1tr0g
-git clone https://github.com/n1tr0g/godoauth.git
-cd godoauth
-go get -u -f -t ./...
-go build ./...
-```
-
-To then install the binaries, run the following command. They can be found in `$GOPATH/bin`.
-
-```bash
-go install ./...
-```
 
 ## License
 
