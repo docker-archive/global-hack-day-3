@@ -21,7 +21,8 @@ const (
 	ls_action = "ls"
 
 	// TODO: Productise this path (e.g. /var/lib/elope)
-	persistence_store = "/tmp/"
+	persistence_store = "/tmp"
+        packages_metadir = persistence_store+"/elope"
 	tomcat = "/usr/local/tomcat/webapps" 
 )
 
@@ -51,6 +52,16 @@ func NewPackageJSON(src []byte) (*Package, error) {
 }
 
 func Pack(name, file, destination string) string {
+        packages_metadir_exists,_ := exists(packages_metadir)
+        // TODO: Error handling
+        if packages_metadir_exists != true {
+                os.Mkdir(packages_metadir, 0777)
+                // Make this debug log
+                fmt.Printf("Creating %v\n",packages_metadir)
+        } else {
+                fmt.Println(packages_metadir+" exists!")
+        }
+
 	id, err := exec.Command("uuidgen").Output()
 	if err != nil {
 		fmt.Println("Issue accessing uuidgen")
@@ -64,7 +75,7 @@ func Pack(name, file, destination string) string {
 	fmt.Println(string(mapB))
 
 	d1 := []byte(string(mapB))
-	error := ioutil.WriteFile(persistence_store+sanitised_id+".json", d1, 0644)
+	error := ioutil.WriteFile(packages_metadir+"/"+sanitised_id+".json", d1, 0644)
 
         if error != nil {
 		fmt.Println(error)
@@ -73,9 +84,16 @@ func Pack(name, file, destination string) string {
 	return sanitised_id
 }
 
+func exists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil { return true, nil }
+	if os.IsNotExist(err) { return false, nil }
+	return true, err
+}
+
 func Run(identifier, container string) {
 	fmt.Println("Using " + identifier)
-	packageJSON, err := ioutil.ReadFile(persistence_store+identifier+".json")
+	packageJSON, err := ioutil.ReadFile(packages_metadir+"/"+identifier+".json")
 	if err != nil {
 		fmt.Printf("Error reading file: %v", err)
 		os.Exit(1)
@@ -155,7 +173,7 @@ func main() {
 		var destination = ""
 		//if numArgs > 2 {
 			destination = args[2]
-			fmt.Println("Using destination %s", destination)
+			fmt.Println("Using destination %v", destination)
 		//}
 		id := Pack("random_name", file, destination)
 		fmt.Println(id)
@@ -176,6 +194,7 @@ func main() {
 			container = args[2]
 		//}
 		Run(id, container)
+	} else if action == ls_action {
 	// TODO:
 	// Implement ls. By searching path /tmp/packages/
 	// Package ID | File | Destination | Latest | Pending Changes
