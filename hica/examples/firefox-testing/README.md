@@ -9,6 +9,10 @@ This Dockerfile uses the following `injectors`:
 Firefox itself is installed from `fedora-updates-testing`, this allows for easy testing of
 web pages using multiple versions of the same browsers.
 
+If your xhost is not configured to accept local connections you can do so with:
+`xhost +local:`
+
+
 *This does not work with enabled *SELinux* yet*
 
 ```bash
