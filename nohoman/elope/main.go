@@ -99,6 +99,7 @@ func Pack(name, file, destination string) string {
         // TODO: Error handling
 	var package_exists = false
 	var existing_package_id = ""
+        currentmd5sumfull := md5sum(file)
         if packages_metadir_exists != true {
                 os.MkdirAll(packages_metadir, 0777)
                 // Make this debug log
@@ -113,13 +114,16 @@ func Pack(name, file, destination string) string {
 			if p_meta_exists == true {
 				p,_ := ReadPackageJSON(metadata_file)
 				fmt.Printf("Comparing %v with %v\n",file,p.SourceFile)	
-				if p.SourceFile == file {
+				savedmd5 := strings.Split(p.Md5sum," ")[0]
+				currentmd5 := strings.Split(currentmd5sumfull," ")[0]
+				fmt.Println(savedmd5)
+				fmt.Println(currentmd5)
+				if p.SourceFile == file && savedmd5 == currentmd5 {
 					package_exists = true
 					existing_package_id = p.ID				
+					break
 				}
-			} else {
-				// Write debugging messages here?
-			}
+			} 
 		}
 	}
 
