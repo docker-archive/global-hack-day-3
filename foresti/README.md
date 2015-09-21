@@ -22,7 +22,9 @@ go get -u -f -t github.com/n1tr0g/...
 This will fetch the code and build the command line tools into `$GOPATH/bin` (assumed to be in your `PATH` already). To start the Go Docker Authentication Service:
 
     docker run -d -p 5002:5002 --restart=always --name godoauth \
-      -v `pwd`/config:/etc/docker/godoauth golja/godoauth
+      -v `pwd`/config:/etc/docker/godoauth \
+      -v `pwd`/certs/:/certs \
+      golja/godoauth
 
 ## Configuration
 
