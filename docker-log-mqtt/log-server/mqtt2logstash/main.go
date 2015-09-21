@@ -60,7 +60,7 @@ func main() {
 			fmt.Printf("Failed to marshal %s: %s\n", message, err)
 			return
 		}
-		//fmt.Println(string(messageBytes))
+		fmt.Println("Log:", string(messageBytes))
 		conn.Write(messageBytes)
 	})
 
