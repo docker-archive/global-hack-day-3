@@ -67,6 +67,7 @@ We use the IP of the host of the container to make sure other serf agent will be
 There is still a lot of work to do to improve the solution, but all the basis are here : we have a way to connect nodes from a Swarm, from anywhere (well as long as they can communicate), simply by providing the IP of one node (any node really) of the cluster.
 
 Now, possible improvements include :
+* Fix instability issues with Serf over WAN
 * Smooth things up for regular use
 * Improve security by doing cluster verification 
 * Streamline build/deployment
