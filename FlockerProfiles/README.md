@@ -158,7 +158,7 @@ root@ip-172-31-1-54:/proc/9444/fdinfo#
 
 We thank:
 
-- ClusterHQ Labs and Engineering, EMC, and Dell for facilitating productive collaboration.
+- ClusterHQ, EMC, and Dell for facilitating productive collaboration.
 
 - Docker Inc for providing venue for prototyping our collective thoughts and encouraging innovation.
 
