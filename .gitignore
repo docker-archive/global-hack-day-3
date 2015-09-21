@@ -1,2 +1,4 @@
 *.sw[po]
 *.pyc
+.DS_Store
+
