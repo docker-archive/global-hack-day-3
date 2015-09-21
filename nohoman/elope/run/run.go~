@@ -7,12 +7,11 @@ import (
 	"path/filepath"
 	"fmt"
 	"time"
+	"io"
 	"io/ioutil"
 	"github.com/craigbarrau/global-hack-day-3/nohoman/elope/docker"
         "github.com/craigbarrau/global-hack-day-3/nohoman/elope/executil"
         "github.com/craigbarrau/global-hack-day-3/nohoman/elope/stringid"
-	"github.com/craigbarrau/global-hack-day-3/nohoman/elope/run"
-	"github.com/craigbarrau/global-hack-day-3/nohoman/elope/common"
 )
 
 var (
@@ -31,17 +30,72 @@ const (
 	tomcat = "/usr/local/tomcat/webapps" 
 )
 
+type Package struct {
+	// ID a unique 64 character identifier of the image
+	ID string `json:"id"`
+	//DeployableURI the cached deployment URI
+	DeployableURI string `json:"deployable-uri"`	
+	// SourceFile the source of the file on the local filesystem
+	SourceFile string `json:"source-file"`
+	// Comment user added comment
+	Comment string `json:"comment,omitempty"`
+	// Created timestamp when image was created
+	Created time.Time `json:"created"`
+	// Destination
+	Destination string `json:"destination,omitempty"`
+	// Author
+	Author string `json:"author,omitempty"`
+	// OS is the operating system used to build and run the deployable
+	OS string `json:"os,omitempty"`
+	// MD5sum
+	Md5sum string `json:"md5sum"`	
+}
+
 // NewPackageJSON creates an Package configuration from json.
-func NewPackageJSON(src []byte) (*common.Package, error) {
-	ret := &common.Package{}
+func NewPackageJSON(src []byte) (*Package, error) {
+	ret := &Package{}
 	if err := json.Unmarshal(src, ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
 }
 
+func ReadPackageJSON(file string) (Package, error) {
+        packageJSON, err := ioutil.ReadFile(file)
+        if err != nil {
+                fmt.Printf("Error reading file: %v", err)
+                return Package{}, err
+        }
+        var p Package
+        error := json.Unmarshal(packageJSON, &p)
+        if error != nil {
+                fmt.Printf("Error reading json: %v", error)
+                return Package{}, error
+        }
+	return p, nil
+}
+
+func cp(src, dst string) error {
+	s, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	// no need to check errors on read only file, we already got everything
+	// we need from the filesystem, so nothing can go wrong now.
+	defer s.Close()
+	d, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	if _, err := io.Copy(d, s); err != nil {
+		d.Close()
+		return err
+	}
+	return d.Close()
+}
+
 func Pack(name, file, destination string) string {
-        packages_metadir_exists,_ := common.Exists(packages_metadir)
+        packages_metadir_exists,_ := exists(packages_metadir)
         // TODO: Error handling
 	var package_exists = false
 	var existing_package_id = ""
@@ -56,9 +110,9 @@ func Pack(name, file, destination string) string {
 			folder := files[i]
 			metadata_file := packages_metadir+"/"+folder.Name()+"/metadata.json"	
 			fmt.Printf("Reading %v\n",metadata_file)
-			p_meta_exists,_ := common.Exists(metadata_file)
+			p_meta_exists,_ := exists(metadata_file)
 			if p_meta_exists == true {
-				p,_ := common.ReadPackageJSON(metadata_file)
+				p,_ := ReadPackageJSON(metadata_file)
 				fmt.Printf("Comparing %v with %v\n",file,p.SourceFile)	
 				savedmd5 := strings.Split(p.Md5sum," ")[0]
 				currentmd5 := strings.Split(currentmd5sumfull," ")[0]
@@ -90,7 +144,7 @@ func Pack(name, file, destination string) string {
 	sanitised_id := string(id)[:len(id)-1]
 
         this_package_metadir := packages_metadir+"/"+sanitised_id
-        this_package_metadir_exists,_ := common.Exists(this_package_metadir)
+        this_package_metadir_exists,_ := exists(this_package_metadir)
         // TODO: Error handling
         if this_package_metadir_exists != true {
                 os.MkdirAll(this_package_metadir, 0777)
@@ -107,7 +161,7 @@ func Pack(name, file, destination string) string {
         contents_cached := this_package_metadir+"/"+filename
 
         abs_file,_ := filepath.Abs(file)
-        common.Cp(abs_file, contents_cached)
+        cp(abs_file, contents_cached)
         md5sum := md5sum(contents_cached)
 
 	mapD := map[string]string{"id": sanitised_id, "source-file": abs_file, "deployable-uri": contents_cached, "destination": destination, "create": t.Format(time.RFC3339), "md5sum": md5sum}
@@ -125,8 +179,50 @@ func Pack(name, file, destination string) string {
 }
 
 func md5sum(contents_cached string) string {
-	output := executil.Run("md5sum", contents_cached)
+	output,_ := executil.Run("md5sum", contents_cached)
 	return output[:len(output)-1]
+}
+
+func exists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil { return true, nil }
+	if os.IsNotExist(err) { return false, nil }
+	return true, err
+}
+
+func Run(identifier, container string) {
+        packages_metadir_exists,_ := exists(packages_metadir)
+        // TODO: Error handling
+        var package_exists = false
+	var existing_package = Package{}
+        if packages_metadir_exists != true {
+                os.MkdirAll(packages_metadir, 0777)
+                // Make this debug log
+                fmt.Printf("Creating %v\n",packages_metadir)
+        } else {
+                files,_ := ioutil.ReadDir(packages_metadir)
+                for i := 0; i < len(files); i++ {
+                        folder := files[i]
+                        metadata_file := packages_metadir+"/"+folder.Name()+"/metadata.json"
+			p_meta_matches := strings.HasPrefix(folder.Name(), identifier) 
+                        p_meta_exists,_ := exists(metadata_file)
+                        if p_meta_exists && p_meta_matches {
+                                p,_ := ReadPackageJSON(metadata_file)
+                                package_exists = true
+				existing_package = p
+                        } else {
+                                // Write debugging messages here?`
+                        }
+                }
+        }
+	if package_exists {
+		p := existing_package
+		docker.Cp(p.DeployableURI, container, p.Destination)
+		CreateDockerImage(p.DeployableURI, container, p.Destination)
+	} else {
+		fmt.Printf("No package found matching %v\n", identifier)	
+		os.Exit(1)
+	}
 }
 
 func CreateDockerImage(file, container, destination string) {
@@ -144,7 +240,7 @@ func CreateDockerImage(file, container, destination string) {
         filename := filepieces[len(filepieces)-1]
 
 	fmt.Println(" c - Pulling snapshot package into Docker context")
-	common.Cp(file, tmp_docker_context+"/"+filename)	
+	cp(file, tmp_docker_context+"/"+filename)	
 		
 	dfile := CreateDockerFile(image_name, filename, destination, tmp_docker_context)
         // Make this part of debug
@@ -223,7 +319,7 @@ func main() {
 		//if numArgs > 2 {
 			container = args[2]
 		//}
-		run.Run(id, container)
+		Run(id, container)
 	} else if action == ls_action {
 	// TODO:
 	// Implement ls. By searching path /tmp/packages/
