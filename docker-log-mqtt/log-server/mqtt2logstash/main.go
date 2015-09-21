@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git"
+	"math/rand"
 	"net"
 	"os"
 	"strings"
@@ -30,6 +31,16 @@ func init() {
 
 }
 
+const hexLetters = "0123456789abcdef"
+
+func RandStringBytes(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = hexLetters[rand.Intn(len(hexLetters))]
+	}
+	return string(b)
+}
+
 func main() {
 
 	fmt.Println("Connecting to logstash...")
@@ -45,7 +56,7 @@ func main() {
 
 	fmt.Println("Connecting to mqtt...")
 	opts := mqtt.NewClientOptions().AddBroker("tcp://" + mqttAddress)
-	opts.SetClientID("mqtt-to-logstash")
+	opts.SetClientID("mqtt-to-logstash-" + RandStringBytes(16))
 	opts.SetKeepAlive(60 * time.Second)
 
 	opts.SetDefaultPublishHandler(func(client *mqtt.Client, msg mqtt.Message) {
@@ -65,7 +76,7 @@ func main() {
 			fmt.Printf("Failed to marshal %s: %s\n", message, err)
 			return
 		}
-		fmt.Println("Publishing:", string(messageBytes))
+		fmt.Println("log:", string(messageBytes))
 		conn.Write(messageBytes)
 	})
 
