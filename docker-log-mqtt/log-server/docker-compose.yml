@@ -1,0 +1,35 @@
+elasticsearch:
+  build: elasticsearch/
+  ports:
+    - "9200:9200"
+logstash:
+  image: logstash:latest
+  command: logstash -f /etc/logstash/conf.d/logstash.conf
+  volumes:
+    - ./logstash/config:/etc/logstash/conf.d
+  ports:
+    - "5000:5000"
+  links:
+    - elasticsearch
+kibana:
+  build: kibana/
+  volumes:
+    - ./kibana/config/kibana.yml:/opt/kibana/config/kibana.yml
+  ports:
+    - "5601:5601"
+  links:
+    - elasticsearch
+
+mosquitto:
+  image: toke/mosquitto:latest
+  ports:
+    - "1883:1883"
+    - "9001:9001"
+  volumes:
+    - ./mosquitto/config:/mqtt/config:ro
+    - ./mosquitto/log:/mqtt/log
+    - ./mosquitto/data/:/mqtt/data/
+  links:
+    - logstash
+
+
