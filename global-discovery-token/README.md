@@ -39,12 +39,12 @@ This will generate the swarm binary in ```$GOBIN/swarm```
   ```
 Done ! You can now launch a container using the serf discovery with :
 ```
-docker run -p 2375:2375 -p 7946:7946 -d docker-global-discovery ./swarm join serf://<ip.of.cluster.node>@<ip.advertised.to.other> --advertise 127.0.0.1:2375
+docker run -p 2375:2375 -p 7946:7946 -p 7373:7373 -d docker-global-discovery ./swarm join serf://<ip.of.cluster.node>@<ip.advertised.to.other> --advertise 127.0.0.1:2375
 ```
 
 #### Explanation :
 
-We forward ports 2375 (swarm) and 7946 (serf) to make sure we are accessible from outside.
+We forward ports 2375 (swarm), 7946 (serf) and 7373(RPC serf) to make sure we are accessible from outside.
 
 Next, we use ./swarm join to use our custom binary (it's still a bit rough around the edges, this kind of things can be improved)
 
@@ -55,7 +55,7 @@ The advertise is required by Docker but not used
 An example would be :
 
 ```
-docker run -p 2375:2375 -p 7946:7946 -d docker-global-discovery ./swarm join serf://135.24.45.8@135.24.45.7 --advertise 127.0.0.1:2375
+docker run -p 2375:2375 -p 7946:7946 -p 7373:7373 -d docker-global-discovery ./swarm join serf://135.24.45.8@135.24.45.7 --advertise 127.0.0.1:2375
 ```
 
 Where 135.24.45.8 is the IP of a node we want to connect to, and 135.24.45.7 is the IP of *the host of the container*.
