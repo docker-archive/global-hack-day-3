@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=0.1
+Name=AppIt
+Comment=git for Desktop Application Environment
+Exec=./appit.py run firefox
+Terminal=true
+Type=Application
+Categories=Utility;Application;
