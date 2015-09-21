@@ -3,7 +3,8 @@ Ridiculously simple system way deploy and test micro-services. It's an internal 
 
 DockerBox is an PAAS solution for setting up a QA or DevInt environment of a company. It can be deployed in a server and can add more servers to the cluster it forms using Docker Swarm. It uses Docker-compose for deploying distributed apps.
 
-Demo: [www.dockerbox.in](http://www.dockerbox.in)
+* Demo: [www.dockerbox.in](http://www.dockerbox.in)
+* Presentation: [Slideshare](https://www.slideshare.net/secret/kqeCXmXf9YFcS8)
 
 ## Usage
 
