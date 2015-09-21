@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+
+# Proof of concept: using Notary to verify git tags.
+
+init() {
+    local gun="$1"
+    local git_dir=$(git rev-parse --git-dir)
+
+    if [ -z "$gun" ]; then
+        echo "gun is required"
+        exit 1
+    fi
+
+    notary init "$gun"
+
+    # Remove the notary section. Note to be: be more subtle.
+    git config --remove-section notary >/dev/null 2>&1
+    git config --add notary.gun "$gun"
+}
+
+tag() {
+    local tag="$1"
+
+    if [ -z "$tag" ]; then
+        echo "tag is required"
+        exit 1
+    fi
+
+    local gun=$(git config --get notary.gun)
+
+    if [ -z "$gun" ]; then
+        echo "Cannot get gun from git config, did you run init?"
+        exit 1
+    fi
+
+    git tag ${tag}
+
+    TAG_FILE=$(mktemp -t tag-dump)
+    git show >${TAG_FILE} $1
+    notary add ${gun} ${tag} ${TAG_FILE}
+    rm ${TAG_FILE}
+}
+
+push() {
+    local tag="$1"
+
+    if [ -z "$tag" ]; then
+        echo "tag is required"
+        exit 1
+    fi
+
+    local gun=$(git config --get notary.gun)
+
+    if [ -z "$gun" ]; then
+        echo "Cannot get gun from git config, did you run init?"
+        exit 1
+    fi
+
+    # TODO get the actual upstream remote
+    local branch=$(git rev-parse --abbrev-ref HEAD)
+    local remote=$(git config --local --get branch.${branch}.remote)
+
+    if notary publish $gun $1; then
+        git push ${remote} ${tag}
+    else
+        echo "Cannot publish tag"
+        exit 1
+    fi
+}
+
+verify() {
+    local tag="$1"
+
+    if [ -z "$tag" ]; then
+        echo "tag is required"
+        exit 1
+    fi
+
+    local gun=$(git config --get notary.gun)
+
+    if [ -z "$gun" ]; then
+        echo "Cannot get gun from git config, did you run init?"
+        exit 1
+    fi
+
+    if git show ${tag} | notary verify ${gun} ${tag} >/dev/null; then
+        echo "Tag $tag is valid"
+    else
+        echo "Cannot verify tag $tag"
+        exit 1
+    fi
+}
+
+help() {
+    cat <<EOF
+usage: git notary (init|tag|push|verify)
+
+    init <GUN>
+        prepare the git repository for notary
+
+    tag <tag>
+        add a git tag and store it in notary for a coming publication
+
+    push <tag>
+        publish the tag and push it to the git repository
+
+    verify <tag>
+        verify an existing git tag against notary's record
+
+EOF
+}
+
+CMD=${1:-help}
+shift
+
+${CMD} $@
