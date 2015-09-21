@@ -42,7 +42,7 @@ Screencast/Demo
 
 We demonstrate our tool by taking a tutorial provided by DigitalOcean on how to setup nginx within a Docker container and generate the Dockerfile automatically from the instructions given in the tutorial.
 
-
+Screencast: https://vimeo.com/139944015
 
 
 Background/Overview
@@ -52,11 +52,11 @@ When starting your setup/maintenance process with docker-record, with every issu
 The Dockerfile can than be seen as the mapping between the gathered historical data and Dockerfile instructions. However, not every mapping is straight-forward, some require the use of heuristics to provide meaningful approximation.
 
 The overall process can be summarized as follows:
-    * Instrument bash commands to gain a full history with execution context
-    * Extract log history from container
-    * Map bash commands + execution context to Dockerfile instructions
-    * Apply heuristics to extract additional Dockerfile instructions
-    * Apply heuristics to *eliminate* Dockerfile instructions
+- Instrument bash commands to gain a full history with execution context
+- Extract log history from container
+- Map bash commands + execution context to Dockerfile instructions
+- Apply heuristics to extract additional Dockerfile instructions
+- Apply heuristics to *eliminate* Dockerfile instructions
 
 In the current, initial version resulting out of Docker Hack Day #3, we provide heuristics for detecting which 
 files haven been affected and copy these files from the container to a build folder (BUILD_CONTEXT_PATH in docker-record source).
