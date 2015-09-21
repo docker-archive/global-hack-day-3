@@ -9,6 +9,7 @@ import (
 	"io"
 	"io/ioutil"
 	"github.com/craigbarrau/global-hack-day-3/nohoman/elope/docker"
+        "github.com/craigbarrau/global-hack-day-3/nohoman/elope/executil"
 )
 
 var (
@@ -41,6 +42,8 @@ type Package struct {
 	Author string `json:"author,omitempty"`
 	// OS is the operating system used to build and run the deployable
 	OS string `json:"os,omitempty"`
+	// MD5sum
+	Md5sum string `json:"md5sum"`	
 }
 
 // NewPackageJSON creates an Package configuration from json.
@@ -139,20 +142,27 @@ func Pack(name, file, destination string) string {
                 os.Exit(1)
         }
 
-	mapD := map[string]string{"id": sanitised_id, "deployable-uri": file, "destination": destination, "create": t.Format(time.RFC3339)}
+        contents_cached := this_package_metadir+"/contents"
+        cp(file, contents_cached)
+        md5sum := md5sum(contents_cached)
+
+	mapD := map[string]string{"id": sanitised_id, "deployable-uri": file, "destination": destination, "create": t.Format(time.RFC3339), "md5sum": md5sum}
 	mapB, _ := json.Marshal(mapD)
 	fmt.Println(string(mapB))
 
 	d1 := []byte(string(mapB))
 	error := ioutil.WriteFile(this_package_metadir+"/metadata.json", d1, 0644)
 
-	cp(file, this_package_metadir+"/contents")
-
         if error != nil {
 		fmt.Println(error)
 		os.Exit(1)
 	}
 	return sanitised_id
+}
+
+func md5sum(contents_cached string) string {
+	output,_ := executil.Run("md5sum", contents_cached)
+	return output[:len(output)-1]
 }
 
 func exists(path string) (bool, error) {
