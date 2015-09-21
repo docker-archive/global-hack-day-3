@@ -49,22 +49,26 @@ func main() {
 
 	opts.SetDefaultPublishHandler(func(client *mqtt.Client, msg mqtt.Message) {
 
-		var message map[string]interface{}
-		err := json.Unmarshal(msg.Payload(), &message)
-		if err != nil {
-			fmt.Printf("Failed to unmarshal %s: %s\n", msg.Payload(), err)
-			return
-		}
+		/*
+			var message map[string]interface{}
+			err := json.Unmarshal(msg.Payload(), &message)
+			if err != nil {
+				fmt.Printf("Failed to unmarshal %s: %s\n", msg.Payload(), err)
+				return
+			}
 
-		topic := msg.Topic()
-		levels := strings.Split(string(topic), "/")
-		message["container_id"] = levels[len(levels)-1]
-		messageBytes, err := json.Marshal(message)
-		if err != nil {
-			fmt.Printf("Failed to marshal %s: %s\n", message, err)
-			return
-		}
-		fmt.Println("Received log:", string(messageBytes))
+			topic := msg.Topic()
+			levels := strings.Split(string(topic), "/")
+			message["container_id"] = levels[len(levels)-1]
+			messageBytes, err := json.Marshal(message)
+			if err != nil {
+				fmt.Printf("Failed to marshal %s: %s\n", message, err)
+				return
+			}
+			fmt.Println("Received log:", string(messageBytes))
+		*/
+		fmt.Println("Topic: ", string(msg.Topic()))
+		fmt.Println("Log  : ", string(msg.Payload()))
 	})
 
 	c := mqtt.NewClient(opts)
