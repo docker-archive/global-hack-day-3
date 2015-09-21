@@ -32,4 +32,9 @@ mosquitto:
   links:
     - logstash
 
-
+mqtt2logstash:
+  build: mqtt2logstash
+  command: app localhost:1883 docker-log/# localhost:5601
+  links:
+    - logstash
+    - mosquitto
