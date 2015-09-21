@@ -1,0 +1,121 @@
+extends layout
+
+block assets
+	style
+		| #sshlink {
+		|	letter-spacing: normal;
+		|	margin-left: 10px;
+		|	font-weight: bold;
+		|	line-height: 23px;
+		| }
+
+block content
+	include includes/header.jade
+	.pure-g.fullhw
+		.pure-u-1-2.bookmargin
+			.pure-form.pure-form-stacked
+				h2 Server Details
+				.pure-control-group
+					label Name
+					p=name
+				.pure-control-group
+					- var appString = JSON.stringify(app);
+					textarea.hidden=appString
+				.pure-control-group
+					label Description
+					p=description
+				.pure-control-group
+					label TTL Days
+					p=ttl
+				if compose_status == 0
+					.pure-control-group
+						label SSH to the container
+						.pure-g 
+							select(onchange='sshChange(this)')
+								each server in serverList
+									option=server
+							a#sshlink.pure-button.pure-button-primary(href='http://terminal-'+name+serverList[0] + '.' + domainName target='_blank') SSH
+						.pure-g
+							p#sshport=sshIpMap[serverList[0]]
+					.pure-control-group
+						button.pure-button.pure-button-error(onclick='deleteQA(this)') Delete
+					if publish
+						.pure-control-group
+							button.pure-button.pure-button-primary(onclick='publishTemplate(false)') Unpublish as Template
+					else
+						.pure-control-group
+							button.pure-button.pure-button-primary(onclick='publishTemplate(true)') Publish as Template
+				else
+					if compose_status == 'processing'
+						button.pure-button.pure-button-primary Server Orchestration going on....
+					else
+						label Orchestration Failed
+						button.pure-button.pure-button-error(onclick='deleteQA(this)') Delete
+					button(onclick='toggleProcessing()') Show Console Output
+
+		.pure-u-1-2.marginline
+			include uml
+
+	script!='var dockerbox = ' + JSON.stringify({sshIpMap:sshIpMap, servername:name, compose_status:compose_status, _rev:_rev, streamId:(streamId || ''), domainName:domainName})
+	script
+		| var processingNode = document.querySelector('#processing');
+		| if(dockerbox.streamId) {
+		|		var source = new EventSource("/events/" + dockerbox.streamId);
+		|		var live = false;
+		|		source.onmessage = function(e) {
+		|			var stream = JSON.parse(e.data);
+		|			if(stream.redirect && (dockerbox.compose_status === 'processing')) window.location = stream.redirect.location;
+		|			var check = ((processingNode.clientHeight + processingNode.scrollTop) == processingNode.scrollHeight);
+		|			document.querySelector('#eventstream').textContent = stream.data;
+		|			if(check) processingNode.scrollTop = processingNode.scrollHeight;
+		|			if(stream.completed) e.target.close();
+		|			if(stream.completed && live) window.location = '';
+		|			live = true;
+		|		};
+		|	}
+		| 
+		| function deleteQA() {
+		|	if(!confirm("Are you sure you want to delete this server?")) return;
+		|	processingNode.classList.remove('hidden');
+		|	$.post('delete/' + dockerbox.servername, {_rev : dockerbox._rev}, function(res){
+		|		if(res.redirect) {
+		|			window.location = res.redirect;
+		|		} else alert(JSON.stringify(res));
+		|	});
+		| }
+		| 
+		| function publishTemplate(publish) {
+		|	if(publish) if(!confirm("Publishing this server system as a template ?")) return;
+		|	if(!publish) if(!confirm("Unpublishing this server system from the templates ?")) return;
+		|	processingNode.classList.remove('hidden');
+		|	$.post('publish/' + dockerbox.servername, {publish : publish, _rev : dockerbox._rev}, function(res){
+		|		if(res.redirect) {
+		|			window.location = res.redirect;
+		|		} else alert(JSON.stringify(res));
+		|	});
+		| }
+		| 
+		| function renderUml() {
+		|	var uml = [];
+		|	var app = JSON.parse(document.querySelector('textarea.hidden').value);
+		|	if(!app.image) return;
+		|	uml.push('['+app.image+']'); 
+		|	doSome(app);
+		|	
+		|	function doSome(app){
+		|		if(!app.image) return;
+		|		app.dependency && app.dependency.forEach(function(dep){
+		|			if(dep.image) uml.push('['+app.image+']->['+dep.image+']');
+		|			doSome(dep);
+		|		});
+		|	};
+		|	nomnoml.parseAndRender(uml.join('\n') || '.');
+		| }
+		| function sshChange(select){
+		|	document.querySelector('#sshlink').href = 'http://terminal-' + dockerbox.servername + select.value + '.' + dockerbox.domainName;
+		|	document.querySelector('#sshport').textContent = dockerbox.sshIpMap[select.value];
+		| }
+		| window.onload = function(){
+		|	renderUml();
+		|	sshChange(document.querySelector('select'));
+		| };

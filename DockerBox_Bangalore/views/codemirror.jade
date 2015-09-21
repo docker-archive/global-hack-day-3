@@ -1,0 +1,25 @@
+link(rel="stylesheet" href="/codemirror/lib/codemirror.css")
+script(src="/codemirror/lib/codemirror.js")
+script(src="/codemirror/addon/mode/simple.js")
+script(src="/codemirror/mode/dockerfile/dockerfile.js")
+style
+  | #codemirrorform {
+  |   position: releative;
+  | }
+  | .CodeMirror {
+  |   position: absolute;
+  |   height: 100%;
+  |   width: 100%;
+  |  }
+
+form#codemirrorform
+  - dockerfile = dockerfile || '#Enter the Dockerfile here';
+  textarea#code=dockerfile
+
+script
+  | var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+  |   lineNumbers: true,
+  |   lineWrapping: true,
+  |   mode: "dockerfile"
+  | });
+

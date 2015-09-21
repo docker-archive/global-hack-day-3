@@ -1,0 +1,503 @@
+body {
+  padding: 0;
+  font: 14px sans-serif, Helvetica, Arial;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.pure-g [class *="pure-u"],
+.pure-g {
+  font-family: sans-serif;
+}
+
+.pure-button-error {
+	background: rgb(202, 60, 60); /* this is a maroon */
+	color: #FFF;
+	font-weight: bold;
+	margin: 10px auto;
+	width: 200px;
+	display: block;
+}
+
+div {
+	box-sizing:border-box;
+}
+
+a:hover {
+	color: rgb(39, 169, 216);
+}
+
+a {
+	color : #6C7084;
+	text-decoration: none;
+}
+
+input,
+textarea,
+.pure-form textarea,
+.pure-form input:not([type]){
+	border: 0;
+	box-shadow: -1px 0px 0px 0px gray;
+	border-radius: 0;
+}
+
+.pure-g p {
+    letter-spacing: normal;
+}
+
+textarea {
+	display: block;
+}
+
+h2,
+.label {
+	color : #6C7084;
+}
+
+label {
+	font-weight:bold;
+}
+
+.textcenter {
+	text-align :center;
+}
+
+.marginline {
+	border-left: 1px solid #838282;
+	margin-left: -1px;
+	position: relative;
+}
+
+.fullhw {
+	position: absolute;
+	height: 80%;
+	width:99%;
+}
+
+.bookmargin {
+	padding-left: 150px;
+}
+
+.cearfix {
+	overflow: auto;
+	zoom: 1;
+}
+
+#processing h2 {
+	text-align: center;
+	position: fixed;
+	width: 100%;
+	color: rgb(82, 242, 249);
+	font-size: 23px;
+}
+
+#processing {
+	position: absolute;
+	left: 0;
+	top: 0;
+	overflow: auto;
+	z-index: 9999999;
+	color: #FFF;
+	background: #000;
+	right: 0;
+	bottom: 0;
+	opacity: 0.8;
+	vertical-align: middle;
+	text-shadow: 0 0 16px #FFF;
+}
+
+#processing button {
+	right: 0;
+	position: fixed;
+	color: black;
+}
+
+.page {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+
+.button {
+	border: 1px solid;
+	box-shadow: 0 0 1px 0px;
+	padding: 12px 40px;
+	border-radius: 20px;
+	background: transparent;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+.button:hover {
+	background: #6C7084;
+	color: #FFF;
+}
+
+.content {
+	margin: 20px 150px;
+}
+
+.control-group {
+	margin: 15px 0;
+}
+
+#login_page_wrapper {
+	text-align: center;
+	top: 50%;
+	position: absolute;
+	width: 100%;
+	transform: translateY(-50%);
+}
+
+/*----header---Start*/
+
+.header #addimagebutton:hover,
+.header #addserverbutton:hover {
+	color: #FFF;
+}
+
+.header #addimagebutton,
+.header #addserverbutton {
+	font-size: 15px;
+	float: right;
+	margin-top: -33px;
+	margin-right: 15px;
+	padding: 10px;
+	text-decoration: none;
+	color: #6C7084;
+	cursor: pointer;
+}
+
+.header #logo b {
+	color: rgb(208, 208, 208);
+	margin-right: -8px;
+}
+
+.header #logo {
+	position: absolute;
+	display: block;
+	left: 150px;
+	top: 2px;
+	font-size: 40px;
+	text-decoration: none;
+	color: #6C7084;
+	line-height: 37px;
+}
+
+.header #user a:hover {
+	color: rgb(39, 169, 216);
+}
+
+.header #user a {
+	color : #6C7084;
+	cursor: pointer;
+	text-decoration: none;
+	font-size: 13px;
+	padding: 2px;
+}
+
+.header #user img {
+	width: 100%;
+	border-radius: 20px;
+	margin-bottom: -3px;
+}
+
+.header #user {
+	float: right;
+	height: 50px;
+	width: 43px;
+	margin-top: -42px;
+	margin-right: 27px;
+}
+
+.header #addserverbutton {
+}
+
+.header {
+	height: 75px;
+	border-bottom: 1px solid #838282;
+	padding: 50px 0 0 150px;
+}
+
+.header_tab.selected {
+	border-bottom: 2px solid;
+	padding-bottom: 8px;
+	font-weight: bold;
+}
+.header_tab,
+.header_tab.selected:hover{
+	color: #6C7084;
+	cursor: default;
+}
+
+.header_tab {
+	padding: 0px 10px 0;
+	font-size: 15px;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: lighter;
+	letter-spacing: 3px;
+}
+
+/*----header---End*/
+
+/*---------------------------------LOGIN PAGE-----------------------------Start*/
+
+#login_page {
+}
+
+#login_page #loginbutton {
+	float: right;
+	margin: 25px 50px;
+	outline: none;
+}
+
+#login_page #loginbutton:hover {
+	background: #C86666;
+}
+
+#login_page p {
+	font-size: 1.5em;
+	letter-spacing: 1px;
+}
+
+#login_page h1 {
+	font-family: sans-serif;
+	letter-spacing: 1px;
+	font-size: 4em;
+	font-weight: lighter;
+	margin: 0;
+}
+
+/*---------------------------------LOGIN PAGE-----------------------------End*/
+/*---------------------------------UNAUTHLOGIN PAGE-----------------------------Start*/
+#unauthlogin_page form .row {
+	height: 40px;
+}
+
+#unauthlogin_page form .button {
+	margin-top: 20px;
+	text-align: center;
+}
+
+#unauthlogin_page form .row input {
+	padding: 10px;
+    border: 0;
+    outline: none;
+    box-shadow: none;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.35);
+    margin-left: 10px;
+}
+
+/*---------------------------------UNAUTHLOGIN PAGE-----------------------------End*/
+
+/*---------------------------------Landing PAGE-----------------------------Start*/
+
+#landing_page {
+
+}
+
+#landing_page .content #images,
+#landing_page .content #servers {
+	max-height: 550px;
+	overflow: auto;
+}
+
+#landing_page .content #images,
+#landing_page .content #servers,
+#landing_page .content #server_details,
+#landing_page .content #image_details {
+	width: 50%;
+}
+
+#landing_page .content #image_details,
+#landing_page .content #server_details {
+	float: right;
+	padding: 0 0 0 25px;
+	line-height: 25px;
+}
+
+#landing_page .content #image_details #clone:hover {
+	background-color: rgb(3, 81, 4);
+}
+
+#landing_page .content #image_details #clone {
+	background-color: rgb(66, 157, 67);
+	width: 66px;
+	display: block;
+	border-radius: 11px;
+	text-align: center;
+	text-decoration: none;
+	color: #FFF;
+}
+
+
+#landing_page .content .search {
+	margin-bottom: 20px;
+	width: 49%;
+	height: 20px;
+	padding-left: 10px;
+	outline: none;
+}
+
+#landing_page .content .row {
+	border: 1px solid transparent
+}
+
+#landing_page .content .row:nth-child(odd) {
+	background-color: #F7F7F7;
+}
+
+#landing_page .content .row.selected {
+	border: 1px solid #DBDADA;
+	background-color: beige;
+}
+
+#landing_page .content .row .processing {
+	float: right;
+    position: relative;
+    top: 4px;
+    right: 5px;
+}
+
+#landing_page .content .row .cell.disabled a {
+	color : #C1C1C1
+}
+
+#landing_page .content .row .cell.warning a {
+	color : #FFA3A3
+}
+
+#landing_page .content .row .cell {
+	display: inline-block;
+	padding: 10px;
+}
+/*---------------------------------Landing PAGE-----------------------------End*/
+/*---------------------------------Create Server PAGE-----------------------------Start*/
+#create-server .template + .template {
+}
+
+#create-server .template:hover {
+	box-shadow: 0 0 8px 0px #6C7084;
+}
+
+#create-server .template {
+	float: left;
+	height: 150px;
+	width: 150px;
+	margin: 0 10px 10px 0;
+	text-align: center;
+	padding: 63px 10px;
+	font-size: 20px;
+	background: #EDEDED;
+	border-radius: 81px;
+	border: 1px solid #BABABA;
+	cursor: pointer;
+}
+
+
+/*---------------------------------Create Server PAGE-----------------------------End*/
+/*---------------------------------Not Found PAGE-----------------------------Start*/
+#errorpage {
+	top: 75px;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+#background-image {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	color: rgb(228, 228, 228);
+	font-size: 50em;
+	font-weight: bolder;
+	text-align: center;
+	text-shadow: 0px 0px 500px #4F4A4A;
+}
+/*---------------------------------Not Found PAGE-----------------------------End*/
+/*---------------------------------Configuration PAGE-----------------------------Start*/
+
+#configurationpage {
+	text-align: center;
+}
+
+#configurationpage textarea {
+	width: 800px;
+    height: 600px;
+    background: rgb(0, 0, 0);
+    border: 1px #ddd solid;
+    color: #969631;
+    font-size: 18px;
+    padding: 40px 20px 20px 100px;
+    margin: 0 auto;
+}
+
+/*---------------------------------Configuration PAGE-----------------------------End*/
+
+/*---------------------------------Create Server PAGE-----------------------------Start*/
+#create_new_wrapper .aname input[type=text] {
+	padding: .5em .6em;
+	border: 0;
+	box-shadow: -1px 0px 0px 0px gray;
+	border-radius: 0;
+}
+#create_new_wrapper .aname div div{
+	letter-spacing: 1px;
+	padding: 5px 20px;
+}
+#create_new_wrapper #hostmessage {
+	color: red;
+}
+
+#create_new_wrapper .aname input {
+	padding: .5em .6em !important;
+	margin: inherit !important;
+}
+	
+#template_build {
+	position: relative;
+	margin: 7% auto;
+	height: 400px;
+	width: 300px;
+	background-color: #FFF;
+	padding: 20px;
+	top: 0;
+	left: 0;
+}
+#template_build h2 {
+	text-align: center;
+	border-bottom: 1px solid rgb(191, 191, 191);
+	padding-bottom: 10px;
+	position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+#template_build input,
+#template_build textarea,
+#template_build button {
+	margin: 30px;
+	padding: 10px;
+	display: block;
+	outline: none;
+}
+
+.shim {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background-color: gray;
+	opacity: 0.5;
+}
+/*---------------------------------Create Server PAGE-----------------------------End*/
+
+.hidden {
+	display: none !important;
+}

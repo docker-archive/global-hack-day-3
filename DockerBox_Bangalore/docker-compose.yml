@@ -1,0 +1,22 @@
+dockerbox:
+  image: dockerx/dockerbox
+  ports:
+   - "2222:22"
+  volumes:
+   - /opt/dockerboxsetup/data/couchdb:/couchdb
+  links:
+   - couchdb:db
+   - registry:registry
+   - elb:elb
+registry:
+  image: registry:2
+  ports:
+   - "5000:5000"
+couchdb:
+  image: klaemo/couchdb
+  volumes:
+   - /opt/dockerboxsetup/data/couchdb:/usr/local/var/lib/couchdb
+elb:
+  image: dockerx/elb
+  ports:
+   - "80:80"

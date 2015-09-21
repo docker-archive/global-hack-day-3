@@ -1,0 +1,111 @@
+extends layout
+
+block assets
+	style
+		| .appblock > .appblock {
+		|	margin-left : 20px;
+		| }
+		| .pure-button {
+		|	margin-top : 20px;
+		| }
+		| input {
+		|	width: 100%;
+		| }
+
+block content
+	include includes/header.jade
+
+	.pure-g.fullhw
+		.pure-u-1-2.bookmargin
+			.pure-form.pure-form-stacked
+				h2 Image Details
+				.pure-control-group
+					label Name
+					input#appname(placeholder='Name for your Image' value=name required disabled=!!name pattern="[a-z0-9]*" data-validation="Any characters otherthan a-z or 0-9 is not allowed for image name.")
+				.pure-control-group
+					label Port No.
+					input#appport(placeholder='Port which the app will be listening on' value=port)
+				.pure-control-group.hidden
+					label Default Build No
+					input#appbuild(placeholder='Default Build No of a stable build in GA repo' value=default_build)
+				.pure-control-group
+					label Description
+					textarea#appdesc=description
+				.pure-control-group
+					unless name
+						button.pure-button.pure-button-primary(onclick='submit(this)') Build
+					else
+						if build_status == 0
+							button.pure-button.pure-button-primary(onclick='submit(this)') Update
+							button.pure-button.pure-button-error(onclick='deleteImage(this)') Delete
+						else
+							if build_status == 'processing'
+								button.pure-button.pure-button-primary Image Build progressing....
+							else
+								label Build Failed
+								button.pure-button.pure-button-primary(onclick='submit(this)') Update & Rebuild
+								button.pure-button.pure-button-error(onclick='deleteImage(this)') Delete
+						button(onclick='toggleProcessing()') Show Console Output
+
+		.pure-u-1-2.marginline
+			include codemirror
+
+	script="var _id='" + (_id || '') + "',_rev='" + (_rev || '') + "',build_status='" + (build_status || '') + "',streamId='" + (streamId || '') + "';"
+	script
+		| var processingNode = document.querySelector('#processing');
+		| function deleteImage() {
+		|	if(!confirm("Are you sure you want to delete this image?")) return;
+		|	processingNode.classList.remove('hidden');
+		|	$.post('delete/' + _id, {_rev:_rev}, function(res){
+		|		if(res.redirect) {
+		|			window.location = res.redirect;
+		|		} else alert(JSON.stringify(res));
+		|	});
+		| }
+		| 
+		| //The log streaming
+		| if(streamId) {
+		| 	var source = new EventSource("/events/" + streamId);
+		| 	var live = false;
+		| 	source.onmessage = function(e) {
+		| 		var stream = JSON.parse(e.data);
+		| 		if(stream.redirect && (build_status === 'processing')) window.location = stream.redirect.location;
+		| 		var check = ((processingNode.clientHeight + processingNode.scrollTop) == processingNode.scrollHeight);
+		| 		document.querySelector('#eventstream').textContent = stream.data;
+		| 		if(check) processingNode.scrollTop = processingNode.scrollHeight;
+		| 		if(stream.completed) e.target.close();
+		| 		if(stream.completed && live) window.location = '';
+		| 		live = true;
+		| 		//Keeping the stream in localstorage
+		| 		stream.data && localStorage && localStorage.setItem(_id, stream.data);
+		| 	};
+		| } else if(localStorage && localStorage.hasOwnProperty(_id)) {
+		| 		document.querySelector('#eventstream').textContent = localStorage.getItem(_id);
+		| }
+		| 
+		| function submit() {
+		|	if(!validate()) return;
+		|	var data = {
+		|			name : document.querySelector('#appname').value,
+		|			port : document.querySelector('#appport').value,
+		|			default_build : document.querySelector('#appbuild').value,
+		|			description : document.querySelector('#appdesc').value,
+		|			dockerfile : editor.getValue(),
+		|			build_status : 'processing'
+		|	};
+		|	if(_rev) { // Update
+		|		data._rev = _rev;
+		|		data._id = _id;
+		|	}
+		|	processingNode.classList.remove('hidden');
+		|	$.post('/createimage', data, function(res){
+		|		if(res.redirect) {
+		|			window.location = res.redirect;
+		|		} else alert(JSON.stringify(res));
+		|	});
+		| }
+		| function validate() {
+		|	var name = document.querySelector('#appname');
+		|	if(!name.checkValidity()) alert(name.dataset.validation);
+		|	return name.checkValidity();
+		| }

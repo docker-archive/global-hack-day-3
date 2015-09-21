@@ -1,0 +1,179 @@
+extends layout
+
+block assets
+	style
+		| .appblock > .appblock {
+		|	margin-left : 20px;
+		| }
+		| .pure-button {
+		|	margin-top : 20px;
+		| }
+		| .dep-button {
+		|	padding: 10px 5px;
+		| }
+
+block content
+	include includes/header.jade
+		a.header_tab.selected(onclick="toggleTab(event, 'templates_wrapper', 'create_new_wrapper')") TEMPLATES
+		a#create_new_server_tab.header_tab(onclick="toggleTab(event, 'create_new_wrapper', 'templates_wrapper')") CREATE NEW
+	.shim.hidden(onclick='displayTemplateBuild(false)')
+	#create-server.cearfix
+		#templates_wrapper.content
+			each template in templates
+				.template(onclick='showTemplateBuild(this)')
+					.data.hidden=JSON.stringify(template)
+					span=template.name
+		#create_new_wrapper.hidden.pure-g.fullhw
+			.pure-u-1-2.bookmargin
+				.pure-form.pure-form-stacked
+					h2 Server Details
+					.pure-control-group
+						label Name
+						input#qaname(onchange='checkHostName(this)' placeholder='Host name' required pattern="[a-z0-9]*" data-validation="Hostname is allowed only with a-z and 0-9")
+						#hostmessage
+					.pure-control-group
+						label Image Name : FQDN (domain name)
+						.appblock
+							.pure-g
+								button.dep-button.hidden(onclick='remD(this)' title='Remove') -
+								.aname
+								input.hidden.fqdn(placeholder='FQDN of this server')
+								input.hidden.buildno(placeholder='build No.')
+								button.dep-button(onclick='addD(this)' title='Add dependency') +
+					.pure-control-group
+						label Description
+						textarea#qadesc
+					.pure-control-group
+						label TTL Days
+						input#ttl(placeholder='Delete this QA after how many days')
+					.pure-control-group
+						button.pure-button.pure-button-primary(onclick='submit(this)') Create
+
+			.pure-u-1-2.marginline
+				include uml
+		#template_build.hidden
+			h2 New Host Details
+			input#name(placeholder='Host name' required pattern="[A-Za-z0-9]*" data-validation="Any characters otherthan A-Z or a-z or 0-9 is not allowed for image name.")
+			textarea#desc(placeholder='Description')
+			input#ttl(placeholder='ttl')
+			button(onclick='buildTemplate(this)') Build
+	script(src="/js/completely.js")
+	script!="var imageMap = " + JSON.stringify(images) + ";"
+	script
+		| var imageList = Object.keys(imageMap);
+		| var appblock = document.querySelector('.appblock').cloneNode(true);
+		| autoComplete(document.querySelector('.appblock .aname'), imageList);
+		| document.querySelector('.appblock').addEventListener('input', _.debounce(renderUml, 300));
+		| function addD(button) {
+		|	var newNode = appblock.cloneNode(true);
+		|	newNode.querySelector("button.hidden").classList.remove("hidden");// remove the hidden from Remove button
+		|	newNode.querySelector(".hidden.fqdn").classList.remove("hidden");// remove hidden from fqdn
+		|	button.parentElement.parentElement.appendChild(newNode);
+		|	autoComplete(newNode.querySelector('.aname'), imageList);
+		| }
+		| function autoComplete (node, imageList) {
+		| 	var pv = completely(node,{
+		| 		fontSize: 'inherit',
+		| 		fontFamily: 'inherit'
+		| 	});
+		| 
+		| 	pv.options = imageList;
+		| 	pv.onChange = function (text) {
+		| 		pv.repaint();
+		|		renderUml();
+		| 	};
+		| 	node.image = pv;
+		| 	setTimeout(function() { pv.input.focus() },0);
+		| }
+		| function remD(button) {
+		|	button.parentElement.parentElement.remove();
+		|	renderUml();
+		| }
+		| function renderUml() {
+		|	var uml = [];
+		|	var app = getApp();
+		|	if(!app.image) return;
+		|	uml.push('['+app.image+']'); 
+		|	doSome(app);
+		|	
+		|	function doSome(app){
+		|		if(!app.image) return;
+		|		app.dependency.forEach(function(dep){
+		|			if(dep.image) uml.push('['+app.image+']->['+dep.image+']');
+		|			doSome(dep);
+		|		});
+		|	};
+		|	nomnoml.parseAndRender(uml.join('\n') || '.');
+		| }
+		| function submit() {
+		|	if(!validate()) return;
+		|	var data = {
+		|			name : document.querySelector('#qaname').value,
+		|			app : getApp(),
+		|			description : document.querySelector('#qadesc').value,
+		|			compose_status : 'processing',
+		|			ttl : document.querySelector('#ttl').value
+		|	};
+		|	if(!data.app.image) {alert('Atleast one image in mandatory to create a server'); return;}
+		| 	if(invalidImage(data.app)) return;
+		| 	if(sameImageHack(data.app)) return;
+		|	document.querySelector('#processing').classList.remove('hidden');
+		|	$.post('', data, function(res){
+		|		if(res.redirect) {
+		|			window.location = res.redirect;
+		|		} else alert(JSON.stringify(res));
+		|	});
+		| }
+		| function getApp(appblock) {
+		|	appblock = appblock || document.querySelector('.appblock'); // Get the first Appblock
+		|	var qaname = document.querySelector('#qaname').value;
+		|	var imageName = appblock.querySelector('.pure-g .aname').image.getText();
+		|	var app = {
+		|		name : imageName,
+		|		image : imageName,
+		|		port : imageMap[imageName] || 80,
+		|		fqdn : appblock.querySelector('.pure-g .fqdn').value,
+		|		build : appblock.querySelector('.pure-g .buildno').value,
+		|		dependency : []
+		|	};
+		|	var subblocks = appblock.childNodes;
+		|	[].forEach.call(subblocks, function(capp){
+		|		if(capp.classList.contains('appblock')){
+		|			app.dependency.push(getApp(capp));
+		|		}
+		|	});
+		|	return app;
+		| }
+		| 
+		| function checkHostName(n) {
+		| 	if(!validate(n)) return;
+		|	$.post('/createserver/checkhostname', {name:n.value}, function(res){
+		|		document.querySelector('#hostmessage').innerHTML = res.message;
+		|	});			
+		| }
+		| 
+		| function validate(n) {
+		|	var name = n || document.querySelector('#qaname');
+		|	if(!name.checkValidity()) document.querySelector('#hostmessage').innerHTML = name.dataset.validation;
+		|	return name.checkValidity();
+		| }
+		| 
+		| function invalidImage(a) {
+		| 	var app = a || getApp(),
+		| 	invalid = !has(app.image);
+		| 	invalid && alert('The image : ' + app.image + ' is not available');
+		| 	return invalid || app.dependency.some(function(d){
+		| 		return invalidImage(d);
+		| 	});
+		| 	function has(i) {return (imageList.indexOf(i) > -1);}
+		| }
+		| function sameImageHack(a, map) {
+		| 	var app = a || getApp(),
+		|	imagesMap = map || {},
+		|	invalid = !!imagesMap[app.image];
+		|	invalid && alert('Because of an issue in the system we cannot use an image more than once. Here the image : ' + app.image + ' is used more than once. Please use a different image for now. We are working on a fix for this issue');
+		| 	imagesMap[app.image] = true;
+		| 	return invalid || app.dependency.some(function(d){
+		| 		return sameImageHack(d, imagesMap);
+		| 	});
+		| }
