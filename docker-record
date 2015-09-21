@@ -76,18 +76,16 @@ def replay(container):
             dockerfile.append("CMD " + command)
         elif is_editor(command):
             # now check whether the file was actually created/changed in the FS
-            print command
-            changed_path = extract_path_from_editor_command(command)
-            print changed_path
+            changed_path = extract_path_from_editor_command(command).replace('\n', '')
             if changed_in_filesystem(fs_changes, changed_path):
                 if changed_path.startswith('/'):
                     source_path = changed_path
                 else:
                     source_path = workdir + "/" + changed_path
 
-                copy_from_container(container, source_path, BUILD_CONTEXT_PATH + flatten_path(source_path))
-                local_file = "path/to/local/file"
-                dockerfile.append("ADD " + local_file + " " + changed_path)
+                destination_path = BUILD_CONTEXT_PATH + flatten_path(source_path)
+                copy_from_container(container, source_path, destination_path)
+                dockerfile.append("ADD " + destination_path + " " + source_path)
         else:
             dockerfile.append("RUN " + command)
 
@@ -106,7 +104,10 @@ def flatten_path(path):
 
 def changed_in_filesystem(fs_changes, filename):
     # ignore the Kind parameter for now
-    return filename in fs_changes
+    for change_paths in fs_changes.keys():
+        if filename == change_paths:
+            return True
+    return False
 
 def filesystem_diff(container):
     client = Client()
@@ -117,10 +118,10 @@ def filesystem_diff(container):
     return changes
 
 def extract_path_from_editor_command(command):
-    command.split(' ')[1]
+    return command.split(' ')[1]
 
 def read_session(container, filename):
-    return copy(container, SESSION_PATH.format(filename = filename))
+    return copy(container, SESSION_PATH.format(filename = filename)).split("\n")
 
 def is_docker_cmd(command):
     for docker_cmd_command in DOCKER_CMD_WHITELIST:
@@ -148,7 +149,7 @@ def copy(container, path):
     buffer.seek(0)
     tar = tarfile.open(fileobj=buffer, mode='r')
     for member in tar.getmembers():
-        return tar.extractfile(member).readlines()
+        return tar.extractfile(member).read()
 
 if __name__ == '__main__':
 
