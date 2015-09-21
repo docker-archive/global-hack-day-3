@@ -1,0 +1,79 @@
+get:
+  x-swagger-router-controller: "ServicesController"
+  description: "Reads all Service objects under the specified Ref object."
+  operationId: "ReadAllServicesByRefSlug"
+  summary: "Read all Services by Ref slug"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  parameters:
+  - name: "projectSlug"
+    description: "The unique Project slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "applicationSlug"
+    description: "The Application slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "refSlug"
+    description: "The Ref slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  responses:
+    200:
+      description: "Success."
+      schema:
+        type: "object"
+        additionalProperties:
+          $ref: "../definitions/ServiceObject.yaml"
+    405:
+      description: "Validation exception"
+    500:
+      description: "General error"
+    default:
+      description: "Error"
+post:
+  x-swagger-router-controller: "ServicesController"
+  description: "Creates a new Service object under the specified Ref object."
+  operationId: "CreateServiceByPermalink"
+  summary: "Create Service by permalink"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  parameters:
+  - name: "projectSlug"
+    description: "The unique Project slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "applicationSlug"
+    description: "The Application slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "refSlug"
+    description: "The Ref slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "body"
+    description: "A qualified Ref object"
+    schema:
+      $ref: "../definitions/ServiceObject.yaml"
+    in: "body"
+  responses:
+    200:
+      description: "Success."
+      schema:
+        $ref: "../definitions/ServiceObject.yaml"
+    405:
+      description: "Validation exception"
+    default:
+      description: "Error"
+      schema:
+        $ref: "../definitions/ErrorResponse.yaml"

@@ -1,0 +1,6 @@
+﻿{
+   "PORT": 10010,
+   "MONGODB_PORT_27017_TCP_ADDR": "localhost",
+   "MONGODB_PORT_27017_TCP_PORT": 27017,
+   "dbname": "app-reg"
+}

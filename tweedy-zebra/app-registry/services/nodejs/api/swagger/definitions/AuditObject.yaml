@@ -1,0 +1,20 @@
+description: "The AuditInfo is becoming an SJC standard for conveying an auditable track of who made modifications when. It does not currently support the concept of 'what' was audited."
+type: "object"
+additionalProperties: false
+properties:
+  created:
+    type: "object"
+    properties:
+      by:
+        type: "string"
+      on:
+        type: "string"
+        format: "date-time"
+  updated:
+    type: "object"
+    properties:
+      by:
+        type: "string"
+      on:
+        type: "string"
+        format: "date-time"

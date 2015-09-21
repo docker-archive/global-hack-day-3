@@ -1,0 +1,29 @@
+description: "A Git branch or ref plus additional meta describing the version, target envs, etc."
+type: "object"
+additionalProperties: false
+properties:
+  version:
+    description: "The SemVer version of the current SJC application. See [http://semver.org/](http://semver.org/)"
+    type: "string"
+    format: /^(\d+\.)?(\d+\.)?(\*|\d+)$/
+  instances:
+    description: "Known instances, or deployments, of this ref."
+    type: "object"
+    additionalProperties:
+      $ref: "./InstanceObject.yaml"
+  testRunners:
+    type: "object"
+    additionalProperties:
+      $ref: "./TestRunnerObject.yaml"
+  scripts:
+    type: "object"
+    additionalProperties:
+      type: "string"
+  services:
+    type: "object"
+    additionalProperties:
+      $ref: "./ServiceObject.yaml"
+  audit:
+    type: "object"
+    additionalProperties:
+      $ref: "./AuditObject.yaml"

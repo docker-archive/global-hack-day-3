@@ -1,0 +1,48 @@
+get:
+  x-swagger-router-controller: "ProjectsController"
+  description: "Read all Projects from the registry."
+  operationId: "ReadAllProjects"
+  summary: "Read All Projects"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  responses:
+    200:
+      description: "Success."
+      schema:
+        type: "array"
+        items:
+          $ref: "../definitions/ProjectObject.yaml"
+    405:
+      description: "Validation exception"
+    default:
+      description: "Error"
+      schema:
+        $ref: "../definitions/ErrorResponse.yaml"
+post:
+  x-swagger-router-controller: "ProjectsController"
+  description: "Create a new uniquely named project."
+  operationId: "CreateProject"
+  summary: "Create Project"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  parameters:
+  - name: "body"
+    description: "The JSON Project object."
+    schema:
+      $ref: "../definitions/ProjectRequest.yaml"
+    in: "body"
+  responses:
+    200:
+      description: "Success."
+      schema:
+        $ref: "../definitions/ProjectObject.yaml"
+    405:
+      description: "Validation exception"
+    default:
+      description: "Error"
+      schema:
+        $ref: "../definitions/ErrorResponse.yaml"

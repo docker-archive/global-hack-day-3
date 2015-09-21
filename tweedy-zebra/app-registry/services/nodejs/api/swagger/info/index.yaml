@@ -1,0 +1,8 @@
+version: "0.1.0"
+title: "SJC Application Registry"
+description: "Registry as a Service providing daemon-like assistance to SJC CLI via HTTPS RESTful API."
+termsOfService: ""
+contact:
+  name: "SJC"
+license:
+  name: ""

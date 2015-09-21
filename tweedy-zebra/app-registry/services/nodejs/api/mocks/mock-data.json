@@ -1,0 +1,245 @@
+﻿{
+   "ProjectDefinition": {
+      "name": "The lowercase dash separated unique name by which the project will be officially known.",
+      "fullname": "A more descriptive and human friendly name.",
+      "description": "Enough text to adequately describe the project to a typical SJC employee.",
+      "homepage": "Location of a Confluence page or README.md that summarizes the project and provides deep links to each applications issue tracker and documentation wiki.",
+      "applications": "A hash of one or more application definitions that make up the project.",
+      "audit": "An SJC standard Audit object that indicates who and when the record was created as well as who and when it was last updated.",
+      "tags": "A simple list of lowercase and dash-separated keywords that can be leveraged in future search mechanisms."
+   },
+
+
+
+   "ApplicationDefinition": {
+      "slug": "The lowercase dash separated unique name by which the application will be officially known.",
+      "name": "A more descriptive and human friendly name.",
+      "description": "Enough text to adequately describe the project to a typical SCJ employee.",
+      "address": "The address portion of a DNS entry required to locate this application. Note that FQN's are found in individual ref entries.",
+      "issues": "The JIRA location of this applications issues including bugs, stories, tasks, epics, etc.",
+      "docs": "The Confluence location of this applications technical brief, deployment notes, etc.",
+      "remotes": "A list of known Git endpoints. Origin is the minimum required remote.",
+      "refs": "A list of known Git branches/remotes. Each remote entry also contains a list of all known deployed endpoints. Since remotes are specific snapshots of source code each remote entry also contains a SemVer, test runner information commands and service definitions.",
+      "tags": "A simple list of lowercase and dash-separated keywords that can be leveraged in future search mechanisms.",
+      "audit": "An SJC standard Audit object that indicates who and when the record was created as well as who and when it was last updated."
+   },
+
+
+
+   "ServiceDefinition": {
+      "description": "Enough text to adequately describe the service to a typical SCJ employee.",
+      "type": "Categorizes the type of service into application, database, external (e.g. third party such as Google, Facebook, etc).",
+      "langauge": "The primary language used to implement the service (e.g. javascript, sql, python, c#, etc).",
+      "ports": "An array of standard ports the service exposes. In the case of a custom service such as a socket based app the array can be left empty.",
+      "version": "A pseudo-semver like version number for tracking purposes.",
+      "docker": "The contents of what would normally be a docker file.",
+      "audit": "An SJC standard Audit object that indicates who and when the record was created as well as who and when it was last updated."
+   },
+
+
+
+   "RefDefinition": {
+      "version": "Since every ref is potentially a branch to be merged into develop (assumes Gitflow) then the branch can contain a SemVer to indicate its position in the roadmap.",
+      "hosts": "A list of known hosts where the ref has been deployed. This will include development workstations (unless the branch has since been deleted following a successful merge) as well as integration, stage and production.",
+      "testRunners": "Pointers to the test runners implemented to date and for the current ref.",
+      "scripts": "A list of shell commands implemented to date and for the current ref. Commands are key/value pairs with the value being the path to an executable script.",
+      "services": "A list of services (aka docker containers) required to run this ref'd instance of the application."
+   },
+
+
+
+   "HostsDefinition": {
+      "name": "The name of the hosting environment such as dev, stage, integration or production.",
+      "provider": "Expected to be either localhost or AWS but open to others in the future such as Rackspace, openstack, etc.",
+      "description": "Enough text to adequately describe the service to a typical SCJ employee.",
+      "audit": "An SJC standard Audit object that indicates who and when the record was created as well as who and when it was last updated."
+   },
+
+
+
+   // The following is representative of what we might see in response to an app-reg GET for a specific project. e.g. GET https://appreg.sjc.io/api/v1/projects/orchestra
+   "ProjectInstanceExample": {
+      "name": "orchestra",
+      "fullname": "SJC Applications Orchestra",
+      "description": "Orchestrates and automates the creation and management of SJC applications.",
+      "homepage": "https://stjosephcontent.atlassian.net/wiki/display/CLI/Orchestra",
+
+      "applications": {
+
+         "app-reg": {
+            "slug": "app-reg",
+            "name": "SJC Application Registry",
+            "description": "Implements a queryable list of officially supported SJC applications.",
+            "address": "app-reg.orchestra",
+            "issues": "https://stjosephcontent.atlassian.net/secure/RapidBoard.jspa?rapidView=72",
+            "docs": "https://stjosephcontent.atlassian.net/wiki/display/CLI/App+Registry",
+
+            "remotes": {
+               "not-origin-to-test-required-param": {
+                  "ssh": "ssh://hello",
+                  "https": "http://goodbye"
+               },
+               "origin": {
+                  "ssh": "git@github.com:stjosephcontent/app-registry.git",
+                  "https": "https://github.com/stjosephcontent/app-registry.git"
+               }
+            },
+
+            "refs": { // Aka Git branches
+               "reg-15-my-branch": {
+                  "version": "1.3.1",
+                  "hosts": { // List of all the hosts this application ref/branch has been deployed to
+                     "dev-tforster": {
+                        "hostname": "174.117.35.248",
+                        "cnames": [ "localhost" ]
+                     },
+                     "seansMacBook": {
+                        "hostname": "192.168.10.23",
+                        "cnames": [ "localhost" ]
+                     },
+                     "stage": { // stage and prod are reserved words
+                        "hostname": "stage.sjc.io",
+                        "cname": ""
+                     }
+                  },
+
+                  "testRunners": {
+                     "angular": { },
+                     "postman": { },
+                     "server": { }
+                  },
+
+                  "commands": {
+                     "command1": "by your command.",
+                     "command2": "these are not the droids you are looking for."
+                  },
+
+                  /*
+                  * Each service keyname is arbitrary but hopefully meaningful
+                  * serviceDefinition is a direct copy of an existing service from the Services Mongo collection. Should it be a pointer or copy?
+                  * The startup property is the script or executable to run when the service is booted
+                  * External services are listed even though we don't host/dockerize them but so we can build a comprehensive picture of our application
+                  */
+                  "services": {
+                     "MongoDb": {
+                        "serviceDefinition": "#/Services/mongodb",
+                        "description": "MongoDB backs app-reg for simple high-read, low-write throughput.",
+                        "startup": "",
+                        "host": "localhost"
+                     },
+
+                     "NodeApp": {
+                        "serviceDefinition": "#/Services/nodejs",
+                        "description": "NodeJS is used for the bulk of the API implementation.",
+                        "startup": "server.js",
+                        "host": "localhost",
+                        "port": "3056",
+                        "protocols": [ "http", "https" ]
+                     },
+
+                     "tumblr": { // Not really part of app-reg, just used to illustrate how a third party service might be defined.
+                        "serviceDefinition": "#/Services/external",
+                        "description": "Tumblr's API is used for a crude CMS.",
+                        "startup": "",
+                        "host": "api.tumblr.com",
+                        "port": "443",
+                        "protocols": [ "https" ]
+                     }
+                  }
+
+               }
+            },
+
+            "tags": [ "registry", "directory-service", "applications" ],
+
+            "audit": {
+               "created": {
+                  "by": "tforster",
+                  "on": "2015-08-24T17:08:02.078Z"
+               },
+               "updated": {
+                  "by": "smacdonald",
+                  "on": "2015-08-24T17:08:02.078Z"
+               }
+            }
+         }, // End Application
+
+
+         "sjc-cli": {
+            "slug": "sjc-cli",
+            "name": "SJC CLI",
+            "description": "A command line tool used to interact with SJC applications throughout their lifecycle.",
+            "address": null, // to-do: how do we differentiate between servers, services and installed applications?
+            "issues": "https://stjosephcontent.atlassian.net/secure/RapidBoard.jspa?rapidView=72",
+            "docs": "https://stjosephcontent.atlassian.net/wiki/display/CLI/SJC-CLI",
+
+            "remotes": {
+               "origin": {
+                  "ssh": "git@github.com:stjosephcontent/sjc-cli.git",
+                  "https": "https://github.com/stjosephcontent/sjc-cli.git"
+               }
+            },
+
+            "refs": {
+               "cli-99-change-the-shade-of-black": {
+                  "version": "0.2.9",
+                  "hosts": { // List of all the hosts this application ref/branch has been deployed to
+                     "seansMacBook": {
+                        "hostname": "localhost",
+                        "cnames": null // Since cli is an installed app it does not use a cname
+                     }
+                  },
+
+                  "testRunners": {
+                     "angular": { },
+                     "postman": { },
+                     "server": { }
+                  },
+
+                  "commands": {
+                     "command1": "by your command.",
+                     "command2": "these are not the droids you are looking for."
+
+                  },
+
+                  // Since cli is an installed application it does not require any dockerized services
+                  "services": { }
+               }
+            },
+
+            "tags": [
+               "cli",
+               "command-line",
+               "tool",
+               "utility"
+
+            ],
+
+            "audit": {
+               "created": {
+                  "by": "tforster",
+                  "on": "2015-08-24T17:08:02.078Z"
+               },
+               "updated": {
+                  "by": "smacdonald",
+                  "on": "2015-08-24T17:08:02.078Z"
+               }
+            }
+         } // End Application
+      },
+
+      "tags": [
+         "cli",
+         "command line",
+         "registry",
+         "app",
+         "application",
+         "directory",
+         "directory service"
+      ]
+   }
+
+
+
+
+}

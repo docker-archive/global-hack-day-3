@@ -1,0 +1,26 @@
+description: "A JSONPatch document as defined by RFC 6902."
+type: "object"
+properties:
+  op:
+    type: "string"
+    description: "The operation to be performed"
+    enum:
+    - "add"
+    - "remove"
+    - "replace"
+    - "move"
+    - "copy"
+    - "test"
+  path:
+    type: "string"
+    description: "A JSON-Pointer"
+  value:
+    description: "The value to be used within the operations."
+  from:
+    type: "string"
+    description: "A string containing a JSON Pointer value."
+example:
+   op: "myop"
+externalDocs:
+   description: ""
+   url: "https://tools.ietf.org/html/rfc6902"

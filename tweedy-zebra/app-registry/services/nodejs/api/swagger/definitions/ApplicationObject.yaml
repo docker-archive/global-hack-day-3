@@ -1,0 +1,43 @@
+description: "Describes an application member of Project.Applications."
+type: "object"
+additionalProperties: false
+properties:
+  name:
+    description: "Name of the application."
+    type: "string"
+  slug:
+    description: "Unique-to-the-project lowercase dash-separated version of the name property."
+    type: "string"
+  description:
+    description: ""
+    type: "string"
+  address:
+    description: ""
+    type: "string"
+  issues:
+    description: ""
+    type: "string"
+  docs:
+    description: ""
+    type: "string"
+  remotes:
+    description: ""
+    type: "object"
+    required:
+    - "origin"
+    additionalProperties:
+      $ref: "./RemoteObject.yaml"
+  refs:
+    description: ""
+    type: "object"
+    additionalProperties:
+      $ref: "./RefObject.yaml"
+  tags:
+    description: ""
+    type: "array"
+    items:
+      type: "string"
+  audit:
+    description: ""
+    type: "object"
+    $ref: "./AuditObject.yaml"

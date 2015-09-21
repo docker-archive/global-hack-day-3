@@ -1,0 +1,332 @@
+﻿[
+   {
+      "name": "orchestra",
+      "slug": "orchestra",
+      "fullname": "SJC Applications Orchestra",
+      "description": "Orchestrates and automates the creation and management of SJC applications.",
+      "homepage": "https://stjosephcontent.atlassian.net/wiki/display/CLI/Orchestra",
+
+      "applications": {
+
+         "app-reg": {
+            "slug": "app-reg",
+            "name": "SJC Application Registry",
+            "description": "Implements a queryable list of officially supported SJC applications.",
+            "address": "app-reg.orchestra",
+            "issues": "https://stjosephcontent.atlassian.net/secure/RapidBoard.jspa?rapidView=72",
+            "docs": "https://stjosephcontent.atlassian.net/wiki/display/CLI/App+Registry",
+
+            "remotes": {
+               "not-origin-to-test-required-param": {
+                  "ssh": "ssh://hello",
+                  "https": "http://goodbye"
+               },
+               "origin": {
+                  "ssh": "git@github.com:stjosephcontent/app-registry.git",
+                  "https": "https://github.com/stjosephcontent/app-registry.git"
+               }
+            },
+
+            "refs": {
+               "reg-15-my-branch": {
+                  "version": "1.3.1",
+                  "containerHosts": {
+                     "dev-tforster": {
+                        "hostname": "174.117.35.248",
+                        "cnames": [ "localhost" ]
+                     },
+                     "seansMacBook": {
+                        "hostname": "192.168.10.23",
+                        "cnames": [ "localhost" ]
+                     },
+                     "stage": {
+                        "hostname": "stage.sjc.io",
+                        "cnames": [ ]
+                     }
+                  },
+
+                  "testRunners": {
+                     "angular": { },
+                     "postman": { },
+                     "server": { }
+                  },
+
+                  "scripts": {
+                     "script1": "by your command.",
+                     "script2": "these are not the droids you are looking for."
+                  },
+
+                  "services": {
+
+                     "MongoDb": {
+                        "docker": "#/Services/mongodb",
+                        "description": "MongoDB backs app-reg for simple high-read, low-write throughput.",
+                        "startup": "",
+                        "containerHost": "localhost"
+                     },
+
+                     "NodeApp": {
+                        "docker": "#/Services/nodejs",
+                        "description": "NodeJS is used for the bulk of the API implementation.",
+                        "startup": "server.js",
+                        "containerHost": "localhost",
+                        "port": "3056",
+                        "protocols": [ "http", "https" ]
+                     },
+
+                     "tumblr": {
+                        "docker": "#/Services/external",
+                        "description": "Tumblr's API is used for a crude CMS.",
+                        "startup": "",
+                        "containerHost": "api.tumblr.com",
+                        "port": "443",
+                        "protocols": [ "https" ]
+                     }
+                  }
+
+               }
+            },
+
+            "tags": [ "registry", "directory-service", "applications" ],
+
+            "audit": {
+               "created": {
+                  "by": "tforster",
+                  "on": "2015-08-24T17:08:02.078Z"
+               },
+               "updated": {
+                  "by": "smacdonald",
+                  "on": "2015-08-24T17:08:02.078Z"
+               }
+            }
+         },
+
+
+         "sjc-cli": {
+            "slug": "sjc-cli",
+            "name": "SJC CLI",
+            "description": "A command line tool used to interact with SJC applications throughout their lifecycle.",
+            "address": "",
+            "issues": "https://stjosephcontent.atlassian.net/secure/RapidBoard.jspa?rapidView=72",
+            "docs": "https://stjosephcontent.atlassian.net/wiki/display/CLI/SJC-CLI",
+
+            "remotes": {
+               "origin": {
+                  "ssh": "git@github.com:stjosephcontent/sjc-cli.git",
+                  "https": "https://github.com/stjosephcontent/sjc-cli.git"
+               }
+            },
+
+            "refs": {
+               "cli-99-change-the-shade-of-black": {
+                  "version": "0.2.9",
+                  "containerHosts": {
+                     "seansMacBook": {
+                        "hostname": "localhost"
+                     }
+                  },
+
+                  "testRunners": {
+                     "angular": { },
+                     "postman": { },
+                     "server": { }
+                  },
+
+                  "scripts": {
+                     "script1": "by your command.",
+                     "script2": "these are not the droids you are looking for."
+
+                  },
+
+                  "services": { }
+               }
+            },
+
+            "tags": [
+               "cli",
+               "command-line",
+               "tool",
+               "utility"
+            ],
+
+            "audit": {
+               "created": {
+                  "by": "tforster",
+                  "on": "2015-08-24T17:08:02.078Z"
+               },
+               "updated": {
+                  "by": "smacdonald",
+                  "on": "2015-08-24T17:08:02.078Z"
+               }
+            }
+         }
+      },
+
+      "tags": [
+         "cli",
+         "command line",
+         "registry",
+         "app",
+         "application",
+         "directory",
+         "directory service"
+      ]
+   },
+
+   {
+      "name": "cerebrum",
+      "slug": "cerebrum",
+      "fullname": "Is there an official tag line for Cerebrum",
+      "description": "And official description?",
+      "homepage": "https://stjosephcontent.atlassian.net/wiki/display/CE/Cerebrum+Home",
+
+      "applications": {
+         "ce": {
+            "slug": "ce",
+            "name": "Cerebrum Content Manager",
+            "description": "Implements the CMS portion of Cerebrum.",
+            "address": "app-reg.orchestra",
+            "issues": "https://stjosephcontent.atlassian.net/secure/RapidBoard.jspa?rapidView=43&projectKey=CE",
+            "docs": "https://stjosephcontent.atlassian.net/wiki/display/CE/Cerebrum+Home",
+
+            "remotes": {
+               "origin": {
+                  "ssh": "git@github.com:stjosephcontent/cerebrum.git",
+                  "https": "https://github.com/stjosephcontent/cerebrum.git"
+               }
+            },
+
+            "refs": { },
+
+            "tags": [ ],
+
+            "audit": {
+               "created": {
+                  "by": "tforster",
+                  "on": "2015-08-24T17:08:02.078Z"
+               },
+               "updated": {
+                  "by": "smacdonald",
+                  "on": "2015-08-24T17:08:02.078Z"
+               }
+            }
+         },
+
+         "api": {
+            "slug": "api",
+            "name": "",
+            "description": "Implements the API.",
+            "address": "api.cerebrum",
+            "issues": "",
+            "docs": "",
+
+            "remotes": {
+               "origin": { }
+            },
+            "refs": {
+               "master": {
+                  "containerHosts": { },
+                  "scripts": {
+                     "script0": ""
+                  },
+                  "services": {
+                     "python": {
+                        "docker": "#/Services/python",
+                        "description": "Python is used as glue between Postgres and Django to implement the API.",
+                        "startup": "",
+                        "containerHost": "localhost"
+                     },
+                     "django": { },
+                     "postgres": { }
+                  },
+                  "testRunners": { },
+                  "version": ""
+               }
+            },
+            "tags": [ ],
+            "audit": {
+               "created": {
+                  "by": "tforster",
+                  "on": "2015-08-24T17:08:02.078Z"
+               },
+               "updated": {
+                  "by": "smacdonald",
+                  "on": "2015-08-24T17:08:02.078Z"
+               }
+            }
+         },
+
+         "web-client": {
+            "slug": "web-client",
+            "name": "",
+            "description": "An Angular 1.x driven web client.",
+            "address": "www.cerebrum",
+            "issues": "",
+            "docs": "",
+
+            "remotes": {
+               "origin": {
+                  "ssh": "",
+                  "https": ""
+               }
+            },
+            "refs": { },
+            "tags": [ ],
+            "audit": {
+               "created": {
+                  "by": "tforster",
+                  "on": "2015-08-24T17:08:02.078Z"
+               },
+               "updated": {
+                  "by": "smacdonald",
+                  "on": "2015-08-24T17:08:02.078Z"
+               }
+            }
+         },
+
+         "sizeify": {
+            "slug": "sizeify",
+            "name": "",
+            "description": "Sizeify is an image resizing service.",
+            "address": "app-reg.orchestra",
+            "issues": "https://stjosephcontent.atlassian.net/secure/RapidBoard.jspa?rapidView=43&projectKey=CE",
+            "docs": "https://stjosephcontent.atlassian.net/wiki/display/CE/Cerebrum+Home",
+
+            "remotes": {
+               "origin": {
+                  "ssh": "git@github.com:stjosephcontent/sizeify-client.git",
+                  "https": "https://github.com/stjosephcontent/sizeify-client.git"
+               }
+            },
+
+            "refs": { },
+
+            "tags": [ "image", "resize", "utility", "tool", "webservice", "service", "api" ],
+
+            "audit": {
+               "created": {
+                  "by": "tforster",
+                  "on": "2015-08-24T17:08:02.078Z"
+               },
+               "updated": {
+                  "by": "smacdonald",
+                  "on": "2015-08-24T17:08:02.078Z"
+               }
+            }
+         }
+      },
+
+      "tags": [ ],
+
+      "audit": {
+         "created": {
+            "by": "tforster",
+            "on": "2015-08-24T17:08:02.078Z"
+         },
+         "updated": {
+            "by": "smacdonald",
+            "on": "2015-08-24T17:08:02.078Z"
+         }
+      }
+   }
+]

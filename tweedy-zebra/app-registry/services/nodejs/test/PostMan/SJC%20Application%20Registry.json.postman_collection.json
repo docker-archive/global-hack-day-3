@@ -1,0 +1,583 @@
+{
+	"id": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+	"name": "SJC Application Registry",
+	"description": "Registry as a Service providing daemon-like assistance to SJC CLI via HTTPS RESTful API.",
+	"order": [],
+	"folders": [
+		{
+			"id": "c3620137-c563-e2df-ac1f-adbc3e222e68",
+			"name": "Not Implemented",
+			"description": "",
+			"order": [
+				"dad697df-7806-605c-b08d-8518f0e271b9",
+				"b04767e1-592d-bbea-d314-5e4af9de2b54",
+				"71ef5e88-edc8-f5f1-d4f8-96395d15e65a",
+				"fc54913f-e87d-3bab-a570-c68a38cf3991",
+				"043c65d0-a08a-d34e-4bae-52e697a6a422",
+				"a4418922-65cc-ab62-8c1d-519cdf94a00b",
+				"d6bd3783-e75e-2da9-1445-a036a0c7ab95",
+				"e084cccc-056c-14c0-6bfe-e0d910f3f846",
+				"de825e6b-1131-e308-c22a-2881e2d9da62",
+				"5f909b43-2314-b54f-8b98-bd31d775c652",
+				"fb07cb36-5a43-52b2-4d51-758e6c499db5",
+				"202259c4-330f-2324-ff84-ec62a4670f4a",
+				"5aa528e2-760c-0c67-9ebc-a03166b9e590",
+				"5bfe34c7-30d1-2e53-a718-690e25fc572f",
+				"4dc7dfdd-b45b-9eb0-813e-a84c3c36d181"
+			],
+			"owner": "37443"
+		},
+		{
+			"id": "b5c38b13-262b-4ebd-8db6-bddd29f26638",
+			"name": "projects",
+			"description": "Folder for projects",
+			"order": [
+				"8c6cf673-7e0b-6e87-8aaf-8f9af653b12b",
+				"263e9362-2aa1-7fba-c9a6-2c77dc9c7f43",
+				"3d7b2fdd-0fe0-1f6b-c658-52745c6981cd",
+				"ed82bd91-5ba5-b30d-96cc-c4eac208c59c",
+				"1a88b62c-5634-7476-666b-64042de571ea",
+				"317c398c-0fc5-b47b-3330-5047f69754f7",
+				"c6692d7b-6370-66a3-c765-67a20a7725a5"
+			],
+			"owner": "37443",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766"
+		}
+	],
+	"timestamp": 1413302258635,
+	"owner": "37443",
+	"remoteLink": "",
+	"public": false,
+	"requests": [
+		{
+			"id": "043c65d0-a08a-d34e-4bae-52e697a6a422",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/orchestra/applications/app-reg/refs/reg-15-my-branch/services",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1442248734263,
+			"name": "Read all Services by permalink",
+			"description": "Reads all Service objects under the specified Ref object.",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"responses": [],
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "1a88b62c-5634-7476-666b-64042de571ea",
+			"headers": "Content-Type: application/json-patch+json\n",
+			"url": "http://localhost:10010/api/v1/projects/orchestra2",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1442694234481,
+			"name": "Patch Project: Add New Application",
+			"description": "Uses Project patching to legally add a new Application object.",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"responses": [],
+			"rawModeData": "[\n  {\n    \"op\": \"add\",\n    \"path\": \"applications\",\n    \"value\": {\n      \"app-reg-2\": {\n        \"slug\": \"app-reg\",\n        \"name\": \"SJC Application Registry\",\n        \"description\": \"Implements a queryable list of officially supported SJC applications.\",\n        \"address\": \"app-reg.orchestra\",\n        \"issues\": \"https://stjosephcontent.atlassian.net/secure/RapidBoard.jspa?rapidView=72\",\n        \"docs\": \"https://stjosephcontent.atlassian.net/wiki/display/CLI/App+Registry\",\n        \"remotes\": {\n          \"not-origin-to-test-required-param\": {\n            \"ssh\": \"ssh://hello\",\n            \"https\": \"http://goodbye\"\n          },\n          \"origin\": {\n            \"ssh\": \"git@github.com:stjosephcontent/app-registry.git\",\n            \"https\": \"https://github.com/stjosephcontent/app-registry.git\"\n          }\n        },\n        \"refs\": {\n          \"reg-15-my-branch\": {\n            \"version\": \"1.3.1\",\n            \"testRunners\": {\n              \"angular\": {},\n              \"postman\": {},\n              \"server\": {}\n            },\n            \"scripts\": {\n              \"script1\": \"by your command.\",\n              \"script2\": \"these are not the droids you are looking for.\"\n            },\n            \"services\": {\n              \"MongoDb\": {\n                \"description\": \"MongoDB backs app-reg for simple high-read, low-write throughput.\",\n                \"startup\": \"\",\n                \"image\": \"#/Services/mongodb\"\n              },\n              \"NodeApp\": {\n                \"description\": \"NodeJS is used for the bulk of the API implementation.\",\n                \"startup\": \"server.js\",\n                \"port\": \"3056\",\n                \"protocols\": [\n                  \"http\",\n                  \"https\"\n                ],\n                \"image\": \"#/Services/nodejs\"\n              },\n              \"tumblr\": {\n                \"description\": \"Tumblr's API is used for a crude CMS.\",\n                \"startup\": \"\",\n                \"port\": \"443\",\n                \"protocols\": [\n                  \"https\"\n                ],\n                \"image\": \"#/Services/external\"\n              }\n            },\n            \"instances\": {\n              \"dev-tforster\": {\n                \"hostname\": \"174.117.35.248\",\n                \"cnames\": [\n                  \"localhost\"\n                ]\n              },\n              \"seansMacBook\": {\n                \"hostname\": \"192.168.10.23\",\n                \"cnames\": [\n                  \"localhost\"\n                ]\n              },\n              \"stage\": {\n                \"hostname\": \"stage.sjc.io\",\n                \"cnames\": []\n              }\n            }\n          }\n        },\n        \"tags\": [\n          \"registry\",\n          \"directory-service\",\n          \"applications\"\n        ],\n        \"audit\": {\n          \"created\": {\n            \"by\": \"tforster\",\n            \"on\": \"2015-08-24T17:08:02.078Z\"\n          },\n          \"updated\": {\n            \"by\": \"smacdonald\",\n            \"on\": \"2015-08-24T17:08:02.078Z\"\n          }\n        }\n      }\n    }\n  }\n]"
+		},
+		{
+			"id": "202259c4-330f-2324-ff84-ec62a4670f4a",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications/{applicationSlug}?detail={{detail}}&",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "PUT",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Returns the named Application.",
+			"descriptionFormat": "html",
+			"time": 1442244708621,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Read Application by permalink",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "263e9362-2aa1-7fba-c9a6-2c77dc9c7f43",
+			"headers": "Content-Type: application/json\n",
+			"url": "http://localhost:10010/api/v1/projects",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1442259956741,
+			"name": "Create: Project",
+			"description": "Create a new uniquely named project.",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"responses": [],
+			"rawModeData": "{\r\n    \"name\": \"orchestra2\",\r\n    \"slug\": \"orchestra2\",\r\n    \"fullname\": \"SJC Applications Orchestra\",\r\n    \"description\": \"Orchestrates and automates the creation and management of SJC applications.\",\r\n    \"homepage\": \"https://stjosephcontent.atlassian.net/wiki/display/CLI/Orchestra\",\r\n    \"applications\": {\r\n        \"app-reg\": {\r\n            \"slug\": \"app-reg\",\r\n            \"name\": \"SJC Application Registry\",\r\n            \"description\": \"Implements a queryable list of officially supported SJC applications.\",\r\n            \"address\": \"app-reg.orchestra\",\r\n            \"issues\": \"https://stjosephcontent.atlassian.net/secure/RapidBoard.jspa?rapidView=72\",\r\n            \"docs\": \"https://stjosephcontent.atlassian.net/wiki/display/CLI/App+Registry\",\r\n            \"remotes\": {\r\n                \"not-origin-to-test-required-param\": {\r\n                    \"ssh\": \"ssh://hello\",\r\n                    \"https\": \"http://goodbye\"\r\n                },\r\n                \"origin\": {\r\n                    \"ssh\": \"git@github.com:stjosephcontent/app-registry.git\",\r\n                    \"https\": \"https://github.com/stjosephcontent/app-registry.git\"\r\n                }\r\n            },\r\n            \"refs\": {\r\n                \"reg-15-my-branch\": {\r\n                    \"version\": \"1.3.1\",\r\n                    \"testRunners\": {\r\n                        \"angular\": {},\r\n                        \"postman\": {},\r\n                        \"server\": {}\r\n                    },\r\n                    \"scripts\": {\r\n                        \"script1\": \"by your command.\",\r\n                        \"script2\": \"these are not the droids you are looking for.\"\r\n                    },\r\n                    \"services\": {\r\n                        \"MongoDb\": {\r\n                            \"description\": \"MongoDB backs app-reg for simple high-read, low-write throughput.\",\r\n                            \"startup\": \"\",\r\n                            \"image\": \"#/Services/mongodb\"\r\n                        },\r\n                        \"NodeApp\": {\r\n                            \"description\": \"NodeJS is used for the bulk of the API implementation.\",\r\n                            \"startup\": \"server.js\",\r\n                            \"port\": \"3056\",\r\n                            \"protocols\": [\r\n                                \"http\",\r\n                                \"https\"\r\n                            ],\r\n                            \"image\": \"#/Services/nodejs\"\r\n                        },\r\n                        \"tumblr\": {\r\n                            \"description\": \"Tumblr's API is used for a crude CMS.\",\r\n                            \"startup\": \"\",\r\n                            \"port\": \"443\",\r\n                            \"protocols\": [\r\n                                \"https\"\r\n                            ],\r\n                            \"image\": \"#/Services/external\"\r\n                        }\r\n                    },\r\n                    \"instances\": {\r\n                        \"dev-tforster\": {\r\n                            \"hostname\": \"174.117.35.248\",\r\n                            \"cnames\": [\r\n                                \"localhost\"\r\n                            ]\r\n                        },\r\n                        \"seansMacBook\": {\r\n                            \"hostname\": \"192.168.10.23\",\r\n                            \"cnames\": [\r\n                                \"localhost\"\r\n                            ]\r\n                        },\r\n                        \"stage\": {\r\n                            \"hostname\": \"stage.sjc.io\",\r\n                            \"cnames\": []\r\n                        }\r\n                    }\r\n                }\r\n            },\r\n            \"tags\": [\r\n                \"registry\",\r\n                \"directory-service\",\r\n                \"applications\"\r\n            ],\r\n            \"audit\": {\r\n                \"created\": {\r\n                    \"by\": \"tforster\",\r\n                    \"on\": \"2015-08-24T17:08:02.078Z\"\r\n                },\r\n                \"updated\": {\r\n                    \"by\": \"smacdonald\",\r\n                    \"on\": \"2015-08-24T17:08:02.078Z\"\r\n                }\r\n            }\r\n        },\r\n        \"sjc-cli\": {\r\n            \"slug\": \"sjc-cli\",\r\n            \"name\": \"SJC CLI\",\r\n            \"description\": \"A command line tool used to interact with SJC applications throughout their lifecycle.\",\r\n            \"address\": \"\",\r\n            \"issues\": \"https://stjosephcontent.atlassian.net/secure/RapidBoard.jspa?rapidView=72\",\r\n            \"docs\": \"https://stjosephcontent.atlassian.net/wiki/display/CLI/SJC-CLI\",\r\n            \"remotes\": {\r\n                \"origin\": {\r\n                    \"ssh\": \"git@github.com:stjosephcontent/sjc-cli.git\",\r\n                    \"https\": \"https://github.com/stjosephcontent/sjc-cli.git\"\r\n                }\r\n            },\r\n            \"refs\": {\r\n                \"cli-99-change-the-shade-of-black\": {\r\n                    \"version\": \"0.2.9\",\r\n                    \"testRunners\": {\r\n                        \"angular\": {},\r\n                        \"postman\": {},\r\n                        \"server\": {}\r\n                    },\r\n                    \"scripts\": {\r\n                        \"script1\": \"by your command.\",\r\n                        \"script2\": \"these are not the droids you are looking for.\"\r\n                    },\r\n                    \"services\": {},\r\n                    \"instances\": {\r\n                        \"seansMacBook\": {\r\n                            \"hostname\": \"localhost\"\r\n                        }\r\n                    }\r\n                }\r\n            },\r\n            \"tags\": [\r\n                \"cli\",\r\n                \"command-line\",\r\n                \"tool\",\r\n                \"utility\"\r\n            ],\r\n            \"audit\": {\r\n                \"created\": {\r\n                    \"by\": \"tforster\",\r\n                    \"on\": \"2015-08-24T17:08:02.078Z\"\r\n                },\r\n                \"updated\": {\r\n                    \"by\": \"smacdonald\",\r\n                    \"on\": \"2015-08-24T17:08:02.078Z\"\r\n                }\r\n            }\r\n        }\r\n    },\r\n    \"tags\": [\r\n        \"cli\",\r\n        \"command line\",\r\n        \"registry\",\r\n        \"app\",\r\n        \"application\",\r\n        \"directory\",\r\n        \"directory service\"\r\n    ]\r\n}"
+		},
+		{
+			"id": "317c398c-0fc5-b47b-3330-5047f69754f7",
+			"headers": "Content-Type: application/json-patch+json\n",
+			"url": "http://localhost:10010/api/v1/projects/orchestra2",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1442702841408,
+			"name": "Patch Project: Remove  Application copy",
+			"description": "Uses Project patching to legally remove an existing Application object.",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"responses": [],
+			"rawModeData": "[\n  {\n    \"op\": \"remove\",\n    \"path\": \"applications/app-reg-3\"   \n  }\n]"
+		},
+		{
+			"id": "3d7b2fdd-0fe0-1f6b-c658-52745c6981cd",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/orchestra",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1442252070454,
+			"name": "Read: Project by Permalink",
+			"description": "Returns the named project.",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"responses": []
+		},
+		{
+			"id": "4dc7dfdd-b45b-9eb0-813e-a84c3c36d181",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/orchestra/applications",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1442246154421,
+			"name": "Read all Applications by Project",
+			"description": "Returns all Applications for the named Project.",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"responses": [],
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "5aa528e2-760c-0c67-9ebc-a03166b9e590",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications/{applicationSlug}?detail={{detail}}&",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Returns the named Application.",
+			"descriptionFormat": "html",
+			"time": 1442244708621,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Read Application by permalink",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "5bfe34c7-30d1-2e53-a718-690e25fc572f",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications?detail={{detail}}&",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Create new Application object for the named Project object.",
+			"descriptionFormat": "html",
+			"time": 1442244708621,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Create Application by Project",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "5f909b43-2314-b54f-8b98-bd31d775c652",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/orchestra/applications/app-reg/refs",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1442248686127,
+			"name": "Read all Refs by permalink",
+			"description": "Reads all Ref objects under the specified Application object.",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"responses": [],
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "71ef5e88-edc8-f5f1-d4f8-96395d15e65a",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications/{applicationSlug}/refs/{refSlug}/services/{serviceSlug}",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Returns the named Service.",
+			"descriptionFormat": "html",
+			"time": 1442244708622,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Read Service by permalink",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "8c6cf673-7e0b-6e87-8aaf-8f9af653b12b",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Read all Projects from the registry.",
+			"descriptionFormat": "html",
+			"time": 1442244708620,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Read: All Projects",
+			"folder": "b5c38b13-262b-4ebd-8db6-bddd29f26638"
+		},
+		{
+			"id": "a4418922-65cc-ab62-8c1d-519cdf94a00b",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications/{applicationSlug}/refs/{refSlug}",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "DELETE",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Delete the named Ref.",
+			"descriptionFormat": "html",
+			"time": 1442244708621,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Delete Ref by permalink",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "b04767e1-592d-bbea-d314-5e4af9de2b54",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications/{applicationSlug}/refs/{refSlug}/services/{serviceSlug}",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "PUT",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Updates the named Service.",
+			"descriptionFormat": "html",
+			"time": 1442244708622,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Update Service by permalink",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "c6692d7b-6370-66a3-c765-67a20a7725a5",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "DELETE",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Deep deletes the Project identified by projectSlug including all descendant child objects.",
+			"descriptionFormat": "html",
+			"time": 1442244708621,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Delete Project by permalink",
+			"folder": "b5c38b13-262b-4ebd-8db6-bddd29f26638"
+		},
+		{
+			"id": "d6bd3783-e75e-2da9-1445-a036a0c7ab95",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications/{applicationSlug}/refs/{refSlug}",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "PUT",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Updates the named Ref.",
+			"descriptionFormat": "html",
+			"time": 1442244708621,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Update Ref by permalink",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "dad697df-7806-605c-b08d-8518f0e271b9",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications/{applicationSlug}/refs/{refSlug}/services/{serviceSlug}",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "DELETE",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Delete the named Service.",
+			"descriptionFormat": "html",
+			"time": 1442244708622,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Delete Service by permalink",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "de825e6b-1131-e308-c22a-2881e2d9da62",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications/{applicationSlug}/refs",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Creates a new Ref object under the specified Application object.",
+			"descriptionFormat": "html",
+			"time": 1442244708621,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Create Ref by permalink",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "e084cccc-056c-14c0-6bfe-e0d910f3f846",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications/{applicationSlug}/refs/{refSlug}?detail={{detail}}&",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Returns the named Ref.",
+			"descriptionFormat": "html",
+			"time": 1442244708621,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Read Ref by permalink",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "ed82bd91-5ba5-b30d-96cc-c4eac208c59c",
+			"headers": "Content-Type: application/json-patch+json\n",
+			"url": "http://localhost:10010/api/v1/projects/orchestra2",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1442696567478,
+			"name": "Patch Project: Add/edit String Property",
+			"description": "Updates the homepage property at the root of a Project object.",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"responses": [],
+			"rawModeData": "[\r\n  {\r\n    \"op\": \"add\",\r\n    \"path\": \"homepage\",\r\n    \"value\": \"https://stjosephcontent.atlassian.net/wiki/display/CLI/Orchestra\"\r\n  }\r\n]"
+		},
+		{
+			"id": "fb07cb36-5a43-52b2-4d51-758e6c499db5",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications/{applicationSlug}?detail={{detail}}&",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "DELETE",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Returns the named Application.",
+			"descriptionFormat": "html",
+			"time": 1442244708621,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Read Application by permalink",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		},
+		{
+			"id": "fc54913f-e87d-3bab-a570-c68a38cf3991",
+			"headers": "",
+			"url": "http://localhost:10010/api/v1/projects/{{projectSlug}}/applications/{applicationSlug}/refs/{refSlug}/services",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"data": [
+				{
+					"key": "size",
+					"value": "original",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"description": "Creates a new Service object under the specified Ref object.",
+			"descriptionFormat": "html",
+			"time": 1442244708622,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "0f866712-3a01-4ec9-e053-2b5660ab5766",
+			"name": "Create Service by permalink",
+			"folder": "c3620137-c563-e2df-ac1f-adbc3e222e68"
+		}
+	]
+}

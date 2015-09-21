@@ -1,0 +1,1 @@
+This command simply outputs a text file (just as the unix cat command).

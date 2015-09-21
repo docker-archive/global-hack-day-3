@@ -1,0 +1,18 @@
+description: "A known deployment of a ref to a host environment such as dev, stage or prod."
+type: "object"
+additionalProperties: false
+properties:
+  name:
+    description: "Name of the Instance (dev, stage or prod)."
+    type: "string"
+  description:
+    description: "tbd"
+    type: "string"
+  hostname:
+    description: "Hostname or IP of the host of the instance. Typicall localhost or a private address in the case of dev."
+    type: "string"
+  cnames:
+    description: ""
+    type: "array"
+    items:
+      type: "string"

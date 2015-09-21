@@ -1,0 +1,28 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+body {
+    margin: 0 auto;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+}
+#main {
+	font-size: 5vh;
+    text-align: center;
+    vertical-align: middle;
+    margin: 10% auto 0 auto;
+    display: inline-block;
+}
+table {
+    text-align: center;
+    vertical-align: middle;
+}
+table tr td:nth-child(odd) {
+    text-align: left;
+}
+table tr td:nth-child(even) {
+    text-align: right;
+}

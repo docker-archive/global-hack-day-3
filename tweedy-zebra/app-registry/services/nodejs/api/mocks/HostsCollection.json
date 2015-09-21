@@ -1,0 +1,24 @@
+﻿{
+   "dev": {
+      "roy-batty": {
+         "ipv4": "192.168.0.31",
+         "description": "Troy's MacBook running the 'real' operating system.",
+         "network": "private"
+      }
+   },
+
+   "stage": {
+      "stage.sjc.io": {
+         "ipv4": "52.5.130.90",
+         "description": "Primary host for stage sites.",
+         "network": "aws"
+      },
+      "45.55.44.158": {
+         "ipv4": "45.55.44.158"
+         "description": "Secondary/alternative host for stage sites.",
+         "network": "digital-ocean"
+      }
+   },
+
+   "prod": { }
+}

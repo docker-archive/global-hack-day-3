@@ -1,0 +1,20 @@
+{
+	"orchestra": {
+		"version": "0.0.1"
+	},
+	"project": {
+		"name": "tester",
+		"slug": "tester"
+	},
+	"name": "colours",
+	"slug": "colours",
+	"services": {
+		"apache": {
+			"folder": "services/apache",
+			"image": "sean9999/colours",
+			"ambassador": true,
+ 			"ports": [80],
+			"volumes": [ "./services/apache/domains/colours/web:/var/www/html", "./logz:/var/log/apache2" ]		
+		}
+	}
+}

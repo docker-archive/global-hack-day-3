@@ -1,0 +1,28 @@
+description: "A Project object with optional Applications."
+type: "object"
+
+properties:
+  _id:
+    description: "Mongo generated Id. Type not specified as it varies between string and object."
+  name:
+    description: "Name of the Project."
+    type: "string"
+  slug:
+    description: "Unique lowercase dash-separated version of the name property."
+    type: "string"
+  description:
+    description: ""
+    type: "string"
+  homepage:
+    description: ""
+    type: "string"
+  tags:
+    description: ""
+    type: "array"
+    items:
+      type: "string"
+  applications:
+    description: ""
+    type: "object"
+    additionalProperties:
+      $ref: "./ApplicationObject.yaml"

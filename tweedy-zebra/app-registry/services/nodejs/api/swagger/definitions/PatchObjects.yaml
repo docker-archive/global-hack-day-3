@@ -1,0 +1,4 @@
+description: "An array of PatchObject"
+type: "array"
+items:
+  $ref: "./PatchObject.yaml"

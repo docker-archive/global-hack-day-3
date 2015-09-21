@@ -1,0 +1,58 @@
+{
+  "name": "@sean9999/sjc-cli",
+  "version": "1.0.1",
+  "description": "command-line utility for SJC developers and ops engineers",
+  "main": "cli.sh",
+  "scripts": {
+    "test": "bash test/jasmine-harmony.sh",
+    "lint": "gulp lint"
+  },
+  "bin": {
+    "sjc": "cli.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stjosephcontent/sjc-cli.git"
+  },
+  "keywords": [
+    "sjc",
+    "cli",
+    "dev",
+    "ops",
+    "container",
+    "orchestration"
+  ],
+  "author": "Sean Macdonald <sean.macdonald@stjoseph.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stjosephcontent/sjc-cli/issues"
+  },
+  "homepage": "https://github.com/stjosephcontent/sjc-cli#README",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jasmine": "^2.0.1",
+    "gulp-jshint": "^1.11.2",
+    "jasmine": "^2.3.2",
+    "jasmine-core": "^2.3.4",
+    "jshint": "^2.8.0"
+  },
+  "dependencies": {
+    "bash-color": "0.0.3",
+    "colors": "^1.1.2",
+    "columnify": "^1.5.2",
+    "columnizer": "^0.1.0",
+    "dockerode": "^2.2.2",
+    "nodegit": "^0.4.1",
+    "read-yaml": "^1.0.0",
+    "rot": "^0.1.0"
+  },
+  "jshintConfig": {
+    "camelcase": true,
+    "esnext": true,
+    "node": true,
+    "jasmine": true,
+    "globals": {
+      "Promise": true
+    }
+  }
+}

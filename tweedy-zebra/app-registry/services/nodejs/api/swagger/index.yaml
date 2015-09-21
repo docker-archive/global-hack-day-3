@@ -1,0 +1,22 @@
+swagger: '2.0'
+info:
+  version: "0.1.0"
+  title: "SJC Application Registry"
+  description: "Registry as a Service providing daemon-like assistance to SJC CLI via HTTPS RESTful API."
+  termsOfService: ""
+  contact:
+    name: "SJC"
+  license:
+    name: ""
+host: "localhost:10010"
+basePath: "/api/v1"
+schemes:
+- "http"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  $ref: ./paths/index.yaml
+definitions:
+  $ref: ./definitions/index.yaml

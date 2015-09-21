@@ -1,0 +1,105 @@
+get:
+  x-swagger-router-controller: "ApplicationsController"
+  description: "Returns the named Application."
+  operationId: "ReadApplicationByPermalink"
+  summary: "Read Application by permalink"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  parameters:
+  - name: "projectSlug"
+    description: "The unique Project slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "applicationSlug"
+    description: "The Application slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "detail"
+    description: "Specifies the level of detail to return. Options are small, medium and full (default)."
+    type: "string"
+    in: "query"
+  responses:
+    200:
+      description: "Success."
+      schema:
+        $ref: "../definitions/ApplicationObject.yaml"
+    405:
+      description: "Validation exception"
+    default:
+      description: "Error"
+      schema:
+        $ref: "../definitions/ErrorResponse.yaml"
+put:
+  x-swagger-router-controller: "ApplicationsController"
+  description: "Returns the named Application."
+  operationId: "UpdateApplicationByPermalink"
+  summary: "Read Application by permalink"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  parameters:
+  - name: "projectSlug"
+    description: "The unique Project slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "applicationSlug"
+    description: "The Application slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "detail"
+    description: "Specifies the level of detail to return. Options are small, medium and full (default)."
+    type: "string"
+    in: "query"
+  responses:
+    200:
+      description: "Success."
+      schema:
+        $ref: "../definitions/ApplicationObject.yaml"
+    405:
+      description: "Validation exception"
+    default:
+      description: "Error"
+      schema:
+        $ref: "../definitions/ErrorResponse.yaml"
+delete:
+  x-swagger-router-controller: "ApplicationsController"
+  description: "Returns the named Application."
+  operationId: "DeleteApplicationByPermalink"
+  summary: "Read Application by permalink"
+  consumes:
+  - "application/json"
+  produces:
+  - "application/json"
+  parameters:
+  - name: "projectSlug"
+    description: "The unique Project slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "applicationSlug"
+    description: "The Application slug to search on."
+    type: "string"
+    in: "path"
+    required: true
+  - name: "detail"
+    description: "Specifies the level of detail to return. Options are small, medium and full (default)."
+    type: "string"
+    in: "query"
+  responses:
+    200:
+      description: "Success."
+      schema:
+        $ref: "../definitions/ApplicationObject.yaml"
+    405:
+      description: "Validation exception"
+    default:
+      description: "Error"
+      schema:
+        $ref: "../definitions/ErrorResponse.yaml"
