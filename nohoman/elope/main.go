@@ -13,6 +13,7 @@ import (
         "github.com/craigbarrau/global-hack-day-3/nohoman/elope/stringid"
 	"github.com/craigbarrau/global-hack-day-3/nohoman/elope/run"
 	"github.com/craigbarrau/global-hack-day-3/nohoman/elope/common"
+	"github.com/craigbarrau/global-hack-day-3/nohoman/elope/diff"
 )
 
 var (
@@ -24,6 +25,7 @@ const (
 	pack_action = "pack"
 	run_action = "run"
 	ls_action = "ls"
+	diff_action = "diff"
 
 	// TODO: Productise this path (e.g. /var/lib/elope)
 	persistence_store = "/tmp/elope"
@@ -178,7 +180,7 @@ func main() {
 		fmt.Println("    pack     Pack for incremental or full deployment")
 		fmt.Println("    run      Escape it all and deploy the way you want")
 		fmt.Println("    ls       List all pending or active deployments")
-		fmt.Println("    retreat  ...so it didn't work out for you?") 
+		fmt.Println("    diff     See the differences made to the container from elope") 
 		fmt.Println("")
 	}
 	args := os.Args[1:]
@@ -224,6 +226,20 @@ func main() {
 			container = args[2]
 		//}
 		run.Run(id, container)
+	} else if action == diff_action {
+                if numArgs < 2 {
+                        fmt.Fprintf(os.Stderr, "Usage: %s %s CONTAINER\n", os.Args[0], action)
+                        fmt.Println("\nSee the differences made to your container from elope")
+			fmt.Println("This can more useful then 'docker diff' as it shows only deployment changes")
+			fmt.Println("No the insignificant/irrelevant data like log files/n")
+                        fmt.Println("Inputs:")
+                        fmt.Println("    CONTAINER  The identifier for container that has been deploy to.")
+                        fmt.Println("               It can be the name or id of the docker container")
+                        fmt.Println("")
+                        os.Exit(1)
+                }		
+		container := args[1]
+		diff.Diff(container)		
 	} else if action == ls_action {
 	// TODO:
 	// Implement ls. By searching path /tmp/packages/
