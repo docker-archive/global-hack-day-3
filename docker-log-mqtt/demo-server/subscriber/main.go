@@ -1,13 +1,13 @@
 package main
 
 import (
-	"encoding/json"
+	//"encoding/json"
 	"flag"
 	"fmt"
 	"git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git"
 	"math/rand"
 	"os"
-	"strings"
+	//"strings"
 	"time"
 )
 
