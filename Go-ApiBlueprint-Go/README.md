@@ -16,10 +16,11 @@ API Blueprint is a documentation-oriented web API description language. The API 
 
 - Using [Aglio](https://github.com/danielgtaylor/aglio) we generate this [version](http://go-apiblueprint-go.github.io/DockerRemoteAPI/) or you can see [version in Apiary](http://docs.dockerremote.apiary.io/).
 
+## References
 
-[API Blueprint specification](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md)
-[Drafter - API Blueprint Parser](https://github.com/apiaryio/drafter)
-[Aglio - An API Blueprint renderer with theme support that outputs static HTML](https://github.com/danielgtaylor/aglio)
+- [API Blueprint specification](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md)
+- [Drafter - API Blueprint Parser](https://github.com/apiaryio/drafter)
+- [Aglio - An API Blueprint renderer with theme support that outputs static HTML](https://github.com/danielgtaylor/aglio)
 
 ## Using with docker
 
