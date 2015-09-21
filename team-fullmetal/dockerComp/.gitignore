@@ -1,0 +1,8 @@
+*.py[cod]
+*~
+
+db.sqlite3
+*.db
+container_info.json
+containers_details
+dumps/

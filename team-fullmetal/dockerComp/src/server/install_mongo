@@ -1,0 +1,74 @@
+# Ubuntu 14.04
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+sudo service mongod start
+# sudo service mongod enable
+# sudo service mongod restart
+
+
+# SETUP root/user accounts
+
+# stop the service and run this
+sudo service mongod stop
+sudo mongod --noauth --dbpath=/var/lib/mongodb/
+
+# in another terminal, run $ mongo ; then
+# add admin user and db, as follows:
+
+use admin
+db.createUser(
+  {
+    user: "manager",
+    pwd: "<admin pass for manager>",
+    roles:
+    [
+      {
+        role: "userAdminAnyDatabase",
+        db: "admin"
+      }
+    ]
+  }
+)
+
+# then run following for a regular db and user, as follows:
+
+use jugad
+db.createUser(
+  {
+    user: "arco",
+    pwd: "arco123",
+    roles:
+    [
+      {
+        role: "userAdmin",
+        db: "jugad"
+      }
+    ]
+  }
+)
+
+# then exit the shell and close the manual mongod server
+
+# then run this to ensure that on restart, mongo doesn't fail
+sudo chown -R mongodb:mongodb /var/lib/mongodb/
+
+sudo service mongod restart
+
+# ensure that mongod.conf contains auth:true
+# for logging in as user 'manager' in db 'admin'
+mongo admin --port 27017 -u manager -p
+# for logging in as user 'arco' in db 'jugad'
+mongo jugad --port 27017 -u arco -p
+
+# to push data to mongo from previous dumps
+# mongorestore -h 127.0.0.1 -d <db name> --dir <data dir containing bson and json>
+
+# to dump existing collection from mongodb
+# ensure that noauth:True in mongod.conf else this will fail
+# mongodump -h 127.0.0.1 -d jugad -c users
+
+# to convert bson to json
+# bsondump users.bson  > users.json
+

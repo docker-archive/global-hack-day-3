@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# ref: http://sebgoa.blogspot.in/2015/04/1-command-to-kubernetes-with-docker.html
+
+docker-compose -f k8s.yml up -d
+docker ps | grep compose
+
+# had to disable selinux on fedora22 to allow kube to run on 8080
+
+# pip install gcloud
+# curl https://sdk.cloud.google.com | bash
+# gcloud beta container get-server-config --zone=CLOUDSDK_COMPUTE_ZONE
+
+# kubectl config view
+# gcloud auth login --no-launch-browser
+# gcloud config set project  tenacious-plane-107419
+
+kubectl get nodes
+kubectl run dockercomp --image=arcolife/docker_comp --port=80
+kubectl run dockercomp1 --image=arcolife/docker_comp --port=80
+kubectl run dockercomp2 --image=arcolife/docker_comp --port=80
+kubectl run dockercomp3 --image=arcolife/docker_comp --port=80
+kubectl run dockercomp4 --image=arcolife/docker_comp --port=80
+kubectl run dockercomp5 --image=arcolife/docker_comp --port=80
+kubectl run dockercomp6 --image=arcolife/docker_comp --port=80
+
+kubectl get pods
+kubectl get rc
+
+kubectl expose rc dockercomp1 --port=80 --public-ip=192.168.1.101

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+rm *.pyc
+rm */*.pyc
+rm */*/*.pyc
+rm */*/*/*.pyc
+
+rm *~
+rm */*~
+rm */*/*~
+rm */*/*/*~
