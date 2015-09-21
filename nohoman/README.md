@@ -12,19 +12,24 @@ This is a submission for the 3rd edition of the Docker Global Hack Day
 `elope pack <file> <destination folder>`
 * This will snapshot a deployable file (such as a Java web application) for later deployment to a container 
 * This will output an ID for the package which can be used later with `elope run`
+
 #### Pack example
 `elope pack sample.war /usr/local/tomcat/webapps`
+
 ### Run command
 ` elope run <id> <container>`
 * This will run an incremental deployment against a container with no restart necessary (via `docker cp`)
 * This will only work for technologies which support rediscovery without container reboot (e.g. Tomcat container)
 * This will also generate a new image (from a dynamically generated dockerfile) for full deployment in future 
 * A shorter version of the ID can be used similar to how container IDs can be referenced in Docker
+
 #### Run example
 `elope run b5b drunk_feynman`
+
 ### Diff command
 `elope diff <container>`
 * This will show all the files that have been deployed to the container with `elope`
 * In some use cases, this is more useful than `docker diff` as it shows only the files which affect functionatily
+
 #### Diff example
 `elope diff drunkfeynman`
