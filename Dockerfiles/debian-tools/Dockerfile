@@ -13,5 +13,5 @@ RUN \
 
 USER $USER
 
-CMD ["while", "true;", "do", "sleep", "10;", "done"]
+CMD while true;do sleep 10; done
 
