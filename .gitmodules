@@ -1,3 +1,6 @@
 [submodule "tacklebox"]
 	path = tacklebox
 	url = git@github.com:Robobench/tacklebox.git
+[submodule "docker-log-mqtt/docker"]
+	path = docker-log-mqtt/docker
+	url = https://github.com/waitingkuo/docker
