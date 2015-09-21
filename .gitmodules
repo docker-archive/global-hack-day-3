@@ -1,0 +1,3 @@
+[submodule "docker-log-mqtt/docker"]
+	path = docker-log-mqtt/docker
+	url = https://github.com/waitingkuo/docker
