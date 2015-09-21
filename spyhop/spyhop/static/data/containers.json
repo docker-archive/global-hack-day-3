@@ -1,0 +1,21 @@
+{
+    "data": [
+	{
+	    "container-id": "4c01db0b339c",
+	    "image": "ubuntu:12.04",
+	    "command": "bash",
+	    "created": "17 seconds ago",
+	    "status": "Up 16 seconds",
+	    "ports": "3300-3310/tcp",
+	    "names": "webapp"
+	}, {
+	    "container-id": "d7886598dbe2",
+            "image": "crosbymichael/redis:latest",
+            "command": "/redis-server --dir",    
+	    "created": "33 minutes ago",
+            "status": "Up 33 minutes",
+            "ports": "6379/tcp",          
+            "names": "redis,webapp/db"
+	}
+    ]
+}

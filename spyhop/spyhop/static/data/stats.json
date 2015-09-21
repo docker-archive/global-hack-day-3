@@ -1,0 +1,212 @@
+{
+  "blkio_stats": {
+    "io_merged_recursive": [],
+    "io_queue_recursive": [],
+    "io_service_bytes_recursive": [
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "Read",
+        "value": 14184448
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "Write",
+        "value": 0
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "Sync",
+        "value": 0
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "Async",
+        "value": 14184448
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "Total",
+        "value": 14184448
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "Read",
+        "value": 77824
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "Write",
+        "value": 0
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "Sync",
+        "value": 0
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "Async",
+        "value": 77824
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "Total",
+        "value": 77824
+      }
+    ],
+    "io_service_time_recursive": [],
+    "io_serviced_recursive": [
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "Read",
+        "value": 816
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "Write",
+        "value": 0
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "Sync",
+        "value": 0
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "Async",
+        "value": 816
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "Total",
+        "value": 816
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "Read",
+        "value": 8
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "Write",
+        "value": 0
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "Sync",
+        "value": 0
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "Async",
+        "value": 8
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "Total",
+        "value": 8
+      }
+    ],
+    "io_time_recursive": [],
+    "io_wait_time_recursive": [],
+    "sectors_recursive": []
+  },
+  "cpu_stats": {
+    "cpu_usage": {
+      "percpu_usage": [
+        1346944056
+      ],
+      "total_usage": 1346944056,
+      "usage_in_kernelmode": 200000000,
+      "usage_in_usermode": 310000000
+    },
+    "system_cpu_usage": 7738500000000,
+    "throttling_data": {
+      "periods": 0,
+      "throttled_periods": 0,
+      "throttled_time": 0
+    }
+  },
+  "memory_stats": {
+    "failcnt": 0,
+    "limit": 513777664,
+    "max_usage": 27365376,
+    "stats": {
+      "active_anon": 11489280,
+      "active_file": 3436544,
+      "cache": 10199040,
+      "hierarchical_memory_limit": 18446744073709551615,
+      "inactive_anon": 0,
+      "inactive_file": 6762496,
+      "mapped_file": 4354048,
+      "pgfault": 6984,
+      "pgmajfault": 91,
+      "pgpgin": 8976,
+      "pgpgout": 3681,
+      "rss": 11489280,
+      "rss_huge": 0,
+      "total_active_anon": 11489280,
+      "total_active_file": 3436544,
+      "total_cache": 10199040,
+      "total_inactive_anon": 0,
+      "total_inactive_file": 6762496,
+      "total_mapped_file": 4354048,
+      "total_pgfault": 6984,
+      "total_pgmajfault": 91,
+      "total_pgpgin": 8976,
+      "total_pgpgout": 3681,
+      "total_rss": 11489280,
+      "total_rss_huge": 0,
+      "total_unevictable": 0,
+      "total_writeback": 0,
+      "unevictable": 0,
+      "writeback": 0
+    },
+    "usage": 21753856
+  },
+  "network": {
+    "rx_bytes": 1296,
+    "rx_dropped": 0,
+    "rx_errors": 0,
+    "rx_packets": 16,
+    "tx_bytes": 648,
+    "tx_dropped": 0,
+    "tx_errors": 0,
+    "tx_packets": 8
+  },
+  "precpu_stats": {
+    "cpu_usage": {
+      "percpu_usage": null,
+      "total_usage": 0,
+      "usage_in_kernelmode": 0,
+      "usage_in_usermode": 0
+    },
+    "system_cpu_usage": 0,
+    "throttling_data": {
+      "periods": 0,
+      "throttled_periods": 0,
+      "throttled_time": 0
+    }
+  },
+  "read": "2015-09-19T14:16:43.355612057Z"
+}
