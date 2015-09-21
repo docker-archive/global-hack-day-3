@@ -1,3 +1,3 @@
 #!/bin/sh
 
-serf agent -bind=$1 &
+serf agent -advertise=$1 &
