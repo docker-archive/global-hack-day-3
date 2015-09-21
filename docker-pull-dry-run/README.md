@@ -35,10 +35,10 @@ Does not work if a background pull is already running on the same image (but dis
        If you do not specify a REGISTRY_HOST, the command uses Docker's public registry located at registry-1.docker.io by default.
 
 # OPTIONS
-       	-a, --all-tags=true|false
-          Download all tagged images in the repository. The default is false.  
+	-a, --all-tags=true|false
+	  Download all tagged images in the repository. The default is false.  
 	-d, --dry-run
-	  Don't 
+	  Don't download the image layers. Only display the total size to be downloaded 
 	--help
-          Print usage statement
+	  Print usage statement
 
