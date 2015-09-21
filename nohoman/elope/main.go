@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	verbose = true
+	verbose = false
 )
 
 const (
@@ -42,7 +42,7 @@ func NewPackageJSON(src []byte) (*common.Package, error) {
 	return ret, nil
 }
 
-func Pack(name, file, destination string) string {
+func Pack(file, destination string) string {
         packages_metadir_exists,_ := common.Exists(packages_metadir)
         // TODO: Error handling
 	var package_exists = false
@@ -50,22 +50,25 @@ func Pack(name, file, destination string) string {
         currentmd5sumfull := md5sum(file)
         if packages_metadir_exists != true {
                 os.MkdirAll(packages_metadir, 0777)
-                // Make this debug log
-                fmt.Printf("Creating %v\n",packages_metadir)
+                if verbose {
+                	fmt.Printf("Creating %v\n",packages_metadir)
+		}
         } else {
 	        files,_ := ioutil.ReadDir(packages_metadir)
 		for i := 0; i < len(files); i++ {
 			folder := files[i]
 			metadata_file := packages_metadir+"/"+folder.Name()+"/metadata.json"	
-			fmt.Printf("Reading %v\n",metadata_file)
+			if verbose { fmt.Printf("Reading %v\n",metadata_file) }
 			p_meta_exists,_ := common.Exists(metadata_file)
 			if p_meta_exists == true {
 				p,_ := common.ReadPackageJSON(metadata_file)
-				fmt.Printf("Comparing %v with %v\n",file,p.SourceFile)	
+				if verbose { fmt.Printf("Comparing %v with %v\n",file,p.SourceFile) }	
 				savedmd5 := strings.Split(p.Md5sum," ")[0]
 				currentmd5 := strings.Split(currentmd5sumfull," ")[0]
-				fmt.Println(savedmd5)
-				fmt.Println(currentmd5)
+				if verbose {
+					fmt.Println(savedmd5)
+					fmt.Println(currentmd5)
+				}
 				if p.SourceFile == file && savedmd5 == currentmd5 {
 					package_exists = true
 					existing_package_id = p.ID				
@@ -202,12 +205,9 @@ func main() {
 			os.Exit(1)
 		}
 		file := args[1]
-		var destination = ""
-		//if numArgs > 2 {
-			destination = args[2]
-			fmt.Printf("Using destination %v\n", destination)
-		//}
-		id := Pack("random_name", file, destination)
+		var destination = args[2]
+		if verbose { fmt.Printf("Using destination %v\n", destination) }
+		id := Pack(file, destination)
 		fmt.Println(id)
 	} else if action == run_action {
                 if numArgs < 3 {
