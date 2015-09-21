@@ -6,22 +6,22 @@ A tool for making containers easy to debug/hack. It enables you to *temporaly* i
 
 1) setup a tools container
 ```
-docker build -t csk-tool Dockerfiles/debian-tools
+docker build -t csk-tools Dockerfiles/debian-tools
 ```
 2) setup a csk container
 ```
-docker build -t csk Dockerfiles/csk/
+docker build -t csk .
 ```
 
 3) enhance desired container with your tool and follow the instruction to use it! 
 ```
-docker run <container to enhance>
+docker run -ti -v /var/run/docker.sock:/var/run/docker.sock csk <container to enhance>
 ```
-4) hack it
+4) hack it!
 
 5) remove tools from a container
 ```
-docker run --remove <container to enance>
+docker run csk --remove <container to enance>
 ```
 
 ## Motivation
