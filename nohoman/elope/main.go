@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"strings"
 	"encoding/json"
 	"os"
@@ -333,15 +332,4 @@ func main() {
 	} else {
 		fmt.Println(action+" is not yet implemented or it may never be.")
 	}
-	Something("WHATEVER")
 }
-
-func Something(a string) string {
-        wordPtr := flag.String("word", "foo", "a string")
-        numbPtr := flag.Int("numb", 42, "an int")
-        flag.Parse()
-        fmt.Println("word:", *wordPtr)
-        fmt.Println("numb:", *numbPtr)
-        return "X"
-}
-
