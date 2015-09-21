@@ -94,6 +94,12 @@ function setSessionData(req, oauth2Client, tokens, cb) {
 };
 
 function gauthEnabled() {
+  if(secrets.config.gauth.client_secret) {
+    oauth2Client = new gapi.auth.OAuth2(
+    secrets.config.gauth.client_id,
+    secrets.config.gauth.client_secret,
+    secrets.config.gauth.redirect_uris[0]);
+  }
   return !!secrets.config.gauth.client_secret;
 }
 
