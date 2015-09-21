@@ -31,7 +31,7 @@ function __instrument() {
 };
 shopt -s extdebug;
 trap __instrument DEBUG;'''
-    RECORD_COMMAND = SESSION_TEMPLATE.format(instrumentation = INSTRUMENTATION.replace('\n', ' '))
+    RECORD_COMMAND = RECORD_TEMPLATE.format(instrumentation = INSTRUMENTATION.replace('\n', ' '))
 
     # use docker exec to drop the user into an instrumented bash session
     os.execlp('docker', 'docker', 'exec', '-ti', container, 'bash', '-c', RECORD_COMMAND)
@@ -47,13 +47,14 @@ WORKDIR_FILENAME = 'pwd'
 BUILD_CONTEXT_PATH = './build/'
 
 # these commands from the history should not be included in the Dockerfile
-COMMAND_BLACKLIST = ['ls', 'cd', 'pwd', 'history', 'du',
+# list has to be extended, for now there are just common setup/maintenance commands
+COMMAND_BLACKLIST = ['ls', 'cd', 'pwd', 'history', 'du', 'top', 'ps'
                      'exit', 'clear', 'git status', 'cat']
 
 # Heuristic: these commands are likely to be "service"
 DOCKER_CMD_WHITELIST = ['service', '/etc/init.d/']
 
-# Heuristic: add files that were opened by an editor
+# Heuristic: add files that were opened by an editor and correspond to docker diff 
 EDITOR_WHITELIST = ['nano', 'vim', 'emacs', 'joe']
 
 def replay(container):
@@ -63,6 +64,7 @@ def replay(container):
     workdirs = read_session(container, WORKDIR_FILENAME)
 
     dockerfile = []
+    dockerfile_cmd_command = ""
 
     fs_changes = filesystem_diff(container)
 
@@ -73,7 +75,9 @@ def replay(container):
             continue
 
         if is_docker_cmd(command):
-            dockerfile.append("CMD " + command)
+            # there can only be one, and this current heuristic 
+            # just picks the last that has been executed
+            dockerfile_cmd_command = "CMD " + command
         elif is_editor(command):
             # now check whether the file was actually created/changed in the FS
             changed_path = extract_path_from_editor_command(command).replace('\n', '')
@@ -89,6 +93,7 @@ def replay(container):
         else:
             dockerfile.append("RUN " + command)
 
+    dockerfile.append(dockerfile_cmd_command)
 
     for instruction in dockerfile:
         print instruction
@@ -124,20 +129,17 @@ def read_session(container, filename):
     return copy(container, SESSION_PATH.format(filename = filename)).split("\n")
 
 def is_docker_cmd(command):
-    for docker_cmd_command in DOCKER_CMD_WHITELIST:
-        if command.startswith(docker_cmd_command):
-            return True
-    return False
+    return startswith(command, DOCKER_CMD_WHITELIST)
 
 def is_editor(command):
-    for editor in EDITOR_WHITELIST:
-        if command.startswith(editor):
-            return True
-    return False
+    return startswith(command, EDITOR_WHITELIST)
 
 def is_blacklisted(command):
-    for blacklisted_command in COMMAND_BLACKLIST:
-        if command.startswith(blacklisted_command):
+    return startswith(command, COMMAND_BLACKLIST)
+
+def startswith(string, collection):
+    for item in collection:
+        if string.startswith(item):
             return True
     return False
 
