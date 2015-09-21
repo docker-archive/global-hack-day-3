@@ -29,6 +29,7 @@ func init() {
 
 func main() {
 
+	fmt.Println("Connecting to logstash...")
 	addr, err := net.ResolveTCPAddr("tcp", logstashAddress)
 	if err != nil {
 		panic(err)
@@ -39,6 +40,7 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Println("Connecting to mqtt...")
 	opts := mqtt.NewClientOptions().AddBroker("tcp://" + mqttAddress)
 	opts.SetClientID("mqtt-to-logstash")
 	opts.SetKeepAlive(60 * time.Second)
@@ -60,7 +62,7 @@ func main() {
 			fmt.Printf("Failed to marshal %s: %s\n", message, err)
 			return
 		}
-		fmt.Println("Log:", string(messageBytes))
+		fmt.Println("Publishing:", string(messageBytes))
 		conn.Write(messageBytes)
 	})
 
@@ -69,6 +71,7 @@ func main() {
 		panic(token.Error())
 	}
 
+	fmt.Println("Subscribing", mqttTopicFilter)
 	if token := c.Subscribe(mqttTopicFilter, 0, nil); token.Wait() && token.Error() != nil {
 		fmt.Println(token.Error())
 		os.Exit(1)
