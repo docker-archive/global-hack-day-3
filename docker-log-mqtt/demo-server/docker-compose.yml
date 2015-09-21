@@ -10,6 +10,6 @@ mosquitto:
 
 subscriber:
   build: subscriber
-  command: app "mosquitto:1883" "docker-log/#" "logstash:5000"
+  command: app "mosquitto:1883" "docker-log/#"
   links:
     - mosquitto

@@ -6,14 +6,12 @@ import (
 	"fmt"
 	"git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git"
 	"math/rand"
-	"net"
 	"os"
 	"strings"
 	"time"
 )
 
 var mqttAddress string
-var logstashAddress string
 var mqttTopicFilter string
 
 func init() {
@@ -21,13 +19,12 @@ func init() {
 
 	flag.Parse()
 	args := flag.Args()
-	if len(args) != 3 {
-		fmt.Println("Usage: ./mqtt-to-logstash mqtt-address mqtt-topic-filter logstash-address")
+	if len(args) != 2 {
+		fmt.Println("Usage: app mqtt-address mqtt-topic-filter")
 		os.Exit(0)
 	}
 	mqttAddress = args[0]
 	mqttTopicFilter = args[1]
-	logstashAddress = args[2]
 
 	time.Sleep(2 * time.Second)
 
@@ -45,20 +42,9 @@ func RandStringBytes(n int) string {
 
 func main() {
 
-	fmt.Println("Connecting to logstash...")
-	addr, err := net.ResolveTCPAddr("tcp", logstashAddress)
-	if err != nil {
-		panic(err)
-	}
-
-	conn, err := net.DialTCP("tcp", nil, addr)
-	if err != nil {
-		panic(err)
-	}
-
 	fmt.Println("Connecting to mqtt...")
 	opts := mqtt.NewClientOptions().AddBroker("tcp://" + mqttAddress)
-	opts.SetClientID("mqtt-to-logstash-" + RandStringBytes(16))
+	opts.SetClientID("subscriber" + RandStringBytes(16))
 	opts.SetKeepAlive(60 * time.Second)
 
 	opts.SetDefaultPublishHandler(func(client *mqtt.Client, msg mqtt.Message) {
@@ -79,7 +65,6 @@ func main() {
 			return
 		}
 		fmt.Println("Received log:", string(messageBytes))
-		conn.Write(messageBytes)
 	})
 
 	c := mqtt.NewClient(opts)
