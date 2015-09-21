@@ -1,0 +1,29 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/docopt/docopt-go",
+			"repository": "https://github.com/docopt/docopt-go",
+			"revision": "854c423c810880e30b9fecdabb12d54f4a92f9bb",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/hanwen/go-fuse",
+			"repository": "https://github.com/hanwen/go-fuse",
+			"revision": "324ea173d0a4d90e0e97c464a6ad33f80c9587a8",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/mortdeus/go9p",
+			"repository": "https://github.com/mortdeus/go9p",
+			"revision": "6a1d8ce8ea9afa19e8a0a9927c8e465769000b7f",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/tj/docopt",
+			"repository": "https://github.com/tj/docopt",
+			"revision": "c8470e45692f168e8b380c5d625327e756d7d0a9",
+			"branch": "master"
+		}
+	]
+}
